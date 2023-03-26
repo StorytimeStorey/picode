@@ -21,8 +21,8 @@ class TemperatureAndPressureProcessor:
         for temperature, pressure in self.data:
             total_temperature += temperature
             total_pressure += pressure
-        avg_temperature = round(total_temperature / len(self.data), 4)
-        avg_pressure = round(total_pressure / len(self.data))
+        avg_temperature = round(total_temperature / len(self.data), 1)
+        avg_pressure = round(total_pressure / len(self.data),1)
         return avg_temperature, avg_pressure
         
     def write_averages_to_csv(self, avg_temperature, avg_pressure):
