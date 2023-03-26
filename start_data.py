@@ -18,6 +18,7 @@ class SensorRecorder:
 
             if current_time % self.minute_interval == 0:
                 self.tap_processor.process_data()
+            
             time.sleep(1)
 
 recorder = SensorRecorder()
