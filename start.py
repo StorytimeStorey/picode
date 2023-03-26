@@ -1,4 +1,4 @@
 import subprocess
 
-subprocess.Popen(['python', 'start_data.py'])
-subprocess.Popen(['python', 'Bonnibel.py'])
+subprocess.Popen(['python', 'data/start_data.py'])
+subprocess.Popen(['python', 'bot/Bonnibel.py'])
