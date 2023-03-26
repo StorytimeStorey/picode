@@ -60,8 +60,10 @@ async def on_message(message):
         await message.channel.send(f"{current_status}")
 
     if message.content.startswith("$graph"):
-        info.make_graph()
-        with open('../data/csv/temperature_and_humidity.png', 'rb') as file:
+        csv_file = "data/csv/dot.csv"
+        save_location = "data/csv/"
+        info.make_graph(csv_file, save_location)
+        with open('data/csv/temperature_and_humidity.png', 'rb') as file:
             image = discord.File(file)
         await message.channel.send(file=image)
 
