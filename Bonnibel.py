@@ -56,9 +56,15 @@ async def on_message(message):
         await message.channel.send("hello!")
 
     if message.content.startswith('$status'):
-        current_status = info.read_last_row('data/csv/dot.csv')
-        await message.channel.send(f"{current_status}")
+        try:
+            current_status = info.read_last_row('data/csv/dot.csv')
+            await message.channel.send(f"{current_status}")
+        except FileNotFoundError:
+            await message.channel.send("File doesn't exist yet. Pulling data from raw...")
+            current_status = info.read_last_row('data/csv/raw.csv')
+            await message.channel.send(f"{current_status}")
 
+            
     if message.content.startswith("$graph"):
         csv_file = "data/csv/dot.csv"
         save_location = "data/csv/"
