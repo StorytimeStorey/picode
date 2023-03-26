@@ -5,8 +5,8 @@ from datetime import datetime
 
 class TemperatureAndPressureProcessor:
     def __init__(self):
-        self.data_file = 'raw.csv'  #raw data
-        self.output_file = 'dot.csv' #data over time
+        self.data_file = 'Data/CSV/raw.csv'  #raw data
+        self.output_file = 'Data/CSV/dot.csv' #data over time
         self.data = []
         
     def read_data_from_csv(self):

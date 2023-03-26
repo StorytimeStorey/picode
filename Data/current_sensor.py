@@ -20,7 +20,7 @@ class Sensor:
         self.pressure = 0
 
     def update_readings(self):
-        self.temperature = round(self.bmp280.get_temperature(), 4)
-        self.pressure = round(self.bmp280.get_pressure(),5)
+        self.temperature = round(self.bmp280.get_temperature(), 1)
+        self.pressure = round(self.bmp280.get_pressure(),2)
     
     # update_readings(self)
