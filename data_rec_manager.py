@@ -20,3 +20,5 @@ class SensorRecorder:
                 self.tap_processor.process_data()
 
 recorder = SensorRecorder()
+
+recorder.record_data()
