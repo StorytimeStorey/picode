@@ -65,7 +65,7 @@ async def on_message(message):
             image = discord.File(file)
         await message.channel.send(file=image)
 
-with open('C:/Users/tomic/Desktop/token.txt') as f: token = f.read().strip()
+with open('../token.txt') as f: token = f.read().strip()
 client.run(f"{token}")
 
 # if __name__ == "__main__":
