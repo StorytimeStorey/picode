@@ -15,7 +15,7 @@ class Sensor:
     '''
     def __init__(self):
         self.bus = SMBus(1)
-        self.bmp280 = BMP280(i2c_dev=bus)
+        self.bmp280 = BMP280(i2c_dev=self.bus)
         self.temperature = 0
         self.pressure = 0
 
