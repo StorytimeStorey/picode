@@ -68,8 +68,6 @@ async def on_message(message):
 with open('C:/Users/tomic/Desktop/token.txt') as f: token = f.read().strip()
 client.run(f"{token}")
 
-#client.run("MTA1ODg2NjI2MjY4OTcyMjUxMA.GnBAVe.mxztlmGrmAc0FSMHk3yDC1U4jC0ctvMv8VSsWk")
-
 # if __name__ == "__main__":
 #     with open('C:/Users/tomic/Desktop/token.txt') as f: token = f.read().strip()
 #     bot = BonnibelBot(f'{token}')
