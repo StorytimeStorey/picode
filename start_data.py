@@ -1,6 +1,6 @@
 import time
-from Data.data_rec_init import TemperatureAndPressure
-from Data.data_rec_final import TemperatureAndPressureProcessor
+from data.data_rec_init import TemperatureAndPressure
+from data.data_rec_final import TemperatureAndPressureProcessor
 
 
 class SensorRecorder:
