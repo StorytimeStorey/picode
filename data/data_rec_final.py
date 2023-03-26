@@ -1,7 +1,7 @@
 import csv
 import time
 from datetime import datetime
-
+import os
 
 class TemperatureAndPressureProcessor:
     def __init__(self):
@@ -27,6 +27,10 @@ class TemperatureAndPressureProcessor:
         
     def write_averages_to_csv(self, avg_temperature, avg_pressure):
         time_now = datetime.now().strftime('%H%M')
+        if not os.path.isfile(self.output_file):
+            with open(self.output_file, 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(['Time', 'Temp', 'Humidity'])
         with open(self.output_file, 'a') as f:
             writer = csv.writer(f)
             writer.writerow([time_now, avg_temperature, avg_pressure])

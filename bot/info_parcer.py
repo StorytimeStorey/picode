@@ -44,7 +44,7 @@ def make_graph(csv_file, data_directory):
 
     # Extract the temperature and humidity data
     times = [row['Time'] for row in data]
-    temperatures = [float(row['Temperature']) for row in data]
+    temperatures = [float(row['Temp']) for row in data]
     humidities = [float(row['Humidity']) for row in data]
 
     # Create the plot
