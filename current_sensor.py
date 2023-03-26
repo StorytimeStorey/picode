@@ -23,4 +23,4 @@ class Sensor:
         self.temperature = self.bmp280.get_temperature()
         self.pressure = self.bmp280.get_pressure()
     
-    update_readings()
+    # update_readings(self)
