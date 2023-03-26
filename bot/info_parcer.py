@@ -1,20 +1,25 @@
 import csv
 import matplotlib.pyplot as plt
-
+from datetime import datetime
 
 
 
 
 def generate_text_from_csv_list(list):
-    last_time = list[0]
-    last_temp = list[1]
-    last_humidity = list[2]
-    # heater_on = "On" if list[3] == 1 else "off"
-    # cooler_on = "On" if list[4] == 1 else "off"
-    # humidifier_on = "On" if list[5] == 1 else "off"
-    # alerts = "YES" if list[6] == 1 else "NO"
-    # status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nHumidity: {last_humidity}\nHeater: {heater_on}\nCooler: {cooler_on}\nHumidifier: {humidifier_on}\nAlerts: {alerts}"
-    status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nPressure: {last_humidity}"
+    if len(list) > 2:
+
+        last_time = list[0]
+        last_temp = list[1]
+        last_humidity = list[2]
+        # heater_on = "On" if list[3] == 1 else "off"
+        # cooler_on = "On" if list[4] == 1 else "off"
+        # humidifier_on = "On" if list[5] == 1 else "off"
+        # alerts = "YES" if list[6] == 1 else "NO"
+        # status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nHumidity: {last_humidity}\nHeater: {heater_on}\nCooler: {cooler_on}\nHumidifier: {humidifier_on}\nAlerts: {alerts}"
+        status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nPressure: {last_humidity}"
+    else:
+        time_now = datetime.now().strftime('%H%M')
+        status_text = f"Last data taken at {time_now}.\nTemperate: {list[0]}.\nPressure: {list[1]}"
     return status_text
 
 def read_last_row(file_path):
