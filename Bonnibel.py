@@ -56,7 +56,7 @@ async def on_message(message):
         await message.channel.send("hello!")
 
     if message.content.startswith('$status'):
-        current_status = info.read_last_row('../data/csv/dot.csv')
+        current_status = info.read_last_row('data/csv/dot.csv')
         await message.channel.send(f"{current_status}")
 
     if message.content.startswith("$graph"):
