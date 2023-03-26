@@ -1,4 +1,4 @@
-from current_sensor import Sensor
+from Data.current_sensor import Sensor
 
 class TemperatureAndPressure:
     def __init__(self):
