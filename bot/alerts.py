@@ -4,15 +4,29 @@ import os
 
 
 class pi_alerts:
+    '''
+    Checks values in a csv for temps or humidities higher or lower than the desired values
+    Should eventually send alerts to Bonnibel to send them to discord
+    see readme for more details regarding alert implementation plans
+
+    Searches through a raw csv and if any values ping an alert, will increment a "max flags" variable. Once the number alerts surpases max allowed, it will trigger an alarm.
+
+    uses lowlow, low, high, highhigh. This implimentation originates from alarm types seen at Hetchy. 
+    
+    
+    '''
     def __init__(self, 
-                 data_file = 'data/csv/raw.csv', 
-                 alerts_file = 'data/csv/alerts.csv',
-                 temp_vals_low = [50, 58],
-                 temp_vals_high = [68, 72],
-                 hum_vals_low = [85, 79]
+                 data_file = 'data/csv/raw.csv', #file it checks
+                 alerts_file = 'data/csv/alerts.csv', #file it will save alerts to with details. Currently not implemented
+                 temp_vals_low = [50, 58], #lowlow, low
+                 temp_vals_high = [68, 72], #high, highhigh
+                 hum_vals_low = [85, 79] #low, lowlow
                  ):
         self.data_file = data_file
         self.alerts_file = alerts_file
+
+        #major alarms and minor alarms unimplemented yet
+        #intent is to 
         self.minor_alarms = 0
         self.major_alarms = 0
         self.temp_vals_low = temp_vals_low #lowlow, low
@@ -26,7 +40,11 @@ class pi_alerts:
         self.reported_alerts = {}
 
     def check_temp(self, row):
-
+        '''
+        Exists inside the check_values function. Checks a row of values from csv against each chosen value.
+        I've seen a super clean way to do this using dictionary composition but I wasn't sure how it worked. Might be worth looking into.
+        self.total_temp_alerts and self.total_hum_alerts can probably be combined.
+        '''
         #test for low
         if row <= self.temp_vals_low[1]: 
             self.total_temp_alerts_this_run['temp_low'] += 1
@@ -53,18 +71,29 @@ class pi_alerts:
         if row <= self.temp_vals_low[0]:
             self.total_hum_alerts_this_run['hum_lowlow'] += 1
 
+
     def check_values(self):
-        
+        '''
+        All the actual checking happens here.
+        Takes in the cvs file, iterates through each line and checks each value against target
+        If # of alerts surpasses max_flags, writes the alert to a file, and increments major_alarms to 1
+        '''
         self.total_temp_alerts_this_run = {} #reset counters
+
+        #check to see if the file exists
         if os.path.isfile(self.data_file):
             with open(self.data_file, 'r') as f:
                 reader = csv.reader(f)
-                next(reader)
+                next(reader) #go past the header line
                 
                 for row in reader:
                     self.check_temp(row[0])
                     self.check_hum(row[1])
                 
+
+                #After going through each row, this checks for how many alerts it found.
+                #If it found any, raises major_alarms and writes to a csv the time and kind of alarm.
+                #Eventually I'd like to combine these 2 into one function. I don't like having this many lines out.
                 for key,value in self.total_temp_alerts_this_run.items():
                     if value > self.max_flags:
                         self.reported_alerts[key] = time.strftime('%Y-%m-%d %H:%M:%S'), value
