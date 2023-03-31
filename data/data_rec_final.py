@@ -32,6 +32,7 @@ class TemperatureAndPressureProcessor:
 
 
     def read_data_from_csv(self):
+        self.data = [] #reset the list
         with open(self.data_file, 'r') as f:
             reader = csv.reader(f)
             next(reader)  # Skip header row
