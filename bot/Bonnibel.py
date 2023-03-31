@@ -86,12 +86,12 @@ async def on_message(message):
         await message.channel.send(file=image)
 
 #untested, unsure if working. Probably not honestly.
-@client.tasks.loop(seconds=11)
-async def alarms(channel = 705960639687950387):
-    check_alerts = pi_alerts()
-    check_alerts.check_values()
-    if check_alerts.major_alarms > 1:
-        await channel.send('Major Alert Detected')
+# @client.tasks.loop(seconds=11)
+# async def alarms(channel = 705960639687950387):
+#     check_alerts = pi_alerts()
+#     check_alerts.check_values()
+#     if check_alerts.major_alarms > 1:
+#         await channel.send('Major Alert Detected')
 
 
 #Can't put the token directly on here, so it'll need to be saved to each computer seperately.

@@ -1,4 +1,4 @@
-from data.current_sensor import Sensor
+from current_sensor import Sensor
 import os
 
 class TemperatureAndPressure:
