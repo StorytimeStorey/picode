@@ -28,7 +28,7 @@ class TemperatureAndPressureProcessor:
         # Format the date as dd_mm_yy
         date_str = today.strftime('%d_%m_%y')
         #Update self.output_file name
-        self.output_file = f'{date_str}_dot.csv'
+        self.output_file = f'data/csv/{date_str}_dot.csv'
 
 
     def read_data_from_csv(self):
