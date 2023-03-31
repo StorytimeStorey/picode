@@ -4,6 +4,7 @@ import asyncio
 import multiprocessing as mp
 from alerts import pi_alerts
 from discord.ext import tasks
+from discord import app_commands
 from datetime import datetime
 
 ######This is the class bot, but I don't know how to do a bot in a class so...#######
