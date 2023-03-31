@@ -45,12 +45,12 @@ from datetime import datetime
 #         await self.client.start(self.token)
 #########
 
-
+guild_id = 705960639687950387
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
-channel = client.get_channel(705960640111575061)
+channel = client.get_channel(guild_id)
 
 
 @client.event
@@ -92,7 +92,7 @@ async def on_message(message):
 
 
 # slash commands 
-@tree.command(name = "print_status", description = "I dont know yet", guild=discord.Object(id=705960639687950387))
+@tree.command(name = "print_status", description = "I dont know yet", guild=discord.Object(id=guild_id))
 async def print_status():
     try:
         current_day = lambda: datetime.today().strftime('%d_%m_%y')
@@ -103,7 +103,7 @@ async def print_status():
         current_status = info.read_last_row('../data/csv/raw.csv')
         channel.send(f"{current_status}")
 
-@tree.command(name = "print_graphs", description = "I dont know yet", guild=discord.Object(id=705960639687950387))
+@tree.command(name = "print_graphs", description = "I dont know yet", guild=discord.Object(id=guild_id))
 async def print_graphs():
     current_day = lambda: datetime.today().strftime('%d_%m_%y')
     csv_file = f'../data/csv/{current_day}_dot.csv'
@@ -112,6 +112,11 @@ async def print_graphs():
     with open('../data/csv/temperature_and_humidity.png', 'rb') as file:
         image = discord.File(file)
     await channel.send(file=image)
+
+@client.event
+async def on_ready():
+    await tree.sync(guild=discord.Object(id=guild_id))
+    print("Ready!")
 #untested, unsure if working. Probably not honestly.
 # @client.tasks.loop(seconds=11)
 # async def alarms(channel = 705960639687950387):
