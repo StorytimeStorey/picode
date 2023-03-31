@@ -17,9 +17,20 @@ class TemperatureAndPressureProcessor:
     '''
     def __init__(self):
         self.data_file = 'data/csv/raw.csv'  #raw data
-        self.output_file = 'data/csv/dot.csv' #data over time
+        current_day = lambda: datetime.today().strftime('%d_%m_%y')
+        self.output_file = f'data/csv/{current_day}_dot.csv' #data over time
         self.data = []
         
+
+    def csv_name_is_current_date(self):
+        # Get the current date
+        today = datetime.today()
+        # Format the date as dd_mm_yy
+        date_str = today.strftime('%d_%m_%y')
+        #Update self.output_file name
+        self.output_file = f'{date_str}_dot.csv'
+
+
     def read_data_from_csv(self):
         with open(self.data_file, 'r') as f:
             reader = csv.reader(f)
