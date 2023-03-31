@@ -70,21 +70,21 @@ async def on_message(message):
     if message.content.startswith('$status'):
         try:
             current_day = datetime.today().strftime('%d_%m_%y')
-            current_status = info.read_last_row(f'/data/csv/{current_day}_dot.csv')
+            current_status = info.read_last_row(f'../data/csv/{current_day}_dot.csv')
             await message.channel.send(f"{current_status}")
         except FileNotFoundError:
             await message.channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
-            current_status = info.read_last_row('/data/csv/raw.csv')
+            current_status = info.read_last_row('../data/csv/raw.csv')
             await message.channel.send(f"{current_status}")
 
     #Makes a graph
     ########See readme for implentation plans#######
     if message.content.startswith("$graph"):
         current_day = datetime.today().strftime('%d_%m_%y')
-        csv_file = f'/data/csv/{current_day}_dot.csv'
-        save_location = "data/csv/"
+        csv_file = f'../data/csv/{current_day}_dot.csv'
+        save_location = "../data/csv/"
         info.make_graph(csv_file, save_location)
-        with open('/data/csv/temperature_and_humidity.png', 'rb') as file:
+        with open('../data/csv/temperature_and_humidity.png', 'rb') as file:
             image = discord.File(file)
         await message.channel.send(file=image)
 
