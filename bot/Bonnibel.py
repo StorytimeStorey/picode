@@ -4,6 +4,7 @@ import asyncio
 import multiprocessing as mp
 from alerts import pi_alerts
 from discord.ext import tasks
+from datetime import datetime
 
 ######This is the class bot, but I don't know how to do a bot in a class so...#######
 # class BonnibelBot:
@@ -68,7 +69,8 @@ async def on_message(message):
     #returns timestamp, temp, and eventually humidity
     if message.content.startswith('$status'):
         try:
-            current_status = info.read_last_row('../data/csv/dot.csv')
+            current_day = lambda: datetime.today().strftime('%d_%m_%y')
+            current_status = info.read_last_row(f'../data/csv/{current_day}_dot.csv')
             await message.channel.send(f"{current_status}")
         except FileNotFoundError:
             await message.channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
@@ -78,7 +80,8 @@ async def on_message(message):
     #Makes a graph
     ########See readme for implentation plans#######
     if message.content.startswith("$graph"):
-        csv_file = "../data/csv/dot.csv"
+        current_day = lambda: datetime.today().strftime('%d_%m_%y')
+        csv_file = f'../data/csv/{current_day}_dot.csv'
         save_location = "data/csv/"
         info.make_graph(csv_file, save_location)
         with open('../data/csv/temperature_and_humidity.png', 'rb') as file:
@@ -96,7 +99,7 @@ async def on_message(message):
 
 #Can't put the token directly on here, so it'll need to be saved to each computer seperately.
 #Most of the testing happens when working from the pi anyways
-with open('../../token.txt') as f: token = f.read().strip()
+with open('../token.txt') as f: token = f.read().strip()
 client.run(f"{token}")
 
 # if __name__ == "__main__":
