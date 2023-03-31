@@ -37,8 +37,12 @@ Alerts:
         integrate with graphs to see error history
 
 Saved Data
-    Move data saved to a specific place in the pi so it doesn't get deleted on resetting code.
+    ~~Move data saved to a specific place in the pi so it doesn't get deleted on resetting code.~~ 3/30 all data beyond raw now saved to root/data, or just data/(name).csv
+        considering removing the ending _dot and just placing it in a directory named dot. 
+            ERROR:
+                Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
         --only useful if we agree we are finished with changing naming conventions.
+
     
 
 TO BE MADE:
