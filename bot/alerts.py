@@ -17,7 +17,7 @@ class pi_alerts:
     '''
     def __init__(self, 
                  data_file = 'data/csv/raw.csv', #file it checks
-                 alerts_file = 'data/csv/alerts.csv', #file it will save alerts to with details. Currently not implemented
+                 alerts_file = '../data/alerts.csv', #file it will save alerts to with details. Currently not implemented
                  temp_vals_low = [50, 58], #lowlow, low
                  temp_vals_high = [68, 72], #high, highhigh
                  hum_vals_low = [85, 79] #low, lowlow

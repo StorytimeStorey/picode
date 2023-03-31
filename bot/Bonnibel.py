@@ -72,7 +72,7 @@ async def on_message(message):
     if message.content.startswith('$status'):
         try:
             current_day = datetime.today().strftime('%d_%m_%y')
-            current_status = info.read_last_row(f'data/csv/{current_day}_dot.csv')
+            current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
             await message.channel.send(f"{current_status}")
         except FileNotFoundError:
             await message.channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
@@ -83,40 +83,40 @@ async def on_message(message):
     ########See readme for implentation plans#######
     if message.content.startswith("$graph"):
         current_day = datetime.today().strftime('%d_%m_%y')
-        csv_file = f'data/csv/{current_day}_dot.csv'
-        save_location = "data/csv/"
+        csv_file = f'../data/{current_day}_dot.csv'
+        save_location = "../data/"
         info.make_graph(csv_file, save_location)
-        with open('data/csv/temperature_and_humidity.png', 'rb') as file:
+        with open('../data/temperature_and_humidity.png', 'rb') as file:
             image = discord.File(file)
         await message.channel.send(file=image)
 
 
 # slash commands 
-@tree.command(name = "print_status", description = "I dont know yet", guild=discord.Object(id=guild_id))
-async def print_status():
-    try:
-        current_day = lambda: datetime.today().strftime('%d_%m_%y')
-        current_status = info.read_last_row(f'../data/csv/{current_day}_dot.csv')
-        channel.send(f"{current_status}")
-    except FileNotFoundError:
-        channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
-        current_status = info.read_last_row('../data/csv/raw.csv')
-        channel.send(f"{current_status}")
+# @tree.command(name = "print_status", description = "I dont know yet", guild=discord.Object(id=guild_id))
+# async def print_status():
+#     try:
+#         current_day = datetime.today().strftime('%d_%m_%y')
+#         current_status = info.read_last_row(f'data/csv/{current_day}_dot.csv')
+#         channel.send(f"{current_status}")
+#     except FileNotFoundError:
+#         channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
+#         current_status = info.read_last_row('data/csv/raw.csv')
+#         channel.send(f"{current_status}")
 
-@tree.command(name = "print_graphs", description = "I dont know yet", guild=discord.Object(id=guild_id))
-async def print_graphs():
-    current_day = lambda: datetime.today().strftime('%d_%m_%y')
-    csv_file = f'../data/csv/{current_day}_dot.csv'
-    save_location = "data/csv/"
-    info.make_graph(csv_file, save_location)
-    with open('../data/csv/temperature_and_humidity.png', 'rb') as file:
-        image = discord.File(file)
-    await channel.send(file=image)
+# @tree.command(name = "print_graphs", description = "I dont know yet", guild=discord.Object(id=guild_id))
+# async def print_graphs():
+#     current_day = datetime.today().strftime('%d_%m_%y')
+#     csv_file = f'data/csv/{current_day}_dot.csv'
+#     save_location = "data/csv/"
+#     info.make_graph(csv_file, save_location)
+#     with open('data/csv/temperature_and_humidity.png', 'rb') as file:
+#         image = discord.File(file)
+#     await channel.send(file=image)
 
-@client.event
-async def on_ready():
-    await tree.sync(guild=discord.Object(id=guild_id))
-    print("Ready!")
+# @client.event
+# async def on_ready():
+#     await tree.sync(guild=discord.Object(id=guild_id))
+#     print("Ready!")
 #untested, unsure if working. Probably not honestly.
 # @client.tasks.loop(seconds=11)
 # async def alarms(channel = 705960639687950387):
