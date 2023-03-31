@@ -69,7 +69,7 @@ async def on_message(message):
     #returns timestamp, temp, and eventually humidity
     if message.content.startswith('$status'):
         try:
-            current_day = lambda: datetime.today().strftime('%d_%m_%y')
+            current_day = datetime.today().strftime('%d_%m_%y')
             current_status = info.read_last_row(f'/data/csv/{current_day}_dot.csv')
             await message.channel.send(f"{current_status}")
         except FileNotFoundError:
@@ -80,7 +80,7 @@ async def on_message(message):
     #Makes a graph
     ########See readme for implentation plans#######
     if message.content.startswith("$graph"):
-        current_day = lambda: datetime.today().strftime('%d_%m_%y')
+        current_day = datetime.today().strftime('%d_%m_%y')
         csv_file = f'/data/csv/{current_day}_dot.csv'
         save_location = "data/csv/"
         info.make_graph(csv_file, save_location)
