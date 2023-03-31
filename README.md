@@ -12,6 +12,7 @@ Obviously this doesn't always work, but it makes for clean running code that is 
 Known errors:
     csv randomly got deleted? Can't figure out why. 3/30 @ 11pm
     @tasks not working --don't really want alerts working through tasks anyways
+    @tree isn't working currently
 
 Bot:
     change to class form
