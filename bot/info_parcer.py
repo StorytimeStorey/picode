@@ -50,11 +50,11 @@ def make_graph(csv_file, data_directory):
     # Extract the temperature and humidity data
     times = [row['Time'] for row in data]
     temperatures = [float(row['Temp']) for row in data]
-    humidities = [float(row['Humidity']) for row in data]
+    #humidities = [float(row['Humidity']) for row in data]
 
     # Create the plot
     plt.plot(times, temperatures, label='Temperature')
-    plt.plot(times, humidities, label='Humidity')
+   # plt.plot(times, humidities, label='Humidity')
     plt.xlabel('Time')
     plt.ylabel('Value')
     plt.title('Temperature and Humidity Over Time')
