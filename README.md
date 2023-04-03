@@ -6,16 +6,27 @@ If there are any major changes, please put explanations and date/time here
 
 
 ## Known errors:
-- csv randomly got deleted? Can't figure out why. 3/30 @ 11pm
-- @tasks not working --don't really want alerts working through tasks anyways
-- ~@tree isn't working currently~
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
 - directory won't be accessed sometimes
 - data in graph will not reset between calls from the bot
-- slash command for graph not working, regular command is working
+- ~slash command for graph not working, regular command is working~
+- ~csv randomly got deleted? Can't figure out why. 3/30 @ 11pm~ I think we were both interacting at the same time and didn't notice
+- ~@tasks not working --don't really want alerts working through tasks anyways~
+- ~@tree isn't working currently~
+
+##Most Important:
+- We should focus on the following in this order:
+    - Alerts (will work with function to control relay on/off states)
+    - relay controls
+    - Safety measures
+    - Alarms
+    - Testing
+    - Graphing
 
 ## Bot:
 - change to class form
+    - get pipe to work with graph
+    - build file for graphing options: see Graph for more details
     - ~get slash commands working~
     
 ### Graph:
@@ -26,7 +37,6 @@ If there are any major changes, please put explanations and date/time here
             
 ## Threading
 - figure out how threading and pipe works
-- implement with alerts
 - implement with alerts
     - pipe to look for alerts from the alerts function   
     - move alerts to data and have it work while writing to raw
