@@ -32,7 +32,8 @@ async def set_channel(ctx):
 @McJohnson.hybrid_command()
 async def hello(ctx):
     await ctx.send("hello!")
-    
+    await McJohnson.tree.sync()
+
 @McJohnson.hybrid_command()
 async def print_graphs(ctx):
     current_day = datetime.today().strftime('%d_%m_%y')
