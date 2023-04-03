@@ -8,7 +8,7 @@ from discord.ext import tasks, commands
 from discord import app_commands
 from datetime import datetime
 
-with open('../McJohnsontoken.txt') as f: token = f.read().strip()
+with open('../../McJohnsontoken.txt') as f: token = f.read().strip()
 guild_id = 705960639687950387
 # initialize discord client
 McJohnson = discord.Client()
