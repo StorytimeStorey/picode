@@ -19,11 +19,12 @@ If there are any major changes, please put explanations and date/time here
 
 ## Most Important:
 - We should focus on the following in this order:
-    - Multithreading / Pipe
+    - Control
+    - Relays
+        - Safety Measures
     - Alerts (will work with function to control relay on/off states)
-    - relay controls
-    - Safety measures
-    - Alarms
+        - Alerts CSV
+        - bot tasks.loop
     - Testing
     - Graphing
 
