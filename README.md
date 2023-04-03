@@ -12,6 +12,7 @@ If there are any major changes, please put explanations and date/time here
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
 - directory won't be accessed sometimes
 - data in graph will not reset between calls from the bot
+- slash command for graph not working, regular command is working
 
 ## Bot:
 - change to class form
