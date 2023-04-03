@@ -36,9 +36,16 @@ async def set_channel(ctx):
     McJohnson.default_channel = ctx.channel
     await ctx.send('Channel set.')
 
-#This needs to be connected to a pipe in order to work properly, since it takes too long to work normally.
+@McJohnson.event
+async def on_ready():
+    await McJohnson.tree.sync()
+
 @McJohnson.hybrid_command()
-async def print_graphs(ctx):
+async def hello(ctx):
+    await ctx.send("hello!")
+
+@McJohnson.hybrid_command()
+async def print_graphs(ctx): #This needs to be connected to a pipe in order to work properly, since it takes too long to work normally.
     if os.path.exists(pi_johnson_path):
         current_day = datetime.today().strftime('%d_%m_%y')
         csv_file = f'../data/{current_day}_dot.csv'
@@ -57,6 +64,10 @@ async def print_graphs(ctx):
         with open('data/csv/test_temperature_and_humidity.png', 'rb') as file:
             image = discord.File(file)      
         await ctx.send(file=image)
+#Not sure what this is...
+    # await ctx.send(file=image).defer()
+    # asyncio.sleep()
+    # await ctx.followup.send()
 
 @McJohnson.hybrid_command()
 async def print_status(ctx):
@@ -69,6 +80,7 @@ async def print_status(ctx):
             channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
             current_status = info.read_last_row('data/csv/raw.csv')
             await ctx.send(f"{current_status}")
+
 
 
     else: #CODE FOR TESTING ENVIRONMENT

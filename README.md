@@ -8,14 +8,15 @@ If there are any major changes, please put explanations and date/time here
 ## Known errors:
 - csv randomly got deleted? Can't figure out why. 3/30 @ 11pm
 - @tasks not working --don't really want alerts working through tasks anyways
-- @tree isn't working currently
+- ~@tree isn't working currently~
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
 - directory won't be accessed sometimes
 - data in graph will not reset between calls from the bot
+- slash command for graph not working, regular command is working
 
 ## Bot:
 - change to class form
-    - get slash commands working
+    - ~get slash commands working~
     
 ### Graph:
 - slash commands for graph time desired           
