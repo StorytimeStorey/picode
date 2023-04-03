@@ -7,7 +7,8 @@ from datetime import datetime
 class TemperatureAndPressure:
     def __init__(self):
         self.sensor = Sensor()
-        if not self.sensor.test_mode:     
+        if not self.sensor.test_mode:
+            self.test_mode = False 
             self.csv = 'data/csv/raw.csv'
 
         else: #CODE FOR TESTING ENVIRONMENT

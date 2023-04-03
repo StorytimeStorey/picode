@@ -1,5 +1,4 @@
 import random
-import time
 
 test_mode = False
 try:  #test to see if sensor is connected
