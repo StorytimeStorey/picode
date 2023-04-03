@@ -19,15 +19,20 @@ intents = discord.Intents(value=7,
                           typing=True,
                           integrations=True)
 McJohnson = discord.Client(intents=intents)
+client = discord.Client(intents=intents)
 channel = McJohnson.get_channel(guild_id)
 # set command prefix
 McJohnson = commands.Bot(command_prefix='@M', intents=intents)
 
-@McJohnson.command(name='set_channel')
+@client.event
 async def set_channel(ctx):
     McJohnson.default_channel = ctx.channel
     await ctx.send('Channel set.')
 
+@McJohnson.hybrid_command()
+async def hello(ctx):
+    await ctx.send("hello!")
+    
 @McJohnson.hybrid_command()
 async def print_graphs(ctx):
     current_day = datetime.today().strftime('%d_%m_%y')
