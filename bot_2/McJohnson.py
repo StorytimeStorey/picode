@@ -31,10 +31,10 @@ async def set_channel(ctx):
 @McJohnson.hybrid_command()
 async def print_graphs(ctx):
     current_day = datetime.today().strftime('%d_%m_%y')
-    csv_file = f'data/csv/{current_day}_dot.csv'
+    csv_file = f'../data/{current_day}_dot.csv'
     save_location = "data/csv/"
     info.make_graph(csv_file, save_location)
-    with open('data/csv/temperature_and_humidity.png', 'rb') as file:
+    with open('../data/temperature_and_humidity.png', 'rb') as file:
         image = discord.File(file)
     await ctx.send(file=image)
 
@@ -42,7 +42,7 @@ async def print_graphs(ctx):
 async def print_status(ctx):
     try:
         current_day = datetime.today().strftime('%d_%m_%y')
-        current_status = info.read_last_row(f'data/csv/{current_day}_dot.csv')
+        current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
         channel.send(f"{current_status}")
     except FileNotFoundError:
         channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
