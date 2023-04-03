@@ -15,7 +15,7 @@ intents = discord.Intents.default()
 McJohnson = discord.Client(intents=intents)
 channel = McJohnson.get_channel(guild_id)
 # set command prefix
-McJohnson = commands.Bot(command_prefix='@M')
+McJohnson = commands.Bot(command_prefix='@M', intents=intents)
 
 @McJohnson.command(name='set_channel')
 async def set_channel(ctx):
