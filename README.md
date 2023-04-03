@@ -6,10 +6,11 @@ If there are any major changes, please put explanations and date/time here
 
 
 ## Known errors:
-- Currently stuck in test mode
+
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
 - directory won't be accessed sometimes
 - data in graph will not reset between calls from the bot
+- ~Currently stuck in test mode~ fixed 4/3 @ 10am.
 - ~slash command for graph not working, regular command is working~
 - ~csv randomly got deleted? Can't figure out why. 3/30 @ 11pm~ I think we were both interacting at the same time and didn't notice
 - ~@tasks not working --don't really want alerts working through tasks anyways~
