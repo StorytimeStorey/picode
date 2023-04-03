@@ -11,7 +11,7 @@ from datetime import datetime
 with open('../McJohnsonToken.txt') as f: token = f.read().strip()
 guild_id = 705960639687950387
 # initialize discord client
-intents = discord.Intents.all()
+intents = ['dm_messages', 'guild_messages', 'message_content', 'messages', 'typing']
 McJohnson = discord.Client(intents=intents)
 channel = McJohnson.get_channel(guild_id)
 # set command prefix
