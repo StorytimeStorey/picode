@@ -14,7 +14,7 @@ If there are any major changes, please put explanations and date/time here
 - ~@tasks not working --don't really want alerts working through tasks anyways~
 - ~@tree isn't working currently~
 
-##Most Important:
+## Most Important:
 - We should focus on the following in this order:
     - Alerts (will work with function to control relay on/off states)
     - relay controls
