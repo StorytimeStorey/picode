@@ -1,6 +1,8 @@
 import random
 import time
 
+
+test_mode = bool
 try:  #test to see if sensor is connected
     from bmp280 import BMP280
 except ImportError: #if not, enter test mode
