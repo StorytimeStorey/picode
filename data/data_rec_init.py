@@ -12,6 +12,7 @@ class TemperatureAndPressure:
 
         else: #CODE FOR TESTING ENVIRONMENT
             self.test_mode = True
+            print("data_rec_init is in test mode")
             self.csv = 'data/csv/test.csv'
 
     def record_data_to_csv(self):

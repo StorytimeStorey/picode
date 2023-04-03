@@ -1,8 +1,7 @@
 import random
 import time
 
-
-test_mode = bool
+test_mode = False
 try:  #test to see if sensor is connected
     from bmp280 import BMP280
     print("Sensor bmp280 found")
@@ -28,7 +27,6 @@ class Sensor:
     sets self.test_mode = True, which should cascade testing environment changes
     '''
     def __init__(self, temp_low = 55, temp_high = 75, hum_low = 82, hum_high = 99):
-        print(test_mode)
         if not test_mode:
             self.bus = SMBus(1)
             self.bmp280 = BMP280(i2c_dev=self.bus)
@@ -38,6 +36,7 @@ class Sensor:
 
         else: #CODE FOR TESTING ENVIRONMENT
             self.test_mode = True
+            print("current_sensor.py is in test mode")
             self.temperature = 0
             self.pressure = 0   
             self.temp_low = temp_low

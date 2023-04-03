@@ -16,6 +16,7 @@ class SensorRecorder:
         else:
             #IF TEST MODE ACTIVE, tap_processor = False, meaning no data gets saved in the main file and everything gets put in data/csv/test.csv
             self.tap_processor = False
+            print("Start_data.py is in test mode")
 
     def record_data(self):
 
