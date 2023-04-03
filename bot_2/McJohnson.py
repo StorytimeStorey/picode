@@ -55,7 +55,7 @@ async def print_status(ctx):
         channel.send(f"{current_status}")
     except FileNotFoundError:
         channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
-        current_status = info.read_last_row('data/csv/raw.csv')
+        current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
         ctx.send(f"{current_status}")
 
 def run_bot():
