@@ -45,8 +45,9 @@ async def print_graphs(ctx):
     info.make_graph(csv_file, save_location)
     with open('../data/temperature_and_humidity.png', 'rb') as file:
         image = discord.File(file)
-    await ctx.send(file=image)
-
+    await ctx.defer(file=image)
+    asyncio.sleep()
+    await ctx.followup.send(file-image)
 @McJohnson.hybrid_command()
 async def print_status(ctx):
     try:
