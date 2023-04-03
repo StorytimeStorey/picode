@@ -52,7 +52,7 @@ async def print_status(ctx):
     try:
         current_day = datetime.today().strftime('%d_%m_%y')
         current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
-        channel.send(f"{current_status}")
+        ctx.send(f"{current_status}")
     except FileNotFoundError:
         channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
         current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
