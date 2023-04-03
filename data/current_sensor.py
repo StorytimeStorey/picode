@@ -28,6 +28,7 @@ class Sensor:
     sets self.test_mode = True, which should cascade testing environment changes
     '''
     def __init__(self, temp_low = 55, temp_high = 75, hum_low = 82, hum_high = 99):
+        print(test_mode)
         if not test_mode:
             self.bus = SMBus(1)
             self.bmp280 = BMP280(i2c_dev=self.bus)
