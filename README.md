@@ -16,7 +16,7 @@ If there are any major changes, please put explanations and date/time here
 
 ## Bot:
 - change to class form
-    - get slash commands working
+    - ~get slash commands working~
     
 ### Graph:
 - slash commands for graph time desired           
