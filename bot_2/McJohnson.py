@@ -25,9 +25,12 @@ channel = McJohnson.get_channel(guild_id)
 McJohnson = commands.Bot(command_prefix='@M', intents=intents)
 
 @client.event
-async def on_ready(ctx):
+async def set_channel(ctx):
     McJohnson.default_channel = ctx.channel
     await ctx.send('Channel set.')
+
+@McJohnson.event
+async def sync_tree():
     await McJohnson.tree.sync()
 
 @McJohnson.hybrid_command()
