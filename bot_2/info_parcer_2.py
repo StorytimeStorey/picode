@@ -59,7 +59,19 @@ def make_graph(csv_file, data_directory):
     plt.ylabel('Value')
     plt.title('Temperature and Humidity Over Time')
     plt.legend()
-    plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
+    if csv_file == 'data/csv/test.csv':
+        plt.savefig(f'{data_directory}/test_temperature_and_humidity.png', dpi=300)
+    else:
+        plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
+
+def add_time_column(data):
+    time = 1
+    new_data = [['Time', 'Temp', 'Humidity']]
+    for row in data[1:]:
+        new_row = [time] + row
+        new_data.append(new_row)
+        time += 1
+    return new_data
 
 
 if __name__ == '__main__':
