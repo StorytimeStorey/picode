@@ -30,7 +30,7 @@ async def set_channel(ctx):
     await ctx.send('Channel set.')
 
 @McJohnson.event
-async def sync_tree():
+async def on_ready():
     await McJohnson.tree.sync()
 
 @McJohnson.hybrid_command()
@@ -60,6 +60,5 @@ async def print_status(ctx):
 
 def run_bot():
     McJohnson.run(token)
-    sync_tree()
 
 run_bot()
