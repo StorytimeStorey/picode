@@ -28,7 +28,7 @@ async def set_channel(ctx):
     McJohnson.default_channel = ctx.channel
     await ctx.send('Channel set.')
 
-@McJohnson.hybrid_command
+@McJohnson.hybrid_command()
 async def print_graphs():
     current_day = datetime.today().strftime('%d_%m_%y')
     csv_file = f'data/csv/{current_day}_dot.csv'
@@ -38,7 +38,7 @@ async def print_graphs():
         image = discord.File(file)
     await channel.send(file=image)
 
-@McJohnson.hybrid_command
+@McJohnson.hybrid_command()
 async def print_status():
     try:
         current_day = datetime.today().strftime('%d_%m_%y')
