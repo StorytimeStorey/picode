@@ -26,16 +26,17 @@ class Sensor:
     If sensor isn't found, enters "test mode" which sets everything to chosen values and saves random info to a test csv
     sets self.test_mode = True, which should cascade testing environment changes
     '''
-    def __init__(self, temp_low = 55, temp_high = 75, hum_low = 82, hum_high = 99):
+    def __init__(self, test_mode, temp_low = 55, temp_high = 75, hum_low = 82, hum_high = 99,):
         if not test_mode:
             self.bus = SMBus(1)
             self.bmp280 = BMP280(i2c_dev=self.bus)
             self.temperature = 0
             self.pressure = 0
+            self.test_mode = test_mode
 
 
         else: #CODE FOR TESTING ENVIRONMENT
-            self.test_mode = True
+            self.test_mode = test_mode
             print("current_sensor.py is in test mode")
             self.temperature = 0
             self.pressure = 0   
