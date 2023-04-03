@@ -7,6 +7,7 @@ If there are any major changes, please put explanations and date/time here
 
 ## Known errors:
 
+- Graphing works in test mode with minimal data, but once there's too much data it takes too long for slash commands. Need to get pipe implemented properly and graph linked through it.
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
 - directory won't be accessed sometimes
 - data in graph will not reset between calls from the bot
@@ -18,6 +19,7 @@ If there are any major changes, please put explanations and date/time here
 
 ## Most Important:
 - We should focus on the following in this order:
+    - Multithreading / Pipe
     - Alerts (will work with function to control relay on/off states)
     - relay controls
     - Safety measures
