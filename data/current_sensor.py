@@ -5,7 +5,9 @@ import time
 test_mode = bool
 try:  #test to see if sensor is connected
     from bmp280 import BMP280
+    print("Sensor bmp280 found")
 except ImportError: #if not, enter test mode
+    print("Sensor not found, entering test mode")
     test_mode = True
 
 try:
