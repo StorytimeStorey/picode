@@ -10,7 +10,7 @@ from datetime import datetime
 import os
 
 Storey_johnson_path = r'C:/Users/tomic/Desktop/johnson.txt'
-Jackson_johnson_path = r'put the path for your token here jackson'
+Jackson_johnson_path = r'/Users/jackson/Documents/GitHub/picode/bot_2/McJohnsonToken.txt'
 pi_johnson_path = r'../McJohnsonToken.txt'
 
 guild_id = 705960639687950387 #Channel ID
@@ -86,6 +86,7 @@ async def print_status(ctx):
     else: #CODE FOR TESTING ENVIRONMENT
         current_status = info.read_last_row('data/csv/test.csv')
         await ctx.send(f"{current_status}")
+
 
 def run_bot():
     if os.path.exists(Storey_johnson_path): #If Storey is testing...
