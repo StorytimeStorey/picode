@@ -50,6 +50,7 @@ def make_graph(csv_file, data_directory):
     # Extract the temperature and humidity data
     times = [row['Time'] for row in data]
     temperatures = [float(row['Temp']) for row in data]
+    x_points_count = 12 #Controls how many data points we'll get in the x axis
     #humidities = [float(row['Humidity']) for row in data]
 
     # Create the plot
@@ -59,7 +60,7 @@ def make_graph(csv_file, data_directory):
     plt.ylabel('Value')
     plt.title('Temperature and Humidity Over Time')
     plt.legend()
-    plt.xticks(range(0, len(times), int(len(times)/6)), times[::int(len(times)/6)], fontsize=8)
+    plt.xticks(range(0, len(times), int(len(times)/x_points_count)), times[::int(len(times)/x_points_count)], fontsize=8)
     plt.xlim(times[0], times[-1])
 
     if csv_file == 'data/csv/test.csv':
