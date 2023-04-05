@@ -9,8 +9,15 @@ If there are any major changes, please put explanations and date/time here
 
 - Graphing works in test mode with minimal data, but once there's too much data it takes too long for slash commands. Need to get pipe implemented properly and graph linked through it.
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
-- directory won't be accessed sometimes
-- data in graph will not reset between calls from the bot
+- directory won't be accessed sometimes 
+    - This is an issue with permissions. Currently fixed by with using sudo python3 start.py
+- Graphs x axis isn't showing proper times
+    - Intended to show in 30 minute increments + last time taken. 
+    - Current rendition somehow offsets time with the graph weirdly
+    - Current rendition doesn't show the proper times.
+    
+## Fixed Errors
+- ~data in graph will not reset between calls from the bot~ 4/4/23 Had to do plt.close(). Was actually kind of a big memory leak.
 - ~Currently stuck in test mode~ fixed 4/3 @ 10am.
 - ~slash command for graph not working, regular command is working~
 - ~csv randomly got deleted? Can't figure out why. 3/30 @ 11pm~ I think we were both interacting at the same time and didn't notice
@@ -35,6 +42,7 @@ If there are any major changes, please put explanations and date/time here
     - ~get slash commands working~
     
 ### Graph:
+- Show time in X axis in 30-min intervals, including last time
 - slash commands for graph time desired           
 - X days, weeks, months, years desired               
 - slash commands for type of graph desired
