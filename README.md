@@ -65,13 +65,11 @@ If there are any major changes, please put explanations and date/time here
 - have status update with last line of dot.csv
 
 ### Graph:
-- Show time in X axis in 30-min intervals, including last time
+- ~Show time in X axis in 30-min intervals, including last time~
 - Request "graph" for most current day
 - request "graph X"    
     - X days, weeks, months, years desired               
 - temp/hum
-- fix x axis issues
-- fix weird graph scaling problem from latest x axis fuckery
 
 
 ## Saved Data
