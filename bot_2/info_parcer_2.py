@@ -63,6 +63,8 @@ def make_graph(csv_file, data_directory):
         plt.savefig(f'{data_directory}/test_temperature_and_humidity.png', dpi=300)
     else:
         plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
+    
+    plt.close()
 
 def add_time_column(data):
     time = 1
