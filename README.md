@@ -7,10 +7,7 @@ If there are any major changes, please put explanations and date/time here
 
 ## Known errors:
 
-- Graphing works in test mode with minimal data, but once there's too much data it takes too long for slash commands. Need to get pipe implemented properly and graph linked through it.
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
-- directory won't be accessed sometimes 
-    - This is an issue with permissions. Currently fixed by with using sudo python3 start.py
 - Graphs x axis isn't showing proper times
     - Intended to show in 30 minute increments + last time taken. 
     - Current rendition somehow offsets time with the graph weirdly
@@ -22,6 +19,7 @@ If there are any major changes, please put explanations and date/time here
 - ~slash command for graph not working, regular command is working~
 - ~csv randomly got deleted? Can't figure out why. 3/30 @ 11pm~ I think we were both interacting at the same time and didn't notice
 - ~@tree isn't working currently~~
+- ~directory won't be accessed sometimes~ This is an issue with permissions. Currently fixed by with using sudo python3 start.py
 
 ## Most Important:
 - We should focus on the following in this order:
