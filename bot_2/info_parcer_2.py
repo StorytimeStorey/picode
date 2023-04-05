@@ -59,6 +59,7 @@ def make_graph(csv_file, data_directory):
     plt.ylabel('Value')
     plt.title('Temperature and Humidity Over Time')
     plt.legend()
+    plt.xticks(range(0, len(times), 6), times[::6])
     if csv_file == 'data/csv/test.csv':
         plt.savefig(f'{data_directory}/test_temperature_and_humidity.png', dpi=300)
     else:
