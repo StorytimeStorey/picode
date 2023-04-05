@@ -8,12 +8,13 @@ If there are any major changes, please put explanations and date/time here
 ## Known errors:
 
 - Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension
+
+    
+## Fixed Errors
 - ~Graphs x axis isn't showing proper times~ fixed 4/5/23
     - ~Intended to show in 30 minute increments + last time taken. ~
     - ~Current rendition somehow offsets time with the graph weirdly~
     - ~Current rendition doesn't show the proper times.~
-    
-## Fixed Errors
 - ~data in graph will not reset between calls from the bot~ 4/4/23 Had to do plt.close(). Was actually kind of a big memory leak.
 - ~Currently stuck in test mode~ fixed 4/3 @ 10am.
 - ~slash command for graph not working, regular command is working~
