@@ -49,7 +49,7 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
     if os.path.exists(pi_johnson_path):
         current_day = datetime.today().strftime('%d_%m_%y')
         csv_file = f'../data/{current_day}_dot.csv'
-        save_location = "data/csv/" 
+        save_location = "../data/" 
         info.make_graph(csv_file, save_location)
         with open('../data/temperature_and_humidity.png', 'rb') as file:
             image = discord.File(file)
