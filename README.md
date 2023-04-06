@@ -84,6 +84,15 @@ If there are any major changes, please put explanations and date/time here
 - ~~Need to reset the data list after each run. ~~  finished 3/30, line 35 in data_rec_final.py. 
 - Sometimes return weird times, remove instances of XXX9 and XXX4 from timestamp
 
+## Bot Set-up
+- visit discord.com/developers
+- click on applications
+- click new application
+- go to the bot tab and click 'add bot'
+- from this page you can copy the token that will be used to write the code for your bot
+- scroll down and enable all 'priveleged gateway intents'
+- select bot permissions neccesary for your application
+
 # TO BE CONSIDERED:
 - code for tiggering camera
    - have save to specific directory
@@ -91,6 +100,8 @@ If there are any major changes, please put explanations and date/time here
    - have it generate a gif automatically
    - have it remove the photos and save it to a different directory
 - more advanced graphing
+
+
 
     
 
