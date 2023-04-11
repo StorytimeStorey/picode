@@ -4,8 +4,10 @@ heat_pin = 16
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(heat_pin, GPIO.OUT)
 GPIO.output(heat_pin, False)
-
-while True:
-    GPIO.output(heat_pin, True)
-    sleep(15)
-    GPIO.output(heat_pin, False)
+try:
+    while True:
+        GPIO.output(heat_pin, True)
+        sleep(15)
+        GPIO.output(heat_pin, False)
+except KeyboardInterrupt:
+    GPIO.cleanup()
