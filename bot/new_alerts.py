@@ -1,5 +1,6 @@
 import pandas as pd
 import time
+
 class Alert:
     def __init__(
                 self, 

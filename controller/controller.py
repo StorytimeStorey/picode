@@ -6,7 +6,6 @@ except ImportError:
     print("Entering test mode")
     test_mode = True
 
-import alarms
 import write_raw
 import BME_280
 from time import sleep
@@ -37,8 +36,7 @@ class Control_Module:
         self.sensor = BME_280.Sensor()
 
         ####################### need to make this change
-        self.raw_writer = write_raw.stuff()
-        #Will write to the raw csv
+        self.raw_writer = write_raw.stuff() #Will write to the raw csv
         #Everything from there will be handled by the scripts in the data folder
         #######################
 

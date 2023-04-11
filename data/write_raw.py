@@ -1,10 +1,10 @@
 
-from current_sensor import Sensor
+from controller.BME_280 import Sensor
 import os
 from datetime import datetime
 
 
-class TemperatureAndPressure:
+class TemperatureAndHumidity:
     def __init__(self):
         self.sensor = Sensor()
         if not self.sensor.test_mode:
@@ -23,7 +23,7 @@ class TemperatureAndPressure:
         if not os.path.exists(self.csv):
             if not self.test_mode:
                 with open(self.csv, 'w') as f:
-                    f.write('Temperature,Pressure (hPa)\n')
+                    f.write('Temperature,Humidity\n')
 
             else: #CODE FOR TESTING ENVIRONMENT
                 with open(self.csv, 'w') as f:
@@ -31,9 +31,9 @@ class TemperatureAndPressure:
 
         if not self.test_mode:
             with open(self.csv, 'a') as f:
-                f.write(f'{self.sensor.temperature},{self.sensor.pressure}\n')
+                f.write(f'{self.sensor.temperature},{self.sensor.humidity}\n')
 
         else: #CODE FOR TESTING ENVIRONMENT
             time_now = datetime.now().strftime('%H%M%S')
             with open(self.csv, 'a') as f:
-                f.write(f'{time_now},{self.sensor.temperature},{self.sensor.pressure}\n')
+                f.write(f'{time_now},{self.sensor.temperature},{self.sensor.humidity}\n')
