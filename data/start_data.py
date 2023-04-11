@@ -1,16 +1,16 @@
 import time
-from data_rec_init import TemperatureAndPressure
-from data_rec_final import TemperatureAndPressureProcessor
+from write_raw import TemperatureAndHumidity
+from write_final import TemperatureAndHumidityProcessor
 
 
 class SensorRecorder:
     '''What runs and constantly records the data from the sensor'''
 
     def __init__(self):
-        self.tap = TemperatureAndPressure() #aka raw
+        self.tap = TemperatureAndHumidity() #aka raw
         self.second_interval = 5 #Takes raw data every 5 seconds
         if not self.tap.test_mode:
-            self.tap_processor = TemperatureAndPressureProcessor() #aka dot
+            self.tap_processor = TemperatureAndHumidityProcessor() #aka dot
             self.minute_interval = 300 #Processes raw data every 5 minutes
             self.day_interval = 86,400 #Seconds in Day
         else:
