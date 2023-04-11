@@ -43,12 +43,12 @@ If there are any major changes, please put explanations and date/time here
 
 ## Alerts:
 - will read from raw
-    - temp, hum, relay_status
+    - ~temp, hum~, relay_status
     - will be in charge of handling relay_status timekeeping
     - if an element is on too long, send alarm
     - might be good at have emergency on/off operable from bot
 - will work as part of main control script (imported)
-- alerts will save to csv
+- ~alerts will save to csv~
 - bot will tasks.loop: check the csv for updates
 - bot will be able to access alert history csv
 - triggered alert will create graph of temp/hum of the day

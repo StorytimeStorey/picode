@@ -8,12 +8,17 @@ from discord.ext import tasks, commands
 from discord import app_commands
 from datetime import datetime
 import os
+import pandas as pd
+from new_alerts import write_alert
+# import tracemalloc
+# tracemalloc.start()
 
 Storey_johnson_path = r'C:/Users/tomic/Desktop/johnson.txt'
 Jackson_johnson_path = r'/Users/jackson/Documents/GitHub/picode/bot_2/McJohnsonToken.txt'
 pi_johnson_path = r'../McJohnsonToken.txt'
 
 guild_id = 705960639687950387 #Channel ID
+channel_id = 1092481064087330957
 
 # initialize discord client
 intents = discord.Intents(value=7, 
@@ -24,9 +29,10 @@ intents = discord.Intents(value=7,
                           typing=True,
                           integrations=True)
 
-McJohnson = discord.Client(intents=intents)
+Client = discord.Client(intents=intents)
 
-channel = McJohnson.get_channel(guild_id)
+# channel = Client.get_channel(channel_id)
+
 # set command prefix
 McJohnson = commands.Bot(command_prefix='@M', intents=intents)
 
@@ -35,10 +41,6 @@ McJohnson = commands.Bot(command_prefix='@M', intents=intents)
 async def set_channel(ctx):
     McJohnson.default_channel = ctx.channel
     await ctx.send('Channel set.')
-
-@McJohnson.event
-async def on_ready():
-    await McJohnson.tree.sync()
 
 @McJohnson.hybrid_command()
 async def hello(ctx):
@@ -77,7 +79,7 @@ async def print_status(ctx):
             current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
             await ctx.send(f"{current_status}")
         except FileNotFoundError:
-            channel.send("5-minute file doesn't exist yet. Pulling data from raw...")
+            ctx.send("5-minute file doesn't exist yet. Pulling data from raw...")
             current_status = info.read_last_row('data/csv/raw.csv')
             await ctx.send(f"{current_status}")
 
@@ -86,7 +88,49 @@ async def print_status(ctx):
     else: #CODE FOR TESTING ENVIRONMENT
         current_status = info.read_last_row('data/csv/test.csv')
         await ctx.send(f"{current_status}")
+@McJohnson.hybrid_command()
+# @commands.is_owner()
+async def shutdown(ctx):
+    exit()
+    quit()
 
+@McJohnson.event
+async def send_alert(channel, alert_csv):
+    last_row = alert_csv.iloc[-1]
+    date = last_row[0]
+    time = last_row[1]
+    temp = last_row[2]
+    humidity = last_row[3]
+    alert_type = last_row[4]
+    heater_status = last_row[5]
+    ac_status = last_row[6]
+    humidifier_status = last_row[7]
+    await channel.send(f'On {date} at {time}, the following alert was found:\nAlert Type: {alert_type}\nTemperature: {temp}\nHumidity: {humidity}\nHeater Status: {heater_status}\nAC Status: {ac_status}\nHumidifier Status: {humidifier_status}')
+# loop to check if it needs to send an alert or not
+@tasks.loop(seconds=5)
+async def alert(channel):
+    # if len_alerts exists, check if the length has changed and send alert if it has. if it does not exist, create it
+    alert_csv = pd.read_csv('data/csv/alerts.csv')
+    if not 'len_alerts' in globals():
+        global len_alerts
+        len_alerts = len(alert_csv)
+        print(len_alerts)
+    else:
+        if len(alert_csv) > len_alerts:
+            await send_alert(channel, alert_csv)
+            print('sent alert')
+    # write_alert()
+
+    # current_status = info.read_last_row('data/csv/test.csv')
+    # await channel.send(f'{current_status}')
+
+# syncs the task tree and start the alerts loop
+@McJohnson.event
+async def on_ready():
+    await McJohnson.tree.sync()
+    channel = McJohnson.get_channel(channel_id)
+    alert.start(channel)
+    # exit()
 
 def run_bot():
     if os.path.exists(Storey_johnson_path): #If Storey is testing...
