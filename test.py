@@ -7,5 +7,5 @@ GPIO.output(heat_pin, False)
 
 while True:
     GPIO.output(heat_pin, True)
-    sleep(5)
+    sleep(15)
     GPIO.output(heat_pin, False)
