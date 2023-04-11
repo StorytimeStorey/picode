@@ -6,7 +6,6 @@ except ImportError:
     print("Entering test mode")
     test_mode = True
 
-import alarms
 import write_raw
 import BME_280
 
@@ -36,13 +35,10 @@ class Control_Module:
         self.sensor = BME_280.Sensor()
 
         ####################### need to make this change
-        self.raw_writer = write_raw.stuff()
-        #Will write to the raw csv
+        self.raw_writer = write_raw.stuff() #Will write to the raw csv
         #Everything from there will be handled by the scripts in the data folder
-        #######################
-
-        #set thresholds for low (on) and high (off) for relays
-        self.heat_threshold = heat_threshold
+        
+        self.heat_threshold = heat_threshold #set thresholds for low (on) and high (off) for relays
         self.cold_threshold = cold_threshold
         self.humidity_threshold = humidity_threshold
 

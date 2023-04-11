@@ -4,10 +4,10 @@ from datetime import datetime
 import os
 
 
-class TemperatureAndPressureProcessor:
+class TemperatureAndHumidityProcessor:
     '''
     Names are confusing, I'm sorry.
-    This takes in Temp and Press (eventually humidity) from a raw csv (from data_rec init)
+    This takes in Temp and humidity from a raw csv (from data_rec init)
     Averages the data on that file and saves it to a dot.csv (data over time)
     See readme for implementation plans
 
@@ -25,7 +25,7 @@ class TemperatureAndPressureProcessor:
     def csv_name_is_current_date(self):
         # Get the current date
         today = datetime.today()
-        # Format the date as dd_mm_yy
+        # Format the date as dd_mm_yyhumidity
         date_str = today.strftime('%d_%m_%y')
         #Update self.output_file name
         self.output_file = f'../data/{date_str}_dot.csv'
@@ -41,15 +41,15 @@ class TemperatureAndPressureProcessor:
     def average_data(self):
         #function to average each column of data from the csv
         total_temperature = 0
-        total_pressure = 0
-        for temperature, pressure in self.data:
+        total_humidity = 0
+        for temperature, humidity in self.data:
             total_temperature += temperature
-            total_pressure += pressure
+            total_humidity += humidity
         avg_temperature = round(total_temperature / len(self.data), 1)  #Rounds it to one dec point
-        avg_pressure = round(total_pressure / len(self.data),1)
-        return avg_temperature, avg_pressure
+        avg_humidity = round(total_humidity / len(self.data),1)
+        return avg_temperature, avg_humidity
         
-    def write_averages_to_csv(self, avg_temperature, avg_pressure):
+    def write_averages_to_csv(self, avg_temperature, avg_humidity):
         #Writes to the csv
         time_now = datetime.now().strftime('%H%M')
         if not os.path.isfile(self.output_file): #Checks if file exists. If not, makes it with a header.
@@ -58,25 +58,25 @@ class TemperatureAndPressureProcessor:
                 writer.writerow(['Time', 'Temp', 'Humidity'])
         with open(self.output_file, 'a') as f:
             writer = csv.writer(f)
-            writer.writerow([time_now, avg_temperature, avg_pressure])
+            writer.writerow([time_now, avg_temperature, avg_humidity])
             
     def clear_data_file(self):
         #This clears the raw file. raw should only keep about 5 minutes worth of data. No point in clogging everything up.
         #It's interesting that it works because it absolutely looks like it shouldn't lmao
         with open(self.data_file, 'w') as f:
             writer = csv.writer(f)
-            writer.writerow(['Temperature (C)', 'Pressure (hPa)'])
+            writer.writerow(['Temperature (C)', 'Humidity'])
 
     def process_data(self):
         #The function where everything happens
         self.read_data_from_csv()
-        avg_temperature, avg_pressure = self.average_data()
-        self.write_averages_to_csv(avg_temperature, avg_pressure)
+        avg_temperature, avg_humidity = self.average_data()
+        self.write_averages_to_csv(avg_temperature, avg_humidity)
         self.clear_data_file()
 
 
 if __name__ == '__main__':
-    processor = TemperatureAndPressureProcessor()
+    processor = TemperatureAndHumidityProcessor()
     while True:
         processor.process_data()
         time.sleep(300)  # Wait 5 minutes
