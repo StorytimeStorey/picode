@@ -30,7 +30,7 @@ class Sensor:
             self.test_mode = test_mode
             print("current_sensor.py is in test mode")
             self.temperature = 0
-            self.pressure = 0   
+            self.humidity = 0   
             self.temp_low = temp_low
             self.temp_high = temp_high
             self.hum_low = hum_low
@@ -41,8 +41,8 @@ class Sensor:
 
         if not self.test_mode:
             self.temperature = round(self.bme280.temperature * 9/5 + 32, 1)
-            self.pressure = round(self.bme280.relative_humidity ,2)
+            self.humidity = round(self.bme280.relative_humidity ,2)
 
         else: #CODE FOR TESTING ENVIRONMENT
             self.temperature = round(random.uniform(self.temp_low, self.temp_high), 1)
-            self.pressure = round(random.uniform(self.hum_low, self.hum_high), 2)
+            self.humidity = round(random.uniform(self.hum_low, self.hum_high), 2)
