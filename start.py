@@ -7,4 +7,4 @@ import subprocess
 subprocess.Popen(['python3', 'data/start_data.py'])
 #subprocess.Popen(['python', 'bot/Bonnibel.py'])
 subprocess.Popen(['python3', 'bot_2/McJohnson.py'])
-
+subprocess.Popen(['python3', 'bot_2/new_alerts.py'])
