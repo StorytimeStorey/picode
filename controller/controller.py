@@ -9,6 +9,7 @@ except ImportError:
 import alarms
 import write_raw
 import BME_280
+from time import sleep
 
 
 
@@ -31,7 +32,7 @@ class Control_Module:
     3)writes to raw.csv to be processed by data-dir scripts
     
     '''
-    def __init__(self, heat_threshold, cold_threshold, humidity_threshold, heater_relay_pin, cooler_relay_pin, hum_relay_pin, extrn_relay_pin):
+    def __init__(self, heat_threshold, cold_threshold, humidity_threshold, heat_pin, ac_pin, hum_pin, fan_pin, light_pin):
         #Reach sensor
         self.sensor = BME_280.Sensor()
 
@@ -42,34 +43,26 @@ class Control_Module:
         #######################
 
         #set thresholds for low (on) and high (off) for relays
-        self.heat_threshold = heat_threshold
-        self.cold_threshold = cold_threshold
-        self.humidity_threshold = humidity_threshold
-
-        #### Set up relay pins ####
-        #first: declares pin number
-        #second: uses GPIO library to do magic
-        #third: On/Off represented by True/False (True = on, False = off)
-        #controls heater relay
-        self.heater_relay_pin = heater_relay_pin
-        GPIO.setup(self.heater_relay_pin, GPIO.OUT)
-        self.heater_relay = False
-
-        #controls cooler relay
-        self.cooler_relay_pin = cooler_relay_pin
-        GPIO.setup(self.cooler_relay_pin, GPIO.OUT)      
-        self.cooler_relay = False
-
-        #controls humidifier relay
-        self.humidity_relay_pin = hum_relay_pin
-        GPIO.setup(self.humidity_relay_pin, GPIO.OUT)
-        self.humidity_relay = False
-        
-        #will control fan/lights/camera. This should only have to operate once or twice a day.
-        self.extrn_relay_pin = extrn_relay_pin 
-        GPIO.setup(self.extrn_relay_pin, GPIO.OUT)
-        self.extrn_relay = False
-
+        self.heat_threshold = heat_threshold # (on value, off value)
+        self.cold_threshold = cold_threshold # (on value, off value)
+        self.humidity_threshold = humidity_threshold # (on value, off value)
+        # set the GPIO pins to use
+        self.heat_pin = heat_pin
+        self.ac_pin = ac_pin
+        self.hum_pin = hum_pin
+        self.fan_pin = fan_pin
+        self.light_pin = light_pin
+        # set the pins as output and turn them off
+        GPIO.setup(self.heat_pin, GPIO.OUT)
+        GPIO.setup(self.ac_pin, GPIO.OUT)
+        GPIO.setup(self.hum_pin, GPIO.OUT)
+        GPIO.setup(self.fan_pin, GPIO.OUT)
+        GPIO.setup(self.light_pin, GPIO.OUT)
+        GPIO.output(self.heat_pin, False)
+        GPIO.output(self.ac_pin, False)
+        GPIO.output(self.hum_pin, False)
+        GPIO.output(self.fan_pin, False)
+        GPIO.output(self.light_pin, False)
 
         #Should be immediately changed by sensor updates
         self.current_temp = 0
@@ -82,10 +75,36 @@ class Control_Module:
 
 
     def check_vs_thresholds(self):
-        #do stuff to check allowed thresholds 
-        #turn off/on relays when needed
-        #if beyond accepted thresholds, check vs alarm values
-        pass
+        '''
+        do stuff to check allowed thresholds 
+        turn off/on relays when needed
+        if beyond accepted thresholds, check vs alarm values
+        '''
+        # turn heater on if temp is too low
+        if self.current_temp <= self.heat_threshold[0]:
+            GPIO.output(self.heat_pin, True)
+            GPIO.output(self.ac_pin, False)
+        # turn heater off if temp is good
+        if self.current_temp >= self.heat_threshold[1]:
+            GPIO.output(self.heat_pin, False)
+        # turn ac on if temp is too high
+        if self.current_temp >= self.cold_threshold[0]:
+            GPIO.output(self.ac_pin, True)
+            GPIO.output(self.heat_pin, False)
+        # turn ac off if temp is good
+        if self.current_temp <= self.cold_threshold[1]:
+            GPIO.output(self.ac_pin, False)
+        # turn humidifier on if humidity is too low
+        if self.current_hum <= self.humidity_threshold[0]:
+            GPIO.output(self.hum_pin, True)
+        # turn humidifier off if humidity is good
+        if self.current_hum >= self.humidity_threshold[1]:
+            GPIO.output(self.hum_pin, False)
+        # testing code
+        while True:
+            GPIO.output(self.heat_pin, True)
+            sleep(5)
+            GPIO.output(self.heat_pin, False)
 
     def write_to_raw(self):
         #write the current sensor readings to raw
