@@ -6,7 +6,7 @@ except ImportError:
     print("Entering test mode")
     test_mode = True
 
-import write_raw
+import start_data
 import BME_280
 
 
@@ -30,41 +30,15 @@ class Control_Module:
     3)writes to raw.csv to be processed by data-dir scripts
     
     '''
-    def __init__(self, heat_threshold, cold_threshold, humidity_threshold, heater_relay_pin, cooler_relay_pin, hum_relay_pin, extrn_relay_pin):
-        #Reach sensor
-        self.sensor = BME_280.Sensor()
+    def __init__(self, heat_threshold, cold_threshold, humidity_threshold):
 
-        ####################### need to make this change
-        self.raw_writer = write_raw.stuff() #Will write to the raw csv
-        #Everything from there will be handled by the scripts in the data folder
-        
+        self.sensor = BME_280.Sensor() #Reach sensor
+
+        self.data_writing_module = start_data() #What controls writing and saving the data
+
         self.heat_threshold = heat_threshold #set thresholds for low (on) and high (off) for relays
         self.cold_threshold = cold_threshold
         self.humidity_threshold = humidity_threshold
-
-        #### Set up relay pins ####
-        #first: declares pin number
-        #second: uses GPIO library to do magic
-        #third: On/Off represented by True/False (True = on, False = off)
-        #controls heater relay
-        self.heater_relay_pin = heater_relay_pin
-        GPIO.setup(self.heater_relay_pin, GPIO.OUT)
-        self.heater_relay = False
-
-        #controls cooler relay
-        self.cooler_relay_pin = cooler_relay_pin
-        GPIO.setup(self.cooler_relay_pin, GPIO.OUT)      
-        self.cooler_relay = False
-
-        #controls humidifier relay
-        self.humidity_relay_pin = hum_relay_pin
-        GPIO.setup(self.humidity_relay_pin, GPIO.OUT)
-        self.humidity_relay = False
-        
-        #will control fan/lights/camera. This should only have to operate once or twice a day.
-        self.extrn_relay_pin = extrn_relay_pin 
-        GPIO.setup(self.extrn_relay_pin, GPIO.OUT)
-        self.extrn_relay = False
 
 
         #Should be immediately changed by sensor updates
@@ -83,10 +57,9 @@ class Control_Module:
         #if beyond accepted thresholds, check vs alarm values
         pass
 
-    def write_to_raw(self):
-        #write the current sensor readings to raw
+    def initialize_data(self):
+        self.data_writing_module.record_data()
         pass
-
         
     def control_relay(self):
         temperature, humidity = self.read_sensor_data()

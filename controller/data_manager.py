@@ -4,14 +4,32 @@ from datetime import datetime
 import os
 
 
-class TemperatureAndHumidityProcessor:
+
+#class for writing to raw
+
+class Data_Raw:
+    '''Takes the current values from the sensor and writes them to a csv'''
+    def __init__(self, csv = 'data/csv/raw.csv'):
+        self.csv = csv
+        print("Raw Writer Initialized")
+
+    def record_data_to_csv(self, temp, hum):
+        # Check if CSV file exists and create it with header row if it doesn't
+        if not os.path.exists(self.csv):
+            with open(self.csv, 'w') as f:
+                    f.write('Temperature,Humidity\n')
+
+        with open(self.csv, 'a') as f:
+            f.write(f'{temp},{hum}\n')
+
+
+#class for processed data
+class Data_Final:
     '''
-    Names are confusing, I'm sorry.
-    This takes in Temp and humidity from a raw csv (from data_rec init)
+    This takes in Temp and humidity from a raw csv (from Data_Raw class)
     Averages the data on that file and saves it to a dot.csv (data over time)
     See readme for implementation plans
 
-    It just occurred to me self.data might never reset. Needs to be looked into...
     Another known error is that it sometimes saves at the _9/_4 mark instead of _0/_5 marks. Might be because I'm using time.time()
     
     '''
@@ -75,8 +93,41 @@ class TemperatureAndHumidityProcessor:
         self.clear_data_file()
 
 
-if __name__ == '__main__':
-    processor = TemperatureAndHumidityProcessor()
-    while True:
-        processor.process_data()
-        time.sleep(300)  # Wait 5 minutes
+#class to manage the above two and their times of activation
+class SensorRecorder:
+    '''Gets passed the current sensor readings and controls when data will be written to csv'''
+
+    def __init__(self):
+        self.raw_writer = Data_Raw() #aka raw
+        self.data_processor = Data_Final() #aka dot
+        self.second_interval = 5 #Takes raw data every 5 seconds
+        self.minute_interval = 300 #Processes raw data every 5 minutes
+        self.day_interval = 86,400 #Seconds in Day
+        self.temp = 0
+        self.hum = 0
+    
+    def update_data(self, temp, hum):
+        self.temp = temp
+        self.hum = hum
+
+    def record_data(self):
+
+        current_time = round(time.time())
+
+        #Check if the day has passed, if so start a new dot csv
+        if current_time % self.day_interval == 0:
+            self.data_processor.csv_name_is_current_date()
+
+        #Checks if 5 minutes have passed. If so, records data to dot
+        if current_time % self.minute_interval == 0:
+            self.data_processor.process_data()
+
+        #Checks to see if 5 seconds has passed, if so updates the raw. Works in Test mode or active mode.
+        if current_time % self.second_interval == 0:
+            self.raw_writer.record_data_to_csv(self.temp, self.hum)
+
+
+
+
+        
+        time.sleep(1) #necessary so it doesn't run over and over in the same second
