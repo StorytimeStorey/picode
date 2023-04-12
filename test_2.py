@@ -1,5 +1,6 @@
 import random
 
+test_mode = False
 try:
     import board
     from adafruit_bme280 import basic as adafruit_bme280
