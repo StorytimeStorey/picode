@@ -6,13 +6,13 @@ except ImportError:
     print("Entering test mode")
     test_mode = True
 
-import start_data
-import BME_280
+from data_manager import DataManager
+from sensor import BME280
 
 
 
 
-class Control_Module:
+class ControlModule:
     '''
     class to control multiple elements of the initial sensor information
 
@@ -32,24 +32,21 @@ class Control_Module:
     '''
     def __init__(self, heat_threshold, cold_threshold, humidity_threshold):
 
-        self.sensor = BME_280.Sensor() #Reach sensor
+        self.sensor = BME280() #Reach sensor
 
-        self.data_writing_module = start_data() #What controls writing and saving the data
+        self.data_manager = DataManager() #What controls writing and saving the data
 
         self.heat_threshold = heat_threshold #set thresholds for low (on) and high (off) for relays
         self.cold_threshold = cold_threshold
         self.humidity_threshold = humidity_threshold
-
 
         #Should be immediately changed by sensor updates
         self.current_temp = 0
         self.current_hum = 0
 
     def update_readings_from_sensor(self):
-        self.sensor.update_readings()
-        self.current_temp = self.sensor.temperature
-        self.current_hum = self.sensor.humidity
-
+        '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
+        self.current_temp, self.current_hum = self.sensor.update_readings()
 
     def check_vs_thresholds(self):
         #do stuff to check allowed thresholds 
@@ -57,9 +54,9 @@ class Control_Module:
         #if beyond accepted thresholds, check vs alarm values
         pass
 
-    def initialize_data(self):
-        self.data_writing_module.record_data()
-        pass
+    def record(self):
+        self.data_manager.update_data(self.current_temp, self.current_hum)
+        self.data_manager.record_data()
         
     def control_relay(self):
         temperature, humidity = self.read_sensor_data()
@@ -71,3 +68,5 @@ class Control_Module:
             if self.is_relay_on:
                 GPIO.output(self.relay_pin, GPIO.LOW)
                 self.is_relay_on = False
+
+    

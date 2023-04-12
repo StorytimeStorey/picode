@@ -94,7 +94,7 @@ class Data_Final:
 
 
 #class to manage the above two and their times of activation
-class SensorRecorder:
+class DataManager:
     '''Gets passed the current sensor readings and controls when data will be written to csv'''
 
     def __init__(self):
