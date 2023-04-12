@@ -21,7 +21,7 @@ class Sensor:
     def __init__(self, temp_low = 55, temp_high = 75, hum_low = 82, hum_high = 99,):
         if not test_mode:
             self.i2c = board.I2C()  # uses board.SCL and board.SDA
-            self.bmp280 = adafruit_bme280.Adafruit_BME280_I2C(self.i2c)
+            self.bmp280 = adafruit_bme280.Adafruit_BME280_I2C(self.i2c, address=0x76)
             self.temperature = 0
             self.humidity = 0
             self.test_mode = test_mode
