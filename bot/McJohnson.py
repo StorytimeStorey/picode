@@ -9,9 +9,6 @@ from discord import app_commands
 from datetime import datetime
 import os
 import pandas as pd
-from new_alerts import write_alert
-# import tracemalloc
-# tracemalloc.start()
 
 Storey_johnson_path = r'C:/Users/tomic/Desktop/johnson.txt'
 Jackson_johnson_path = r'/Users/jackson/Documents/GitHub/picode/bot_2/McJohnsonToken.txt'
@@ -147,4 +144,5 @@ def run_bot():
 
     McJohnson.run(token)
 
-run_bot()
+if __name__ == '__main__':
+    run_bot()
