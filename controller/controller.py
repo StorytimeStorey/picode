@@ -45,7 +45,6 @@ class ControlModule:
             data = json.load(file)
         # Extract the settings from the JSON data
         self.settings = data['Thresholds']
-        print(self.settings)
         #Written as follows:
         # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#}
 
@@ -129,8 +128,13 @@ class ControlModule:
         #         self.is_relay_on = False
         pass
 
+    def run(self):
+
+        while True:
+            self.update_readings_from_sensor()
+            self.record()
 
 
 controller = ControlModule()
-controller.update_readings_from_sensor()
-controller.record()
+
+controller.run()

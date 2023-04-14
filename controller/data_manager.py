@@ -102,7 +102,7 @@ class DataManager:
         self.data_processor = Data_Final() #aka dot
         self.second_interval = 5 #Takes raw data every 5 seconds
         self.minute_interval = 300 #Processes raw data every 5 minutes
-        self.day_interval = 86,400 #Seconds in Day
+        self.day_interval = 86400 #Seconds in Day
         self.temp = 0
         self.hum = 0
     
