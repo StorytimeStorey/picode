@@ -113,6 +113,8 @@ class DataManager:
     def record_data(self):
 
         current_time = round(time.time())
+        print(current_time)
+        print(self.day_interval)
 
         #Check if the day has passed, if so start a new dot csv
         if current_time % self.day_interval == 0:
