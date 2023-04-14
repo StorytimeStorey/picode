@@ -9,7 +9,7 @@ from discord import app_commands
 from datetime import datetime
 import os
 import pandas as pd
-from new_alerts import write_alert
+# from new_alerts import write_alert
 # import tracemalloc
 # tracemalloc.start()
 
