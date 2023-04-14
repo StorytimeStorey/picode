@@ -45,7 +45,8 @@ class ControlModule:
         with open(settings, 'r') as file:
             data = json.load(file)
         # Extract the settings from the JSON data
-        self.settings = data['dictionary_key']
+        self.settings = data['Thresholds']
+        print(self.settings)
         #Written as follows:
         # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#}
 
