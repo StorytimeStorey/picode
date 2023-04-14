@@ -35,8 +35,7 @@ class ControlModule:
     3)writes to raw.csv to be processed by data-dir scripts
     
     '''
-    def __init__(self, settings = "settings.json", heat_pin = 0, ac_pin = 0, hum_pin = 0, fan_pin = 0, light_pin = 0):
-
+    def __init__(self, settings = "controller/settings.json", heat_pin = 0, ac_pin = 0, hum_pin = 0, fan_pin = 0, light_pin = 0):
 
 
         self.sensor = BME280() #Reach sensor
