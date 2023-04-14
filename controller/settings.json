@@ -1,0 +1,3 @@
+{
+    "Thresholds": {"LL":55, "HON":60, "HOFF":68, "CON": 75, "COFF" : 68, "HH":80, "HUMON": 80, "HUMOFF":96}
+}
