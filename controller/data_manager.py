@@ -9,7 +9,7 @@ import os
 
 class Data_Raw:
     '''Takes the current values from the sensor and writes them to a csv'''
-    def __init__(self, csv = 'data/csv/raw.csv'):
+    def __init__(self, csv = 'controller/data/csv/raw.csv'):
         self.csv = csv
         print("Raw Writer Initialized")
 
@@ -34,7 +34,7 @@ class Data_Final:
     
     '''
     def __init__(self):
-        self.data_file = 'data/csv/raw.csv'  #raw data
+        self.data_file = 'controller/data/csv/raw.csv'  #raw data
         current_day = datetime.today().strftime('%d_%m_%y')
         self.output_file = f'../data/{current_day}_dot.csv' #data over time
         self.data = []

@@ -59,11 +59,11 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
 
 
     else: #CODE FOR TESTING ENVIRONMENT
-        csv_file = 'data/csv/test.csv'
+        csv_file = 'controller/data/csv/raw.csv'
         print(csv_file)
-        save_location = 'data/csv/'
+        save_location = 'controller/data/csv/'
         info.make_graph(csv_file, save_location)
-        with open('data/csv/test_temperature_and_humidity.png', 'rb') as file:
+        with open('controller/data/csv/test_temperature_and_humidity.png', 'rb') as file:
             image = discord.File(file)      
         await ctx.send(file=image)
 #Not sure what this is...
@@ -80,13 +80,13 @@ async def print_status(ctx):
             await ctx.send(f"{current_status}")
         except FileNotFoundError:
             ctx.send("5-minute file doesn't exist yet. Pulling data from raw...")
-            current_status = info.read_last_row('data/csv/raw.csv')
+            current_status = info.read_last_row('controller/data/csv/raw.csv')
             await ctx.send(f"{current_status}")
 
 
 
     else: #CODE FOR TESTING ENVIRONMENT
-        current_status = info.read_last_row('data/csv/test.csv')
+        current_status = info.read_last_row('controller/data/csv/test.csv')
         await ctx.send(f"{current_status}")
 @McJohnson.hybrid_command()
 # @commands.is_owner()
@@ -110,7 +110,7 @@ async def send_alert(channel, alert_csv):
 @tasks.loop(seconds=5)
 async def alert(channel):
     # if len_alerts exists, check if the length has changed and send alert if it has. if it does not exist, create it
-    alert_csv = pd.read_csv('data/csv/alerts.csv')
+    alert_csv = pd.read_csv('controller/data/csv/alerts.csv')
     if not 'len_alerts' in globals():
         global len_alerts
         len_alerts = len(alert_csv)
