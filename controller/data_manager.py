@@ -9,7 +9,7 @@ import os
 
 class Data_Raw:
     '''Takes the current values from the sensor and writes them to a csv'''
-    def __init__(self, csv = 'data/csv/raw.csv'):
+    def __init__(self, csv = 'controller/data/csv/raw.csv'):
         self.csv = csv
         print("Raw Writer Initialized")
 
@@ -34,7 +34,7 @@ class Data_Final:
     
     '''
     def __init__(self):
-        self.data_file = 'data/csv/raw.csv'  #raw data
+        self.data_file = 'controller/data/csv/raw.csv'  #raw data
         current_day = datetime.today().strftime('%d_%m_%y')
         self.output_file = f'../data/{current_day}_dot.csv' #data over time
         self.data = []
@@ -102,7 +102,7 @@ class DataManager:
         self.data_processor = Data_Final() #aka dot
         self.second_interval = 5 #Takes raw data every 5 seconds
         self.minute_interval = 300 #Processes raw data every 5 minutes
-        self.day_interval = 86,400 #Seconds in Day
+        self.day_interval = 86400 #Seconds in Day
         self.temp = 0
         self.hum = 0
     
@@ -111,9 +111,7 @@ class DataManager:
         self.hum = hum
 
     def record_data(self):
-
         current_time = round(time.time())
-
         #Check if the day has passed, if so start a new dot csv
         if current_time % self.day_interval == 0:
             self.data_processor.csv_name_is_current_date()
