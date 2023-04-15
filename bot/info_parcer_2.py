@@ -16,10 +16,10 @@ def generate_text_from_csv_list(list):
         # humidifier_on = "On" if list[5] == 1 else "off"
         # alerts = "YES" if list[6] == 1 else "NO"
         # status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nHumidity: {last_humidity}\nHeater: {heater_on}\nCooler: {cooler_on}\nHumidifier: {humidifier_on}\nAlerts: {alerts}"
-        status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nPressure: {last_humidity}"
+        status_text = f"Last data taken at {last_time}.\nTemperature: {last_temp}.\nHumidity: {last_humidity}"
     else:
         time_now = datetime.now().strftime('%H%M')
-        status_text = f"Last data taken at {time_now}.\nTemperate: {list[0]}.\nPressure: {list[1]}"
+        status_text = f"Last data taken at {time_now}.\nTemperature: {list[0]}.\nHumidity: {list[1]}"
     return status_text
 
 def read_last_row(file_path):
@@ -63,7 +63,7 @@ def make_graph(csv_file, data_directory):
     plt.xticks(range(0, len(times), int(len(times)/x_points_count)), times[::int(len(times)/x_points_count)], fontsize=8)
     plt.xlim(times[0], times[-1])
 
-    if csv_file == 'data/csv/test.csv':
+    if csv_file == 'controller/data/csv/test.csv':
         plt.savefig(f'{data_directory}/test_temperature_and_humidity.png', dpi=300)
     else:
         plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
