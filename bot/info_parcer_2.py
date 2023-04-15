@@ -43,6 +43,13 @@ def read_last_row(file_path):
 
 def make_graph(csv_file, data_directory):
 
+    def xtick_counter(times:list):
+        x_points_count = 12
+        if len(times) < x_points_count:
+            return len(times)
+        else:
+            return int(len(times)/x_points_count)
+        
     with open(csv_file, 'r') as file:
         reader = csv.DictReader(file)
         data = list(reader)
@@ -50,7 +57,7 @@ def make_graph(csv_file, data_directory):
     # Extract the temperature and humidity data
     times = [row['Time'] for row in data]
     temperatures = [float(row['Temp']) for row in data]
-    x_points_count = 12 #Controls how many data points we'll get in the x axis
+    x_points_count = xtick_counter(times)
     #humidities = [float(row['Humidity']) for row in data]
 
     # Create the plot
@@ -69,6 +76,8 @@ def make_graph(csv_file, data_directory):
         plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
     
     plt.close()
+
+
 
 def add_time_column(data):
     time = 1

@@ -20,12 +20,12 @@ class Alert:
         self.test_mode = False 
         # determine whether or not we are in testing mode
         try:
-            self.raw_csv = pd.read_csv('data/csv/raw.csv')
+            self.raw_csv = pd.read_csv('controller/data/csv/raw.csv')
         except FileNotFoundError:
-            self.raw_csv = pd.read_csv('data/csv/test.csv')
+            self.raw_csv = pd.read_csv('controller/data/csv/test.csv')
             self.test_mode = True
 
-        self.alerts_csv = pd.read_csv('data/csv/alerts.csv')
+        self.alerts_csv = pd.read_csv('controller/data/csv/alerts.csv')
 
     def get_status(self):
 
