@@ -59,7 +59,7 @@ class ControlModule:
         self.pins = data['GPIO_Pins']
         #Written as follows:
         # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#}
-        # "GPIO_Pins":{"heat_pin" : None, "ac_pin" : None, "hum_on":None, "fan_pin":None,"light_pin":None, "test_mode":False}
+        # "GPIO_Pins":{"heat_pin" : None, "ac_pin" : None, "hum_pin":None, "fan_pin":None,"light_pin":None, "test_mode":False}
         
         # set the GPIO pins to use
         self.heat_pin = self.pins["heat_pin"]
@@ -71,7 +71,7 @@ class ControlModule:
         self.test_mode = self.pins["test_mode"] #If set to True, will go through each pin given a number and flicker them
 
         # set the pins as output and turn them off
-        for key, value in self.pins[:-1]:
+        for key, value in list(self.pins.items())[:-1]:
             if value:
                 current_pin = f"self.{key}"
                 print(f"{key} is at {value}")
@@ -84,22 +84,23 @@ class ControlModule:
         self.current_temp = 0
         self.current_hum = 0
 
-    def relay_tester(self):
         if self.test_mode == True:
-            
-            for key, value in self.pins[:-1]:
-                if value:
-                    current_pin = f"self.{key}"
-                    print(f"{key} is at {value}")
-                    GPIO.setup(current_pin, GPIO.OUT)
-                    GPIO.output(current_pin, False)
+            self.relay_tester()
 
-            for key, value in self.pin[:-1]:
-                if value:
-                    current_pin = f"self.{key}"
-                    GPIO.output(current_pin, True)
-                    sleep(10)
-                    GPIO.output(current_pin, False)
+    def relay_tester(self):
+        for key, value in list(self.pins.items())[:-1]:
+            if value:
+                current_pin = f"self.{key}"
+                print(f"{key} is at {value}")
+                GPIO.setup(current_pin, GPIO.OUT)
+                GPIO.output(current_pin, False)
+
+        for key, value in list(self.pins.items())[:-1]:
+            if value:
+                current_pin = f"self.{key}"
+                GPIO.output(current_pin, True)
+                sleep(10)
+                GPIO.output(current_pin, False)
 
     def update_readings_from_sensor(self):
         '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
