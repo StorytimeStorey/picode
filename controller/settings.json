@@ -1,3 +1,4 @@
 {
-    "Thresholds": {"LL":55, "HON":60, "HOFF":68, "CON": 75, "COFF" : 68, "HH":80, "HUMON": 80, "HUMOFF":96}
+    "Thresholds": {"LL":55, "HON":60, "HOFF":68, "CON": 75, "COFF" : 68, "HH":80, "HUMON": 80, "HUMOFF":96},
+    "GPIO_Pins":{"heat_pin" : null, "ac_pin" : null, "hum_on":null, "fan_pin":null,"light_pin":null, "test_mode":false}
 }

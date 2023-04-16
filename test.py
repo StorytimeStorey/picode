@@ -12,3 +12,4 @@ try:
         sleep(15)
 except KeyboardInterrupt:
     GPIO.cleanup()
+

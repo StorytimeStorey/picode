@@ -1,10 +1,10 @@
 test_mode = False
 
-# try:
-#     import RPi.GPIO as GPIO
-# except ImportError:
-#     print("Entering test mode")
-#     test_mode = True
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    print("Entering test mode")
+    test_mode = True
 
 from data_manager import DataManager
 from sensor import BME280
@@ -46,7 +46,7 @@ class ControlModule:
     3)writes to raw.csv to be processed by data-dir scripts
     
     '''
-    def __init__(self, settings = "controller/settings.json", heat_pin = 0, ac_pin = 0, hum_pin = 0, fan_pin = 0, light_pin = 0):
+    def __init__(self, settings = "controller/settings.json"):
 
 
         self.sensor = BME280() #Reach sensor
@@ -55,36 +55,51 @@ class ControlModule:
         with open(settings, 'r') as file:
             data = json.load(file)
         # Extract the settings from the JSON data
-        self.settings = data['Thresholds']
+        self.thresholds = data['Thresholds']
+        self.pins = data['GPIO_Pins']
         #Written as follows:
         # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#}
-
-
-        # self.heat_threshold = heat_threshold #set thresholds for low (on) and high (off) for relays
-        # self.cold_threshold = cold_threshold
-        # self.humidity_threshold = humidity_threshold
+        # "GPIO_Pins":{"heat_pin" : None, "ac_pin" : None, "hum_on":None, "fan_pin":None,"light_pin":None, "test_mode":False}
         
         # set the GPIO pins to use
-        self.heat_pin = heat_pin
-        self.ac_pin = ac_pin
-        self.hum_pin = hum_pin
-        self.fan_pin = fan_pin
-        self.light_pin = light_pin
+        self.heat_pin = self.pins["heat_pin"]
+        self.ac_pin = self.pins["ac_pin"]
+        self.hum_pin = self.pins["hum_pin"]
+        self.fan_pin = self.pins["fan_pin"]
+        self.light_pin = self.pins["light_pin"]
+
+        self.test_mode = self.pins["test_mode"] #If set to True, will go through each pin given a number and flicker them
+
         # set the pins as output and turn them off
-        # GPIO.setup(self.heat_pin, GPIO.OUT)
-        # GPIO.setup(self.ac_pin, GPIO.OUT)
-        # GPIO.setup(self.hum_pin, GPIO.OUT)
-        # GPIO.setup(self.fan_pin, GPIO.OUT)
-        # GPIO.setup(self.light_pin, GPIO.OUT)
-        # GPIO.output(self.heat_pin, False)
-        # GPIO.output(self.ac_pin, False)
-        # GPIO.output(self.hum_pin, False)
-        # GPIO.output(self.fan_pin, False)
-        # GPIO.output(self.light_pin, False)
+        for key, value in self.pins[:-1]:
+            if value:
+                current_pin = f"self.{key}"
+                print(f"{key} is at {value}")
+                GPIO.setup(current_pin, GPIO.OUT)
+                GPIO.output(current_pin, False)
+            else:
+                print(f"{key} is not set up")
 
         #Should be immediately changed by sensor updates
         self.current_temp = 0
         self.current_hum = 0
+
+    def relay_tester(self):
+        if self.test_mode == True:
+            
+            for key, value in self.pins[:-1]:
+                if value:
+                    current_pin = f"self.{key}"
+                    print(f"{key} is at {value}")
+                    GPIO.setup(current_pin, GPIO.OUT)
+                    GPIO.output(current_pin, False)
+
+            for key, value in self.pin[:-1]:
+                if value:
+                    current_pin = f"self.{key}"
+                    GPIO.output(current_pin, True)
+                    sleep(10)
+                    GPIO.output(current_pin, False)
 
     def update_readings_from_sensor(self):
         '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
@@ -97,24 +112,24 @@ class ControlModule:
         '''
         pass
         # turn heater on if temp is too low
-        if self.current_temp <= self.thresholds['HON']:
+        if self.current_temp <= self.thresholds['HON'] and self.heat_pin:
             GPIO.output(self.heat_pin, True)
             GPIO.output(self.ac_pin, False)
         # turn heater off if temp is good
-        if self.current_temp >= self.thresholds['HOFF']:
+        if self.current_temp >= self.thresholds['HOFF'] and self.heat_pin:
             GPIO.output(self.heat_pin, False)
         # turn ac on if temp is too high
-        if self.current_temp >= self.thresholds['CON']:
+        if self.current_temp >= self.thresholds['CON'] and self.ac_pin:
             GPIO.output(self.ac_pin, True)
             GPIO.output(self.heat_pin, False)
         # turn ac off if temp is good
-        if self.current_temp <= self.thresholds['COFF']:
+        if self.current_temp <= self.thresholds['COFF'] and self.ac_pin:
             GPIO.output(self.ac_pin, False)
         # turn humidifier on if humidity is too low
-        if self.current_hum <= self.thresholds['HUMON']:
+        if self.current_hum <= self.thresholds['HUMON'] and self.hum_pin:
             GPIO.output(self.hum_pin, True)
         # turn humidifier off if humidity is good
-        if self.current_hum >= self.thresholds['HUMOFF']:
+        if self.current_hum >= self.thresholds['HUMOFF'] and self.hum_pin:
             GPIO.output(self.hum_pin, False)
         # if the temp exceeds the LL or HH values, send an alert
         if self.current_temp <= self.thresholds['LL'] or self.current_temp >= self.thresholds['HH']:
