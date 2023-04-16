@@ -73,7 +73,7 @@ class ControlModule:
         # set the pins as output and turn them off
         for key, value in list(self.pins.items())[:-1]:
             if value:
-                current_pin = f"self.{value}"
+                current_pin = eval(f"self.{key}")
                 print(f"{key} is at {value}")
                 GPIO.setup(current_pin, GPIO.OUT)
                 GPIO.output(current_pin, False)
@@ -90,14 +90,14 @@ class ControlModule:
     def relay_tester(self):
         for key, value in list(self.pins.items())[:-1]:
             if value:
-                current_pin = f"self.{value}"
+                current_pin = eval(f"self.{key}")
                 print(f"{key} is at {value}")
                 GPIO.setup(current_pin, GPIO.OUT)
                 GPIO.output(current_pin, False)
 
         for key, value in list(self.pins.items())[:-1]:
             if value:
-                current_pin = f"self.{value}"
+                current_pin = eval(f"self.{key}")
                 GPIO.output(current_pin, True)
                 sleep(10)
                 GPIO.output(current_pin, False)
