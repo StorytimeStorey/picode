@@ -68,6 +68,11 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
     # asyncio.sleep()
     # await ctx.followup.send()
 
+@tasks.loop(seconds=30)
+async def change_status():
+    current_status = info.read_last_row('controller/data/csv/raw.csv')
+    await McJohnson.change_presence(activity=discord.Game(f"{current_status}"))
+
 @McJohnson.hybrid_command()
 async def print_status(ctx):
     if os.path.exists(pi_johnson_path):

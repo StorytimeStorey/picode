@@ -32,10 +32,7 @@ def read_last_row(file_path):
         rows = list(reader)
 
         # Get the last row
-        last_row = rows[-1]
-
-        # Convert the last row data to a list
-        data_list = [float(x) for x in last_row]
+        data_list = rows[-1]
     
     text = generate_text_from_csv_list(data_list)
         # Return the list
@@ -57,7 +54,7 @@ def make_graph(csv_file, data_directory):
     # Extract the temperature and humidity data
     times = [row['Time'] for row in data]
     temperatures = [float(row['Temp']) for row in data]
-    x_points_count = xtick_counter(times)
+    x_points_count = 12
     #humidities = [float(row['Humidity']) for row in data]
 
     # Create the plot
