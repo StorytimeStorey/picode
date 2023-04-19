@@ -118,7 +118,7 @@ async def alert(channel):
         if len(alert_csv) > len_alerts:
             await send_alert(channel, alert_csv)
             print('sent alert')
-    write_alert()
+    #write_alert()
 
     current_status = info.read_last_row('data/csv/test.csv')
     await channel.send(f'{current_status}')
@@ -128,8 +128,8 @@ async def alert(channel):
 async def on_ready():
     await bot.tree.sync()
     channel = bot.get_channel(channel_id)
-    alert.start(channel)
-    change_status.start(channel)
+    #alert.start(channel)
+    change_status.start()
     # exit()
 
 def run_bot():
