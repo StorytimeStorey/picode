@@ -16,10 +16,10 @@ def generate_text_from_csv_list(list):
         # humidifier_on = "On" if list[5] == 1 else "off"
         # alerts = "YES" if list[6] == 1 else "NO"
         # status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nHumidity: {last_humidity}\nHeater: {heater_on}\nCooler: {cooler_on}\nHumidifier: {humidifier_on}\nAlerts: {alerts}"
-        status_text = f"Last data taken at {last_time}.\nTemperate: {last_temp}.\nPressure: {last_humidity}"
+        status_text = f"Last data taken at {last_time}.\nTemperature: {last_temp}.\nHumidity: {last_humidity}"
     else:
         time_now = datetime.now().strftime('%H%M')
-        status_text = f"Last data taken at {time_now}.\nTemperate: {list[0]}.\nPressure: {list[1]}"
+        status_text = f"Last data taken at {time_now}.\nTemperature: {list[0]}.\nHumidity: {list[1]}"
     return status_text
 
 def read_last_row(file_path):
@@ -32,17 +32,21 @@ def read_last_row(file_path):
         rows = list(reader)
 
         # Get the last row
-        last_row = rows[-1]
-
-        # Convert the last row data to a list
-        data_list = [float(x) for x in last_row]
+        data_list = rows[-1]
     
     text = generate_text_from_csv_list(data_list)
         # Return the list
     return text
 
-def make_graph(selected_data, csv_file, data_directory):
+def make_graph(csv_file, data_directory):
 
+    def xtick_counter(times:list):
+        x_points_count = 12
+        if len(times) < x_points_count:
+            return len(times)
+        else:
+            return int(len(times)/x_points_count)
+        
     with open(csv_file, 'r') as file:
         reader = csv.DictReader(file)
         data = list(reader)
@@ -50,16 +54,36 @@ def make_graph(selected_data, csv_file, data_directory):
     # Extract the temperature and humidity data
     times = [row['Time'] for row in data]
     temperatures = [float(row['Temp']) for row in data]
-    humidities = [float(row['Humidity']) for row in data]
+    x_points_count = 12
+    #humidities = [float(row['Humidity']) for row in data]
 
     # Create the plot
     plt.plot(times, temperatures, label='Temperature')
-    plt.plot(times, humidities, label='Humidity')
+   # plt.plot(times, humidities, label='Humidity')
     plt.xlabel('Time')
     plt.ylabel('Value')
     plt.title('Temperature and Humidity Over Time')
     plt.legend()
-    plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
+    plt.xticks(range(0, len(times), int(len(times)/x_points_count)), times[::int(len(times)/x_points_count)], fontsize=8)
+    plt.xlim(times[0], times[-1])
+
+    if csv_file == 'controller/data/csv/test.csv':
+        plt.savefig(f'{data_directory}/test_temperature_and_humidity.png', dpi=300)
+    else:
+        plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
+    
+    plt.close()
+
+
+
+def add_time_column(data):
+    time = 1
+    new_data = [['Time', 'Temp', 'Humidity']]
+    for row in data[1:]:
+        new_row = [time] + row
+        new_data.append(new_row)
+        time += 1
+    return new_data
 
 
 if __name__ == '__main__':

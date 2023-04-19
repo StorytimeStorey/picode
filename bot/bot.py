@@ -1,6 +1,6 @@
 
 import discord
-import info_parcer_2 as info
+import info_parcer as info
 import asyncio
 import multiprocessing as mp
 # from alerts import pi_alerts
