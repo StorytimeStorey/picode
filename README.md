@@ -1,5 +1,5 @@
 # autobox name under construction
-This is code to run an automated grow box or room. It was craeted with the intent of controlling a small area's atmosphere. It hasn't been tested yet and should not be expected to work as intended until we have been able to test it extensively. 
+This is code to run an automated grow box or room. It was created with the intent of controlling the climate of a small area. It hasn't been tested yet and should not be expected to work as intended until we have been able to test it extensively. 
 
 It's operation uses a microcomputer capable of running python code, such as a Raspberry Pi or alternative. It needs to have GPIO pins installed for I/O signals. 
 
