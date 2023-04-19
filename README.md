@@ -1,90 +1,69 @@
-# picode
+# autobox name under construction
+This is code to run an automated grow box or room. It was craeted with the intent of controlling a small area's atmosphere. It hasn't been tested yet and should not be expected to work as intended until we have been able to test it extensively. 
 
+It's operation uses a microcomputer capable of running python code, such as a Raspberry Pi or alternative. It needs to have GPIO pins installed for I/O signals. 
 
-Here we will set out implentation plans and major updates.
-If there are any major changes, please put explanations and date/time here
+It uses a sensor, a relay module, and some basic python code. The exact specifications and necessary python modules are laid out below.
 
+# Instruction
+## Purchasing list
+### Microcomputer
+- Microcomputer capable of internet with Python and GPIO pins installed.
 
-## Known errors:
-
-- ~Last data taken at 9.0. <- should say 0009 (12:09 am). reads as 0009 in the text file, so its an error in the comprehension~
-
+### Sensor
+- Sensor capable of Temp and Humidity and I2C communications. 
+    - Relative Humidity should be able to read above 80%. Most cheap ones don't have this capacty. 
     
-## Fixed Errors
-- ~Graphs x axis isn't showing proper times~ fixed 4/5/23
-    - ~Intended to show in 30 minute increments + last time taken. ~
-    - ~Current rendition somehow offsets time with the graph weirdly~
-    - ~Current rendition doesn't show the proper times.~
-- ~data in graph will not reset between calls from the bot~ 4/4/23 Had to do plt.close(). Was actually kind of a big memory leak.
-- ~Currently stuck in test mode~ fixed 4/3 @ 10am.
-- ~slash command for graph not working, regular command is working~
-- ~csv randomly got deleted? Can't figure out why. 3/30 @ 11pm~ I think we were both interacting at the same time and didn't notice
-- ~@tree isn't working currently~~
-- ~directory won't be accessed sometimes~ This is an issue with permissions. Currently fixed by with using sudo python3 start.py
+    - This project uses : https://www.amazon.com/Adafruit-BME280-Temperature-Humidity-Pressure/dp/B013W1AJUY
+### Jumpers 
+-Set of breadboard jumpers. 
+    - Need at least 10 jumpers. They can all be female-to-male if you want to run through a breadboard, or:
+        - 4 female-male, 6 female-female
+### Relays
+- 4 relay module
+    - We have this one: https://www.amazon.com/dp/B00E0NSORY?psc=1&ref=ppx_yo2ov_dt_b_product_details
+- It is important to get a relay module and not just use loose relays. Unless you are confident in your electronics hobby capabilities, it is very easy to cause a short and ruin your computer, relay, or hurt yourself.
+- Power supply capable of 5v and 400mA
 
-## Most Important:
-- We should focus on the following in this order:
-    - Control
-    - Relays
-        - Safety Measures
-    - Alerts (will work with function to control relay on/off states)
-        - Alerts CSV
-        - bot tasks.loop
-    - Testing
-    - Graphing
+### Externals
+- The necessary items to control the climate in your space
+- We are using a heater, cooler, and humidifier
+- THESE RELAYS ARE ONLY SUITABLE TO UP TO 10 AMPS. CHECK YOUR AMPERAGE ON YOUR DEVICES. A/C UNITS AND LARGE HEATERS OFTEN GO ABOVE THAT EASILY.
 
-## Control:
-- Read from Raw
-- Check values against chosen lows and high
-- control relay signals
-- Pass to Alerts
-    - To be passed: temp, low, relay_status
+## Installation
 
+# Prep the Pi
+- Prep your pi and set it up for SSH. 
+    - If you don't know how to do SSH, google it. It isn't required, but it's sure a lot easier to set up and interact with your pi this way.
+    - Make sure your pi is set to accept i2c communications. If you don't know how to do this, google it for your specific pi.
+    - Ensure pip and python are updated
+- Download the following modules:
+    - The adafruit BME280 sensor library avaiable here: https://github.com/adafruit/Adafruit_CircuitPython_BME280
+        - Can be downloaded directly using `sudo pip3 install adafruit-circuitpython-bme280`
+    - matplotlib `sudo apt-get install python3-matplotlib`
+    - The python discord bot library. 
+        - documentation for downloading can be found here: https://discordpy.readthedocs.io/en/stable/intro.html
+    - The python Pandas library
+        - docs here: https://pandas.pydata.org/docs/getting_started/install.html
+- Once all the modules are downloaded, install the BME280 sensor to the GPIO pins according to the manual. Each pi often has different GPIO setting outputs, so make sure yours is the correct one.
+- Make a directory in root called "data." This is currently a very jank fix for something that we plan on fixing soon, but as for now, this is where the data is stored as its saved.
+- Follow the instructions to set up your bot and get a token for it. Save it to a text file in root called "token.txt"
+- Download the autobox code into your root.
 
-## Alerts:
-- will read from raw
-    - ~temp, hum~, relay_status
-    - will be in charge of handling relay_status timekeeping
-    - if an element is on too long, send alarm
-    - might be good at have emergency on/off operable from bot
-- will work as part of main control script (imported)
-- ~alerts will save to csv~
-- bot will tasks.loop: check the csv for updates
-- bot will be able to access alert history csv
-- triggered alert will create graph of temp/hum of the day
-    - graph to show temp, hum, and on/off states of systems for that day
+# Sensor
+- The sensor should be automatic once it's hooked into the pi. Just make sure it's installed correctly, fire and forget.
 
+# Relays
+- The relay will need a seperate power supply, as the volts and amps the pi is capable of isn't enough for the relay.
+- The relay's soldered pins can also shock you if you aren't careful. We recommend 3D-printing this file: https://www.thingiverse.com/thing:957292 or finding some protective shielding. It's easy to avoid touching the pins, but it's also very easy to get shocked.
+- Find which GPIO pins you wish to connect and use the female-to-female jumpers to install each IN#. 
+- Record which pins you are using and set them in the settings.JSON in the autobox/controller/settings.JSON.
+- You can now wire your relays. If you don't know how to do this, I recommend watching some videos.
+    - Basically, relays work as a switch that complete a circuit. All you have to do is cut one side of the power cable and feed it through the relay. 
+    - READ THE MANUAL ON RELAYS. IMPROPER INSTALLATION CAN LEAD TO SERIOUS PROBLEMS.
+    - INSTALL USING THE 'ALWAYS OPEN' SIDE.
 
-## Bot:
-- get tasks.loop to work for alerts
-- clean up names and function names
-- remove Bonnibel and standardize Johnson conventions
-- **CREATE DOCUMENTATION FOR INTENTS AND PROCESS TO CREATE BOT NECESSARY TO WORK WITH THIS PROGRAM**
-- implement graph responses, allowing for more time options on request. 
-    - may tie into advanced alerts requests
-- have status update with last line of dot.csv
-
-### Graph:
-- ~Show time in X axis in 30-min intervals, including last time~
-- Request "graph" for most current day
-- request "graph X"    
-    - X days, weeks, months, years desired               
-- temp/hum
-
-
-## Saved Data
-- Data saves to an external folder on the pi. This folder needs to be created if running for the first time.
-- current save convention is dd/mm/yy_dot.csv. dot stands for "data over time." This convention is under construction.
-- Raw data, which is replaced every 5 minutes, is saved to data/csv inside the picode directory. 
-    - Any test data is also saved here, when running off-pi.
-
-
-## data_rec_final:
-- ~~Each CSV should eventually be seperated by days and saved with a naming convention easy to find.~~ finished 3/30, each daily csv named DD_MM_YY_dot.csv
-- ~~Need to reset the data list after each run. ~~  finished 3/30, line 35 in data_rec_final.py. 
-- Sometimes return weird times, remove instances of XXX9 and XXX4 from timestamp
-
-## Bot Set-up
+# Bot Set-up
 - visit discord.com/developers
 - click on applications
 - click new application
@@ -97,20 +76,8 @@ If there are any major changes, please put explanations and date/time here
 - copy and paste the link into your browser, this will prompt you with questions regarding permissions you want the bot to have in the server. Select the same permissions as the previous step. The bot should now be added to the server.
 - In discord, go to settings --> advanced and activate Developer Mode
 
-
-
-# TO BE CONSIDERED:
-- code for tiggering camera
-   - have save to specific directory
-   - Be able to tell bot when certain run is finished
-   - have it generate a gif automatically
-   - have it remove the photos and save it to a different directory
-- more advanced graphing
-
-
-
-    
-
-
-
-
+# Final steps
+- Go into settings and ensure your GPIO pins are set, test mode is "false" (unless you want to cycle through your relay switches to ensure they work), and make sure the values for thresholds are where you want them. Instructions for how these settings works will eventually be in the wiki. 
+- Navigate into the Autobox directory and use `sudo python start.py'. This will begin all processes. Hope it works!
+   
+        
