@@ -106,6 +106,7 @@ async def send_alert(channel, alert_csv):
     humidifier_status = last_row[7]
     await channel.send(f'On {date} at {time}, the following alert was found:\nAlert Type: {alert_type}\nTemperature: {temp}\nHumidity: {humidity}\nHeater Status: {heater_status}\nAC Status: {ac_status}\nHumidifier Status: {humidifier_status}')
 # loop to check if it needs to send an alert or not
+
 @tasks.loop(seconds=5)
 async def alert(channel):
     # if len_alerts exists, check if the length has changed and send alert if it has. if it does not exist, create it
@@ -127,7 +128,8 @@ async def alert(channel):
 async def on_ready():
     await bot.tree.sync()
     channel = bot.get_channel(channel_id)
-    # alert.start(channel)
+    alert.start(channel)
+    change_status.start(channel)
     # exit()
 
 def run_bot():
