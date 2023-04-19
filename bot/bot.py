@@ -66,7 +66,6 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
 
 @tasks.loop(seconds=30)
 async def change_status():
-    print("task loop is working")
     current_status = info.read_last_row('controller/data/csv/raw.csv')
     await bot.change_presence(activity=discord.Game(f"{current_status}"))
 
