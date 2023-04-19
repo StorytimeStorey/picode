@@ -91,7 +91,13 @@ If there are any major changes, please put explanations and date/time here
 - go to the bot tab and click 'add bot'
 - from this page you can copy the token that will be used to write the code for your bot
 - scroll down and enable all 'priveleged gateway intents'
-- select bot permissions neccesary for your application
+- go to OAuth2 --> URL Generator
+- under scopes, select bot
+- under bot permissions, select 'Read Messages/View Channels', 'Send Messages' and 'Attach Files'
+- copy and paste the link into your browser, this will prompt you with questions regarding permissions you want the bot to have in the server. Select the same permissions as the previous step. The bot should now be added to the server.
+- In discord, go to settings --> advanced and activate Developer Mode
+
+
 
 # TO BE CONSIDERED:
 - code for tiggering camera
