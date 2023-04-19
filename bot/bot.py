@@ -13,8 +13,6 @@ import pandas as pd
 Storey_johnson_path = r'C:/Users/tomic/Desktop/johnson.txt'
 Jackson_johnson_path = r'/Users/jackson/Documents/GitHub/picode/bot_2/McJohnsonToken.txt'
 pi_johnson_path = r'../McJohnsonToken.txt'
-
-guild_id = 705960639687950387 #Channel ID
 channel_id = 1092481064087330957
 
 # initialize discord client
@@ -116,7 +114,6 @@ async def alert(channel):
         if len(alert_csv) > len_alerts:
             await send_alert(channel, alert_csv)
             print('sent alert')
-    write_alert()
 
     current_status = info.read_last_row('data/csv/test.csv')
     await channel.send(f'{current_status}')
