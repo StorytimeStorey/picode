@@ -79,6 +79,25 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 #  JSON settings
 - The settings are located in picode/controller/settings.json, this is where you will input all of the information specific to your system and setup
 - Thresholds:
+    - LL: The temp at which you would like the system to alert you that the temp is too low
+    - HON: The temp at which you would like the heater to turn on
+    - HOFF: The temp at which you would like the heater to turn off
+    - CON: temp at which to turn the cooler on
+    - COFF: temp at which to turn the cooler off
+    - HUMON: humidity level at which to turn the humidifier on
+    - HUMOFF: humidity level at which to turn the humidifier off
+    - HHUM: High humidity at which an alert should be sent
+    - HH: High-High, the high temp at which an alert should be sent
+- GPIO_Pins:
+    - each of these should be the physical pin # associated with the named pin
+    - "test_mode" pin is simply for testing, do not change this value
+- Token_Paths:
+    - pi_path: the path to the bot_token.txt file on your pi or alternative device
+    - test_path: there are 4 test_path variables preset, each of these should consist of the respective paths to the bot_token.txt file on every contributors       personal machine. To add more test_path variables, simply add another value in the Token_Paths dictionary with the naming convention: test_path_n where       n is the number of test_path variables (starting at 0).
+- Channel_Id: 
+    - The channel id should be input as an int, with no quotations. 
+    - The channel ID can be obtained by right clicking on the desired channel within discord, and clicking "Copy Channel ID"
+ 
 # Final steps
 - Go into settings and ensure your GPIO pins are set, test mode is "false" (unless you want to cycle through your relay switches to ensure they work), and make sure the values for thresholds are where you want them. Instructions for how these settings works will eventually be in the wiki. 
 - Navigate into the Autobox directory and use `sudo python start.py'. This will begin all processes. Hope it works!
