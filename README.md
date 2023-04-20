@@ -76,6 +76,9 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 - copy and paste the link into your browser, this will prompt you with questions regarding permissions you want the bot to have in the server. Select the same permissions as the previous step. The bot should now be added to the server.
 - In discord, go to settings --> advanced and activate Developer Mode
 
+#  JSON settings
+- The settings are located in picode/controller/settings.json, this is where you will input all of the information specific to your system and setup
+- Thresholds:
 # Final steps
 - Go into settings and ensure your GPIO pins are set, test mode is "false" (unless you want to cycle through your relay switches to ensure they work), and make sure the values for thresholds are where you want them. Instructions for how these settings works will eventually be in the wiki. 
 - Navigate into the Autobox directory and use `sudo python start.py'. This will begin all processes. Hope it works!
