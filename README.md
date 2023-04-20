@@ -90,16 +90,22 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - HH: High-High, the high temp at which an alert should be sent
 - GPIO_Pins:
     - each of these should be the physical pin # associated with the named pin
-    - "test_mode" pin is simply for testing, do not change this value
 - Token_Paths:
     - pi_path: the path to the bot_token.txt file on your pi or alternative device
     - test_path: there are 4 test_path variables preset, each of these should consist of the respective paths to the bot_token.txt file on every contributors       personal machine. To add more test_path variables, simply add another value in the Token_Paths dictionary with the naming convention: test_path_n where       n is the number of test_path variables (starting at 0).
 - Channel_Id: 
     - The channel id should be input as an int, with no quotations. 
     - The channel ID can be obtained by right clicking on the desired channel within discord, and clicking "Copy Channel ID"
- 
+   
+# Relay and Sensor Testing
+- Before running the main program, you should run relay_test.py and sensor_test.py to make sure the relays and the sensor are working properly. 
+- Relay Testing:
+    - The relay test will turn each relay on for 5 seconds, then turn it off. As it is doing so, it will print which pin it is currently testing to the             console. To run the test again, simply run the file again. 
+- Sensor Testing: 
+    - The sensor test will print to the console the current temperature and humidity a total of 30 times or until interuppted by the keyboard. 
+  
 # Final steps
-- Go into settings and ensure your GPIO pins are set, test mode is "false" (unless you want to cycle through your relay switches to ensure they work), and make sure the values for thresholds are where you want them. 
+- Go into settings and ensure your GPIO pins are set, and make sure the values for thresholds are where you want them. 
 - Navigate into the Autobox directory and use `sudo python start.py'. This will begin all processes. Hope it works!
    
         
