@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 import json
-
+GPIO.setmode(GPIO.board)
 if __name__ == '__main__':
     # open settings json
     with open('picode/controller/settings.json', 'r') as file:
@@ -16,12 +16,13 @@ if __name__ == '__main__':
     # tests each relay, relays should turn on for 5 seconds and then shut off
     for key, value in list(pins.items()):
         if value:
-            current_pin = int(key)
+            current_pin = value
+            print(current_pin)
             print(f"testing {key} at pin {value}")
             GPIO.setup(current_pin, GPIO.OUT)
-            GPIO.output(current_pin, True)
-            sleep(5)
             GPIO.output(current_pin, False)
+            sleep(5)
+            GPIO.output(current_pin, True)
         else:
             print(f"{key} is not set up")
 
