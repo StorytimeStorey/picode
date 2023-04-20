@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO
 from time import sleep
 import json
-GPIO.setmode(GPIO.board)
+GPIO.setmode(GPIO.BOARD)
 if __name__ == '__main__':
     # open settings json
-    with open('picode/controller/settings.json', 'r') as file:
+    with open('controller/settings.json', 'r') as file:
         data = json.load(file)
         pins = data['GPIO_Pins']
     # set variables for each pin

@@ -2,6 +2,7 @@ test_mode = False
 
 try:
     import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BOARD)
 except ImportError:
     print("Entering test mode")
     test_mode = True
@@ -68,8 +69,6 @@ class ControlModule:
         self.fan_pin = self.pins["fan_pin"]
         self.light_pin = self.pins["light_pin"]
 
-        self.test_mode = self.pins["test_mode"] #If set to True, will go through each pin given a number and flicker them
-
         # set the pins as output and turn them off
         for key, value in list(self.pins.items()):
             if value:
@@ -83,24 +82,6 @@ class ControlModule:
         #Should be immediately changed by sensor updates
         self.current_temp = 0
         self.current_hum = 0
-
-        if self.test_mode == True:
-            self.relay_tester()
-
-    def relay_tester(self):
-        for key, value in list(self.pins.items()):
-            if value:
-                current_pin = eval(f"self.{key}")
-                print(f"{key} is at {value}")
-                GPIO.setup(current_pin, GPIO.OUT)
-                GPIO.output(current_pin, False)
-
-        for key, value in list(self.pins.items()):
-            if value:
-                current_pin = eval(f"self.{key}")
-                GPIO.output(current_pin, True)
-                sleep(10)
-                GPIO.output(current_pin, False)
 
     def update_readings_from_sensor(self):
         '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
