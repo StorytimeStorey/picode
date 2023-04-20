@@ -76,7 +76,7 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 - copy and paste the link into your browser, this will prompt you with questions regarding permissions you want the bot to have in the server. Select the same permissions as the previous step. The bot should now be added to the server.
 - In discord, go to settings --> advanced and activate Developer Mode
 
-#  JSON settings
+# Settings Setup
 - The settings are located in picode/controller/settings.json, this is where you will input all of the information specific to your system and setup
 - Thresholds:
     - LL: The temp at which you would like the system to alert you that the temp is too low
