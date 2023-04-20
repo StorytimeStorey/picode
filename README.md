@@ -99,7 +99,7 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - The channel ID can be obtained by right clicking on the desired channel within discord, and clicking "Copy Channel ID"
  
 # Final steps
-- Go into settings and ensure your GPIO pins are set, test mode is "false" (unless you want to cycle through your relay switches to ensure they work), and make sure the values for thresholds are where you want them. Instructions for how these settings works will eventually be in the wiki. 
+- Go into settings and ensure your GPIO pins are set, test mode is "false" (unless you want to cycle through your relay switches to ensure they work), and make sure the values for thresholds are where you want them. 
 - Navigate into the Autobox directory and use `sudo python start.py'. This will begin all processes. Hope it works!
    
         
