@@ -2,7 +2,6 @@ test_mode = False
 
 try:
     import RPi.GPIO as GPIO
-    GPIO.setmode(GPIO.BOARD)
 except ImportError:
     print("Entering test mode")
     test_mode = True
