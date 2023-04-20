@@ -17,6 +17,13 @@ class Sensor:
 
     If sensor isn't found, enters "test mode" which sets everything to chosen values and saves random info to a test csv
     sets self.test_mode = True, which should cascade testing environment changes
+
+    Initial variables:
+        i2c - gets the I2C to use when activating the BME280
+        bmp280 - initializes the BME280 sensor
+        temperature - the current temperature of the environment
+        humidity - the current humidity of the environment
+        test_mode - True/False boolean to determine whether to run real or testing code
     '''
     def __init__(self, temp_low = 55, temp_high = 75, hum_low = 82, hum_high = 99,):
         if not test_mode:
@@ -39,7 +46,9 @@ class Sensor:
 
 
     def update_readings(self):
-
+        '''
+        Updates the current temperature and humidity levels
+        '''
         if not self.test_mode:
             self.temperature = round(self.bme280.temperature * 9/5 + 32, 1)
             self.humidity = round(self.bme280.relative_humidity ,2)
@@ -51,7 +60,11 @@ class Sensor:
 
 if __name__ == '__main__':
     test_sensor = Sensor()
-    while True:
-        test_sensor.update_readings()
-        print(test_sensor.temperature)
-        print(test_sensor.humidity)
+    try:
+        for i in range(30):
+            test_sensor.update_readings()
+            print(test_sensor.temperature)
+            print(test_sensor.humidity)
+        print('testing complete')
+    except KeyboardInterrupt:
+        print('testing interuppted by user input')

@@ -1,21 +1,33 @@
 
 import discord
 import info_parcer as info
-import asyncio
-import multiprocessing as mp
-# from alerts import pi_alerts
 from discord.ext import tasks, commands
-from discord import app_commands
 from datetime import datetime
 import os
 import pandas as pd
+import json
 
-Storey_johnson_path = r'C:/Users/tomic/Desktop/johnson.txt'
-Jackson_johnson_path = r'/Users/jackson/Documents/GitHub/picode/bot_2/McJohnsonToken.txt'
-pi_johnson_path = r'../McJohnsonToken.txt'
-
-guild_id = 705960639687950387 #Channel ID
-channel_id = 1092481064087330957
+# finds the channel id and token paths from settings.json
+with open("controller/settings.json", 'r') as file:
+    data = json.load(file)
+    channel_id = data["Channel_Id"]
+    # set variables for the paths from json
+    token_paths = data["Token_Paths"]
+    pi_path = token_paths["pi_path"]
+    # determine which path to use
+    if os.path.exists(pi_path): 
+        print("using pi_path")
+        path = pi_path
+        with open(path) as f: token = f.read().strip()
+    else:
+        for i in range(len(token_paths)-1):
+            print(i)
+            # check all the test paths and set it to the right one for the current running device
+            if token_paths[f"test_path_{i}"] and os.path.exists(token_paths[f"test_path_{i}"]):
+                path = token_paths[f"test_path_{i}"]
+                print(path)
+                with open(path) as f: token = f.read().strip()
+                break
 
 # initialize discord client
 intents = discord.Intents(value=7, 
@@ -41,7 +53,7 @@ async def hello(ctx):
 
 @bot.hybrid_command()
 async def print_graphs(ctx): #This needs to be connected to a pipe in order to work properly, since it takes too long to work normally.
-    if os.path.exists(pi_johnson_path):
+    if os.path.exists(pi_path):
         current_day = datetime.today().strftime('%d_%m_%y')
         csv_file = f'../data/{current_day}_dot.csv'
         save_location = "../data/" 
@@ -71,7 +83,7 @@ async def change_status():
 
 @bot.hybrid_command()
 async def print_status(ctx):
-    if os.path.exists(pi_johnson_path):
+    if os.path.exists(pi_path):
         try:
             current_day = datetime.today().strftime('%d_%m_%y')
             current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
@@ -117,7 +129,6 @@ async def alert(channel):
         if len(alert_csv) > len_alerts:
             await send_alert(channel, alert_csv)
             print('sent alert')
-    #write_alert()
 
     current_status = info.read_last_row('data/csv/test.csv')
     await channel.send(f'{current_status}')
@@ -131,20 +142,20 @@ async def on_ready():
     change_status.start()
     # exit()
 
-def run_bot():
-    if os.path.exists(Storey_johnson_path): #If Storey is testing...
-        print("Storey path works")
-        with open(Storey_johnson_path) as f: token = f.read().strip()
-    elif os.path.exists(Jackson_johnson_path): #If Jackson is testing...
-        print("Jackson_path works")
-        with open(Jackson_johnson_path) as f: token = f.read().strip()
-    elif os.path.exists(pi_johnson_path): #If run on the pi...
-        print("pi_path works")
-        with open(pi_johnson_path) as f: token = f.read().strip()
-    else:
-        print("Failed to find token") #Catches for failures...
+# def run_bot():
+#     if os.path.exists(Storey_johnson_path): #If Storey is testing...
+#         print("Storey path works")
+#         with open(Storey_johnson_path) as f: token = f.read().strip()
+#     elif os.path.exists(Jackson_johnson_path): #If Jackson is testing...
+#         print("Jackson_path works")
+#         with open(Jackson_johnson_path) as f: token = f.read().strip()
+#     elif os.path.exists(pi_johnson_path): #If run on the pi...
+#         print("pi_path works")
+#         with open(pi_johnson_path) as f: token = f.read().strip()
+#     else:
+#         print("Failed to find token") #Catches for failures...
 
-    bot.run(token)
+#     bot.run(token)
 
 if __name__ == '__main__':
-    run_bot()
+    bot.run(token)

@@ -71,7 +71,7 @@ class ControlModule:
         self.test_mode = self.pins["test_mode"] #If set to True, will go through each pin given a number and flicker them
 
         # set the pins as output and turn them off
-        for key, value in list(self.pins.items())[:-1]:
+        for key, value in list(self.pins.items()):
             if value:
                 current_pin = eval(f"self.{key}")
                 print(f"{key} is at {value}")
@@ -88,14 +88,14 @@ class ControlModule:
             self.relay_tester()
 
     def relay_tester(self):
-        for key, value in list(self.pins.items())[:-1]:
+        for key, value in list(self.pins.items()):
             if value:
                 current_pin = eval(f"self.{key}")
                 print(f"{key} is at {value}")
                 GPIO.setup(current_pin, GPIO.OUT)
                 GPIO.output(current_pin, False)
 
-        for key, value in list(self.pins.items())[:-1]:
+        for key, value in list(self.pins.items()):
             if value:
                 current_pin = eval(f"self.{key}")
                 GPIO.output(current_pin, True)

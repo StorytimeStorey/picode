@@ -1,4 +1,27 @@
 {
-    "Thresholds": {"LL":55, "HON":60, "HOFF":68, "CON": 75, "COFF" : 68, "HH":80, "HUMON": 80, "HUMOFF":96},
-    "GPIO_Pins":{"heat_pin" : null, "ac_pin" : null, "hum_pin":null, "fan_pin":null,"light_pin":null, "test_mode":false}
+    "Thresholds": {
+                   "LL":55, 
+                   "HON":60, 
+                   "HOFF":68, 
+                   "CON": 75, 
+                   "COFF" : 68, 
+                   "HH":80, 
+                   "HUMON": 80, 
+                   "HUMOFF":96
+                },
+    "GPIO_Pins": {
+                  "heat_pin" : null, 
+                  "ac_pin" : null, 
+                  "hum_pin":null, 
+                  "fan_pin":null,
+                  "light_pin":null
+                },
+    "Token_Paths": {
+                    "pi_path": "../McJohnsonToken.txt", 
+                    "test_path_0": "/Users/jackson/Documents/GitHub/picode/bot_2/McJohnsonToken.txt", 
+                    "test_path_1": "C:/Users/tomic/Desktop/johnson.txt", 
+                    "test_path_2": "C:/python_tokens/bonnibel_token.txt", 
+                    "test_path_3": null
+                },
+    "Channel_Id": 1092481064087330957
 }
