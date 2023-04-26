@@ -40,12 +40,15 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 - Download the following modules:
     - The adafruit BME280 sensor library avaiable here: https://github.com/adafruit/Adafruit_CircuitPython_BME280
         - Can be downloaded directly using `sudo pip3 install adafruit-circuitpython-bme280`
-    - matplotlib ```sudo apt-get install python3-matplotlib```
+    - matplotlib `sudo apt-get install python3-matplotlib`
     - The python discord bot library. 
-        - ```pip3 install discord```
+        - `pip3 install discord`
         - documentation for downloading can be found here: https://discordpy.readthedocs.io/en/stable/intro.html
     - The python Pandas library
-        - ```pip3 install pandas  
+        - 
+        ```
+        pip3 install pandas
+        ```  
         - docs here: https://pandas.pydata.org/docs/getting_started/install.html
   
 - Once all the modules are downloaded, install the BME280 sensor to the GPIO pins according to the manual. Each pi often has different GPIO setting outputs, so make sure yours is the correct one.
