@@ -76,7 +76,7 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - INSTALL USING THE 'ALWAYS OPEN' SIDE.
 
 ## Bot Set-up
-- visit discord.com/developers
+- visit Discord's [Developer Website](https://discord.com/developers/applications)
 - click on applications
 - click new application
 - go to the bot tab and click 'add bot'
