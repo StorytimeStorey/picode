@@ -39,10 +39,19 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - Ensure pip and python are updated
 - Download the following modules:
     - The adafruit BME280 sensor library avaiable here: https://github.com/adafruit/Adafruit_CircuitPython_BME280
-        - Can be downloaded directly using `sudo pip3 install adafruit-circuitpython-bme280`
-    - matplotlib `sudo apt-get install python3-matplotlib`
+        - Can be downloaded directly using 
+        ```
+        sudo pip3 install adafruit-circuitpython-bme280
+        ```
+    - matplotlib 
+    ```
+    sudo apt-get install python3-matplotlib
+    ```
     - The python discord bot library. 
-        - `pip3 install discord`
+        - 
+        ```
+        pip3 install discord
+        ```
         - documentation for downloading can be found here: https://discordpy.readthedocs.io/en/stable/intro.html
     - The python Pandas library
         - 
