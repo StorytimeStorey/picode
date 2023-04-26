@@ -39,26 +39,23 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - Ensure pip and python are updated
 - Download the following modules:
     - The adafruit BME280 sensor library avaiable here: https://github.com/adafruit/Adafruit_CircuitPython_BME280
-        - Can be downloaded directly using 
         ```
         sudo pip3 install adafruit-circuitpython-bme280
         ```
     - matplotlib 
-    ```
-    sudo apt-get install python3-matplotlib
-    ```
+        ```
+        sudo apt-get install python3-matplotlib
+        ```
     - The python discord bot library. 
-        - 
+        - documentation: https://discordpy.readthedocs.io/en/stable/intro.html
         ```
         pip3 install discord
         ```
-        - documentation for downloading can be found here: https://discordpy.readthedocs.io/en/stable/intro.html
     - The python Pandas library
-        - 
+        - documentation: https://pandas.pydata.org/docs/getting_started/install.html
         ```
         pip3 install pandas
         ```  
-        - docs here: https://pandas.pydata.org/docs/getting_started/install.html
   
 - Once all the modules are downloaded, install the BME280 sensor to the GPIO pins according to the manual. Each pi often has different GPIO setting outputs, so make sure yours is the correct one.
 - Make a directory in root called "data." This is currently a very jank fix for something that we plan on fixing soon, but as for now, this is where the data is stored as its saved.
