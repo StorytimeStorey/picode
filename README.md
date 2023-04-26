@@ -14,14 +14,14 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 - Sensor capable of Temp and Humidity and I2C communications. 
     - Relative Humidity should be able to read above 80%. Most cheap ones don't have this capacty. 
     
-    - This project uses : https://www.amazon.com/Adafruit-BME280-Temperature-Humidity-Pressure/dp/B013W1AJUY
+    - This project uses [this](https://www.amazon.com/Adafruit-BME280-Temperature-Humidity-Pressure/dp/B013W1AJUY)
 ### Jumpers 
 -Set of breadboard jumpers. 
     - Need at least 10 jumpers. They can all be female-to-male if you want to run through a breadboard, or:
         - 4 female-male, 6 female-female
 ### Relays
 - 4 relay module
-    - We have this one: https://www.amazon.com/dp/B00E0NSORY?psc=1&ref=ppx_yo2ov_dt_b_product_details
+    - We have [this one.](https://www.amazon.com/dp/B00E0NSORY?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 - It is important to get a relay module and not just use loose relays. Unless you are confident in your electronics hobby capabilities, it is very easy to cause a short and ruin your computer, relay, or hurt yourself.
 - Power supply capable of 5v and 400mA
 
@@ -38,7 +38,7 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - Make sure your pi is set to accept i2c communications. If you don't know how to do this, google it for your specific pi.
     - Ensure pip and python are updated
 - Download the following modules:
-    - The adafruit BME280 sensor library avaiable here: https://github.com/adafruit/Adafruit_CircuitPython_BME280
+    - The adafruit BME280 sensor library avaiable [here](https://github.com/adafruit/Adafruit_CircuitPython_BME280)
         ```
         sudo pip3 install adafruit-circuitpython-bme280
         ```
@@ -47,14 +47,14 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
         sudo apt-get install python3-matplotlib
         ```
     - The python discord bot library. 
-        - documentation: https://discordpy.readthedocs.io/en/stable/intro.html
+        - [documentation](https://discordpy.readthedocs.io/en/stable/intro.html)
         ```
-        pip3 install discord
+        sudo pip3 install discord
         ```
     - The python Pandas library
-        - documentation: https://pandas.pydata.org/docs/getting_started/install.html
+        - [documentation](https://pandas.pydata.org/docs/getting_started/install.html)
         ```
-        pip3 install pandas
+        sudo pip3 install pandas
         ```  
   
 - Once all the modules are downloaded, install the BME280 sensor to the GPIO pins according to the manual. Each pi often has different GPIO setting outputs, so make sure yours is the correct one.
@@ -67,7 +67,7 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 
 ## Relays
 - The relay will need a seperate power supply, as the volts and amps the pi is capable of isn't enough for the relay.
-- The relay's soldered pins can also shock you if you aren't careful. We recommend 3D-printing this file: https://www.thingiverse.com/thing:957292 or finding some protective shielding. It's easy to avoid touching the pins, but it's also very easy to get shocked.
+- The relay's soldered pins can also shock you if you aren't careful. We recommend 3D-printing this file: [Relay Case](https://www.thingiverse.com/thing:957292) or finding some protective shielding. It's easy to avoid touching the pins, but it's also very easy to get shocked.
 - Find which GPIO pins you wish to connect and use the female-to-female jumpers to install each IN#. 
 - Record which pins you are using and set them in the settings.JSON in the autobox/controller/settings.JSON.
 - You can now wire your relays. If you don't know how to do this, I recommend watching some videos.
