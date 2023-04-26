@@ -30,9 +30,9 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 - We are using a heater, cooler, and humidifier
 - THESE RELAYS ARE ONLY SUITABLE TO UP TO 10 AMPS. CHECK YOUR AMPERAGE ON YOUR DEVICES. A/C UNITS AND LARGE HEATERS OFTEN GO ABOVE THAT EASILY.
 
-## Installation
+# Installation
 
-# Prep the Pi
+## Prep the Pi
 - Prep your pi and set it up for SSH. 
     - If you don't know how to do SSH, google it. It isn't required, but it's sure a lot easier to set up and interact with your pi this way.
     - Make sure your pi is set to accept i2c communications. If you don't know how to do this, google it for your specific pi.
@@ -50,10 +50,10 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 - Follow the instructions to set up your bot and get a token for it. Save it to a text file in root called "token.txt"
 - Download the autobox code into your root.
 
-# Sensor
+## Sensor
 - The sensor should be automatic once it's hooked into the pi. Just make sure it's installed correctly, fire and forget.
 
-# Relays
+## Relays
 - The relay will need a seperate power supply, as the volts and amps the pi is capable of isn't enough for the relay.
 - The relay's soldered pins can also shock you if you aren't careful. We recommend 3D-printing this file: https://www.thingiverse.com/thing:957292 or finding some protective shielding. It's easy to avoid touching the pins, but it's also very easy to get shocked.
 - Find which GPIO pins you wish to connect and use the female-to-female jumpers to install each IN#. 
@@ -63,7 +63,7 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - READ THE MANUAL ON RELAYS. IMPROPER INSTALLATION CAN LEAD TO SERIOUS PROBLEMS.
     - INSTALL USING THE 'ALWAYS OPEN' SIDE.
 
-# Bot Set-up
+## Bot Set-up
 - visit discord.com/developers
 - click on applications
 - click new application
@@ -76,7 +76,7 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 - copy and paste the link into your browser, this will prompt you with questions regarding permissions you want the bot to have in the server. Select the same permissions as the previous step. The bot should now be added to the server.
 - In discord, go to settings --> advanced and activate Developer Mode
 
-# Settings Setup
+## Settings Setup
 - The settings are located in picode/controller/settings.json, this is where you will input all of the information specific to your system and setup
 - Thresholds:
     - LL: The temp at which you would like the system to alert you that the temp is too low
@@ -97,14 +97,14 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
     - The channel id should be input as an int, with no quotations. 
     - The channel ID can be obtained by right clicking on the desired channel within discord, and clicking "Copy Channel ID"
    
-# Relay and Sensor Testing
+## Relay and Sensor Testing
 - Before running the main program, you should run relay_test.py and sensor_test.py to make sure the relays and the sensor are working properly. 
 - Relay Testing:
     - The relay test will turn each relay on for 5 seconds, then turn it off. As it is doing so, it will print which pin it is currently testing to the             console. To run the test again, simply run the file again. 
 - Sensor Testing: 
     - The sensor test will print to the console the current temperature and humidity a total of 30 times or until interuppted by the keyboard. 
   
-# Final steps
+## Final steps
 - Go into settings and ensure your GPIO pins are set, and make sure the values for thresholds are where you want them. 
 - Navigate into the Autobox directory and use `sudo python start.py'. This will begin all processes. Hope it works!
    
