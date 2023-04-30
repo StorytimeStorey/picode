@@ -4,7 +4,7 @@ try:
     try:
         import LePotatoPi.GPIO as GPIO
     except RuntimeError:
-        import RPi.GPIO
+        import RPi.GPIO as GPIO
 except ImportError:
     print("Entering test mode")
     test_mode = True
