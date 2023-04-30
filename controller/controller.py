@@ -1,12 +1,10 @@
 test_mode = False
-import os
 try:
-    system = os.uname().machine
-    if system == 'aarch64':
+    # import the proper GPIO library for the device
+    try:
         import LePotatoPi.GPIO as GPIO
-    elif system == 'armv7l':
-        import  RPi.GPIO as GPIO
-
+    except RuntimeError:
+        import RPi.GPIO
 except ImportError:
     print("Entering test mode")
     test_mode = True
