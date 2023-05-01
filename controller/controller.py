@@ -1,7 +1,10 @@
 test_mode = False
-
 try:
-    import RPi.GPIO as GPIO
+    # import the proper GPIO library for the device
+    try:
+        import LePotatoPi.GPIO as GPIO
+    except RuntimeError:
+        import RPi.GPIO as GPIO
 except ImportError:
     print("Entering test mode")
     test_mode = True

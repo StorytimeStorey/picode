@@ -17,7 +17,7 @@
                   "light_pin":null
                 },
     "Token_Paths": {
-                    "pi_path": "../McJohnsonToken.txt", 
+                    "pi_path": "../token.txt", 
                     "test_path_0": "/Users/jackson/Documents/GitHub/picode/bot_2/McJohnsonToken.txt", 
                     "test_path_1": "C:/Users/tomic/Desktop/johnson.txt", 
                     "test_path_2": "C:/python_tokens/bonnibel_token.txt", 

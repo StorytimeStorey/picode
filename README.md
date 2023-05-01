@@ -119,5 +119,8 @@ It uses a sensor, a relay module, and some basic python code. The exact specific
 ## Final steps
 - Go into settings and ensure your GPIO pins are set, and make sure the values for thresholds are where you want them. 
 - Navigate into the Autobox directory and use `sudo python start.py'. This will begin all processes. Hope it works!
+
+## IMPORTANT NOTES
+- The code currently is setup to work with either a Raspberry Pi or an AML-2905x-CC (Le Potato). The only known issue to due with using different hardware is the RPi.GPIO library, which works only for the Rapsberry Pi. If you are using a different device, please visit the and add another elif statement for the libary you need for your device. 
    
         
