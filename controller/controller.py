@@ -3,7 +3,7 @@ try:
     # import the proper GPIO library for the device
     try:
         import LePotatoPi.GPIO as GPIO
-    except RuntimeError:
+    except ImportError:
         import RPi.GPIO as GPIO
 except ImportError:
     print("Entering test mode")
