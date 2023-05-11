@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 import os
 import schedule
-
+import threading
 
 
 #class for writing to raw
@@ -106,6 +106,17 @@ class DataManager:
         self.hum = hum
 
     def record_data(self):
+
+        def run_continuously(interval=1):
+            class ScheduleThread(threading.Thread):
+                @classmethod
+                def run(cls):
+                    schedule.run_pending()
+                    time.sleep(interval)
+        
+            continuous_thread = ScheduleThread()
+            continuous_thread.start()
+
         #Check if the day has passed, if so start a new dot csv
         schedule.every().day.do(self.data_processor.csv_name_is_current_date)
 
@@ -115,5 +126,4 @@ class DataManager:
         #Checks to see if 5 seconds has passed, if so updates the raw. Works in Test mode or active mode.
         schedule.every(5).seconds.do(self.raw_writer.record_data_to_csv,self.temp, self.hum)
 
-        schedule.run_pending()
-        time.sleep(1) #necessary so it doesn't run over and over in the same second
+        run_continuously()
