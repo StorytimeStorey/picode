@@ -151,9 +151,11 @@ class ControlModule:
         
 
     def run(self):
+        self.update_readings_from_sensor()
+        self.record()
         while True:
             self.update_readings_from_sensor()
-            self.record()
+
 
 
 controller = ControlModule()
