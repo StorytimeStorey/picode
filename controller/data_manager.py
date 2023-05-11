@@ -30,14 +30,11 @@ class Data_Final:
     This takes in Temp and humidity from a raw csv (from Data_Raw class)
     Averages the data on that file and saves it to a dot.csv (data over time)
     See readme for implementation plans
-
-    Another known error is that it sometimes saves at the _9/_4 mark instead of _0/_5 marks. Might be because I'm using time.time()
-    
     '''
     def __init__(self):
         self.data_file = 'controller/data/csv/raw.csv'  #raw data
-        current_day = datetime.today().strftime('%d_%m_%y')
-        self.output_file = f'../data/{current_day}_dot.csv' #data over time
+        current_day = datetime.today().strftime('%m_%d_%y')
+        self.output_file = f'../data/{current_day}.csv' #data over time
         self.data = []
         
 
@@ -45,9 +42,9 @@ class Data_Final:
         # Get the current date
         today = datetime.today()
         # Format the date as dd_mm_yyhumidity
-        date_str = today.strftime('%d_%m_%y')
+        date_str = today.strftime('%m_%d_%y')
         #Update self.output_file name
-        self.output_file = f'../data/{date_str}_dot.csv'
+        self.output_file = f'../data/{date_str}.csv'
 
 
     def read_data_from_csv(self):
@@ -118,5 +115,5 @@ class DataManager:
         #Checks to see if 5 seconds has passed, if so updates the raw. Works in Test mode or active mode.
         schedule.every(5).seconds.do(self.raw_writer.record_data_to_csv,self.temp, self.hum)
 
-        schedule.run_pending
+        schedule.run_pending()
         time.sleep(1) #necessary so it doesn't run over and over in the same second

@@ -54,8 +54,8 @@ async def hello(ctx):
 @bot.hybrid_command()
 async def print_graphs(ctx): #This needs to be connected to a pipe in order to work properly, since it takes too long to work normally.
     if os.path.exists(pi_path):
-        current_day = datetime.today().strftime('%d_%m_%y')
-        csv_file = f'../data/{current_day}_dot.csv'
+        current_day = datetime.today().strftime('%m_%d_%y')
+        csv_file = f'../data/{current_day}.csv'
         save_location = "../data/" 
         info.make_graph(csv_file, save_location)
         with open('../data/temperature_and_humidity.png', 'rb') as file:
@@ -85,8 +85,8 @@ async def change_status():
 async def print_status(ctx):
     if os.path.exists(pi_path):
         try:
-            current_day = datetime.today().strftime('%d_%m_%y')
-            current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
+            current_day = datetime.today().strftime('%m_%d_%y')
+            current_status = info.read_last_row(f'../data/{current_day}.csv')
             await ctx.send(f"{current_status}")
         except FileNotFoundError:
             await ctx.send("5-minute file doesn't exist yet. Pulling data from raw...")
