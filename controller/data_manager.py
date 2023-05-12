@@ -35,7 +35,7 @@ class Data_Final:
     '''
     def __init__(self):
         self.data_file = 'controller/data/csv/raw.csv'  #raw data
-        current_day = datetime.today().strftime('%d_%m_%y')
+        current_day = datetime.today().strftime('%m_%d_%y')
         self.output_file = f'../data/{current_day}_dot.csv' #data over time
         self.data = []
         
@@ -44,7 +44,7 @@ class Data_Final:
         # Get the current date
         today = datetime.today()
         # Format the date as dd_mm_yyhumidity
-        date_str = today.strftime('%d_%m_%y')
+        date_str = today.strftime('%m_%d_%y')
         #Update self.output_file name
         self.output_file = f'../data/{date_str}_dot.csv'
 
