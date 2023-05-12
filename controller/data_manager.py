@@ -2,7 +2,6 @@ import csv
 import time
 from datetime import datetime
 import os
-import schedule
 
 
 
@@ -101,6 +100,9 @@ class DataManager:
     def __init__(self):
         self.raw_writer = Data_Raw() #aka raw
         self.data_processor = Data_Final() #aka dot
+        self.second_interval = 5 #Takes raw data every 5 seconds
+        self.minute_interval = 300 #Processes raw data every 5 minutes
+        self.day_interval = 86400 #Seconds in Day
         self.temp = 0
         self.hum = 0
     
@@ -109,14 +111,21 @@ class DataManager:
         self.hum = hum
 
     def record_data(self):
+        current_time = round(time.time())
         #Check if the day has passed, if so start a new dot csv
-        schedule.every().day.do(self.data_processor.csv_name_is_current_date)
+        if current_time % self.day_interval == 0:
+            self.data_processor.csv_name_is_current_date()
 
         #Checks if 5 minutes have passed. If so, records data to dot
-        schedule.every(5).minutes.do(self.data_processor.process_data)
-            
-        #Checks to see if 5 seconds has passed, if so updates the raw. Works in Test mode or active mode.
-        schedule.every(5).seconds.do(self.raw_writer.record_data_to_csv,self.temp, self.hum)
+        if current_time % self.minute_interval == 0:
+            self.data_processor.process_data()
 
-        schedule.run_pending
+        #Checks to see if 5 seconds has passed, if so updates the raw. Works in Test mode or active mode.
+        if current_time % self.second_interval == 0:
+            self.raw_writer.record_data_to_csv(self.temp, self.hum)
+
+
+
+
+        
         time.sleep(1) #necessary so it doesn't run over and over in the same second
