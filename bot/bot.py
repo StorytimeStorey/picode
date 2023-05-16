@@ -20,7 +20,7 @@ def make_table(data, table_type):
         return table
     else:
         table = "```\n"
-        table += f"Date                | Temp | Hum |\n"  # Table header
+        table += f"Date                | Temp | Hum  |\n"  # Table header
         table += "--------------------|------|------|\n"  # Table separator
         for row in data:
             table += f"{row[0]} | {row[1]} | {row[2]} |\n"

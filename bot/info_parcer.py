@@ -8,8 +8,8 @@ import sqlite3
 def trim_data_list(data):
     '''takes the length of a list and divides it by 1950 (if its bigger than that). It then trims
         data until 1950 remain.'''
-    if len(data) > 49:
-        step = len(data) // 49
+    if len(data) > 47:
+        step = len(data) // 47
         trimmed_data = data[::step]
         return trimmed_data
     else:
@@ -36,7 +36,7 @@ def get_data_from_db(datatype_queried, timeline_queried):
     c.execute("SELECT * FROM data WHERE timestamp >= ?", (timeline,))
     data = trim_data_list(c.fetchall())
 
-    datatype = parse_dataype(datatype_queried)
+    datatype = parse_datatype(datatype_queried)
     if datatype == "temp":
         requested_data = [(row[1], row[2]) for row in data]
     elif datatype == "hum":
@@ -47,7 +47,7 @@ def get_data_from_db(datatype_queried, timeline_queried):
     conn.close()
     return requested_data, datatype
 
-def parse_dataype(datatype_str):
+def parse_datatype(datatype_str):
     if datatype_str[0].lower() == "h":
         return "hum"
     elif datatype_str[0].lower() == "t":
