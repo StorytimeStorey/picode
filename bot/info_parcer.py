@@ -5,13 +5,26 @@ import sqlite3
 
 
 
+def trim_data_list(data):
+    '''takes the length of a list and divides it by 1950 (if its bigger than that). It then trims
+        data until 1950 remain.'''
+    if len(data) > 1950:
+        step = len(data) // 1950
+        trimmed_data = data[::step][:1950]
+        return trimmed_data
+    else:
+        return data
 
-    # Query the database for data since the start time
+
 
 def get_data_from_db(datatype_queried, timeline_queried):
     '''Takes in a datatype "humidity" or "temperature" and a timeline "10 minutes" or "5 days" and gets the data from the 
     database
     data is a list: [place in list, timestamp, temperature, humidity]
+    final data list comes in 3 forms:
+        timestamp, temp
+        timestamp, hum
+        timestamp, temp, hum
     '''
     #connect to the db
     conn = sqlite3.connect("../data/box1.db")
@@ -21,22 +34,26 @@ def get_data_from_db(datatype_queried, timeline_queried):
     timeline = datetime.now() - start_time
 
     c.execute("SELECT * FROM data WHERE timestamp >= ?", (timeline,))
-    data = c.fetchall()
+    data = trim_data_list(c.fetchall())
 
     datatype = parse_dataype(datatype_queried)
     if datatype == "temp":
         requested_data = [(row[1], row[2]) for row in data]
     elif datatype == "hum":
         requested_data = [(row[1], row[3]) for row in data]
+    elif datatype == "both":
+        requested_data = [(row[1], row[2], row[3]) for row in data]
 
     conn.close()
-    return requested_data
+    return requested_data, datatype
 
 def parse_dataype(datatype_str):
     if datatype_str[0].lower() == "h":
         return "hum"
     elif datatype_str[0].lower() == "t":
         return "temp"
+    elif datatype_str[0].lower() == "b" or datatype_str[0].lower() == "a":
+        return "both"
     else: 
         raise ValueError(f"Invalid datatype {datatype_str}")
 

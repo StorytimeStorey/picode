@@ -8,15 +8,24 @@ import pandas as pd
 import json
 import sqlite3
 
-def make_table(data):
+def make_table(data, table_type):
     # Format data as a table
-    table = "```\n"
-    table += "Date        | Value\n"  # Table header
-    table += "------------|------\n"  # Table separator
-    for row in data:
-        table += f"{row[0]} | {row[1]}\n"
-    table += "```"
-    return table
+    if table_type == "temp" or table_type == "hum":
+        table = "```\n"
+        table += f"Date               |{table_type}\n"  # Table header
+        table += "--------------------|\n"  # Table separator
+        for row in data:
+            table += f"{row[0]} | {row[1]}\n"
+        table += "```"
+        return table
+    else:
+        table = "```\n"
+        table += f"Date               | Temp | Hum |\n"  # Table header
+        table += "--------------------|------|-----|\n"  # Table separator
+        for row in data:
+            table += f"{row[0]} | {row[1]} | {row[2]} |\n"
+        table += "```"
+        return table
 
 
 # finds the channel id and token paths from settings.json
@@ -90,9 +99,9 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
 
 @bot.hybrid_command()
 async def print_db(ctx, datatype, duration):
-    requested_data = info.get_data_from_db(datatype, duration)
+    requested_data, parsed_datatype = info.get_data_from_db(datatype, duration)
     table = make_table(requested_data)
-    await ctx.send(table)
+    await ctx.send(table, parsed_datatype)
 
 
 @tasks.loop(seconds=30)
