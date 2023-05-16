@@ -16,6 +16,7 @@ def make_table(data):
     for row in data:
         table += f"{row[0]} | {row[1]}\n"
     table += "```"
+    return table
 
 
 # finds the channel id and token paths from settings.json
