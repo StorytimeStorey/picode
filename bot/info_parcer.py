@@ -25,19 +25,12 @@ def get_data_from_db(datatype_queried, timeline_queried):
 
     datatype = parse_dataype(datatype_queried)
     if datatype == "temp":
-        requested_data = [(row[2], row[3]) for row in data]
+        requested_data = [(row[1], row[2]) for row in data]
     elif datatype == "hum":
-        requested_data = [(row[2], row[4]) for row in data]
+        requested_data = [(row[1], row[3]) for row in data]
 
     conn.close()
     return requested_data
-
-
-
-
-
-
-
 
 def parse_dataype(datatype_str):
     if datatype_str[0].lower() == "h":
@@ -52,9 +45,7 @@ def parse_duration(duration_str):
     duration = 0
     val, txt = duration_str.split()
     try:
-        print(val)
         value = int(val)
-        print(value)
     except ValueError:
         raise ValueError(f"Invalid duration value: {val}")
     txt.lower()
