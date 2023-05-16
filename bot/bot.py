@@ -155,20 +155,5 @@ async def on_ready():
     change_status.start()
     # exit()
 
-# def run_bot():
-#     if os.path.exists(Storey_johnson_path): #If Storey is testing...
-#         print("Storey path works")
-#         with open(Storey_johnson_path) as f: token = f.read().strip()
-#     elif os.path.exists(Jackson_johnson_path): #If Jackson is testing...
-#         print("Jackson_path works")
-#         with open(Jackson_johnson_path) as f: token = f.read().strip()
-#     elif os.path.exists(pi_johnson_path): #If run on the pi...
-#         print("pi_path works")
-#         with open(pi_johnson_path) as f: token = f.read().strip()
-#     else:
-#         print("Failed to find token") #Catches for failures...
-
-#     bot.run(token)
-
 if __name__ == '__main__':
     bot.run(token)

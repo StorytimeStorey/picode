@@ -20,8 +20,6 @@ def trim_data_list(data):
     else:
         return data
 
-
-
 def get_data_from_db(datatype_queried, timeline_queried):
     '''Takes in a datatype "humidity" or "temperature" and a timeline "10 minutes" or "5 days" and gets the data from the 
     database
@@ -41,6 +39,7 @@ def get_data_from_db(datatype_queried, timeline_queried):
     c.execute("SELECT * FROM data WHERE timestamp >= ?", (timeline,))
     data = trim_data_list(c.fetchall())
 
+    #Depending on the datatype requested, form the new lists accordingly
     datatype = parse_datatype(datatype_queried)
     if datatype == "temp":
         requested_data = [(row[1], row[2]) for row in data]
@@ -64,7 +63,6 @@ def parse_datatype(datatype_str):
         return "both"
     else: 
         raise ValueError(f"Invalid datatype {datatype_str}")
-
 
 def parse_duration(duration_str):
     '''
@@ -153,11 +151,10 @@ def create_graph(datatype_queried, timeline_queried):
     plt.ylabel('Value')
     plt.title('Data Graph')
     plt.legend()
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=90, fontsize = 5)
     plt.tight_layout()
     plt.savefig(f'../data/temperature_and_humidity.png', dpi=300)
     plt.close()
-
 
 def add_time_column(data):
     time = 1
@@ -167,6 +164,8 @@ def add_time_column(data):
         new_data.append(new_row)
         time += 1
     return new_data
+
+
 
 
 if __name__ == '__main__':
