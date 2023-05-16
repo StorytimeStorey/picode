@@ -8,9 +8,9 @@ import sqlite3
 def trim_data_list(data):
     '''takes the length of a list and divides it by 1950 (if its bigger than that). It then trims
         data until 1950 remain.'''
-    if len(data) > 50:
-        step = len(data) // 50
-        trimmed_data = data[::step][:50]
+    if len(data) > 49:
+        step = len(data) // 49
+        trimmed_data = data[::step]
         return trimmed_data
     else:
         return data
