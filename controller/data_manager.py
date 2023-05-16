@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 import os
 import math
+import sqlite3
 
 
 #class for writing to raw
@@ -23,6 +24,44 @@ class Data_Raw:
             f.write(f'{temp},{hum}\n')
 
 
+class Database:
+    '''SQLite database management for data quering and storage'''
+    def __init__(self, filename):
+        self.filename = filename
+        self.connection = sqlite3.connect(filename)
+        self.cursor = self.connection.cursor()
+        self.create_table()
+
+    def create_table(self):
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS data (
+                id INTEGER PRIMARY KEY,
+                timestamp TEXT,
+                value1 REAL,
+                value2 REAL
+            )
+        ''')
+        self.connection.commit()
+
+    def insert_data(self, timestamp, value1, value2):
+        self.cursor.execute('''
+            INSERT INTO data (timestamp, value1, value2)
+            VALUES (?, ?, ?)
+        ''', (timestamp, value1, value2))
+        self.connection.commit()
+
+    def get_data(self, since):
+        self.cursor.execute('''
+            SELECT * FROM data
+            WHERE timestamp >= ?
+        ''', (since,))
+        return self.cursor.fetchall()
+
+    def close(self):
+        self.connection.close()
+
+
+
 #class for processed data
 class Data_Final:
     '''
@@ -38,7 +77,9 @@ class Data_Final:
         current_day = datetime.today().strftime('%m_%d_%y')
         self.output_file = f'../data/{current_day}_dot.csv' #data over time
         self.data = []
-        
+
+        self.db = Database("box1.db")
+
 
     def csv_name_is_current_date(self):
         # Get the current date
@@ -66,6 +107,10 @@ class Data_Final:
         avg_temperature = round(total_temperature / len(self.data), 1)  #Rounds it to one dec point
         avg_humidity = round(total_humidity / len(self.data),1)
         return avg_temperature, avg_humidity
+    
+    def write_averages_to_db(self, avg_temp, avg_hum):
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
+        self.db.insert_data(timestamp, avg_temp, avg_hum)
         
     def write_averages_to_csv(self, avg_temperature, avg_humidity):
         #Writes to the csv
@@ -89,6 +134,7 @@ class Data_Final:
         #The function where everything happens
         self.read_data_from_csv()
         avg_temperature, avg_humidity = self.average_data()
+        self.write_averages_to_db(avg_temperature,avg_humidity)
         self.write_averages_to_csv(avg_temperature, avg_humidity)
         self.clear_data_file()
 
