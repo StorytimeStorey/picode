@@ -127,9 +127,16 @@ def read_last_row(file_path):
     return text
 
 def create_graph(datatype_queried, timeline_queried):
+    '''
+    Takes in a datatype: "Temp" "Hum" or "Both" and a timeline: # and time unit up to weeks
+    Pulls the information from the database
+    Checks for which datatype was called for and makes new lists from the one taken from the database
+    Makes a graph out of it and saves it to the data directory
+    '''
     data, datatype = get_data_from_db(datatype_queried, timeline_queried)
 
     timestamp = [row[0] for row in data]
+
     if datatype == "temp":
         temp = [row[1] for row in data]
         plt.plot(timestamp, temp, label = "Temp")
@@ -150,46 +157,6 @@ def create_graph(datatype_queried, timeline_queried):
     plt.tight_layout()
     plt.savefig(f'../data/temperature_and_humidity.png', dpi=300)
     plt.close()
-    
-
-
-
-def make_graph(csv_file, data_directory):
-
-    def xtick_counter(times:list):
-        x_points_count = 12
-        if len(times) < x_points_count:
-            return len(times)
-        else:
-            return int(len(times)/x_points_count)
-        
-    with open(csv_file, 'r') as file:
-        reader = csv.DictReader(file)
-        data = list(reader)
-
-    # Extract the temperature and humidity data
-    times = [row['Time'] for row in data]
-    temperatures = [float(row['Temp']) for row in data]
-    x_points_count = 12
-    #humidities = [float(row['Humidity']) for row in data]
-
-    # Create the plot
-    plt.plot(times, temperatures, label='Temperature')
-   # plt.plot(times, humidities, label='Humidity')
-    plt.xlabel('Time')
-    plt.ylabel('Value')
-    plt.title('Temperature and Humidity Over Time')
-    plt.legend()
-    plt.xticks(range(0, len(times), int(len(times)/x_points_count)), times[::int(len(times)/x_points_count)], fontsize=8)
-    plt.xlim(times[0], times[-1])
-
-    if csv_file == 'controller/data/csv/test.csv':
-        plt.savefig(f'{data_directory}/test_temperature_and_humidity.png', dpi=300)
-    else:
-        plt.savefig(f'{data_directory}/temperature_and_humidity.png', dpi=300)
-    
-    plt.close()
-
 
 
 def add_time_column(data):

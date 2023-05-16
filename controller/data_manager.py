@@ -74,20 +74,20 @@ class Data_Final:
     '''
     def __init__(self):
         self.data_file = 'controller/data/csv/raw.csv'  #raw data
-        current_day = datetime.today().strftime('%m_%d_%y')
-        self.output_file = f'../data/{current_day}_dot.csv' #data over time
+        # current_day = datetime.today().strftime('%m_%d_%y')
+        # self.output_file = f'../data/{current_day}_dot.csv' #data over time
         self.data = []
 
         self.db = Database("../data/box1.db")
 
 
-    def csv_name_is_current_date(self):
-        # Get the current date
-        today = datetime.today()
-        # Format the date as dd_mm_yyhumidity
-        date_str = today.strftime('%m_%d_%y')
-        #Update self.output_file name
-        self.output_file = f'../data/{date_str}_dot.csv'
+    # def csv_name_is_current_date(self):
+    #     # Get the current date
+    #     today = datetime.today()
+    #     # Format the date as dd_mm_yyhumidity
+    #     date_str = today.strftime('%m_%d_%y')
+    #     #Update self.output_file name
+    #     self.output_file = f'../data/{date_str}_dot.csv'
 
 
     def read_data_from_csv(self):
@@ -112,16 +112,16 @@ class Data_Final:
         timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
         self.db.insert_data(timestamp, avg_temp, avg_hum)
         
-    def write_averages_to_csv(self, avg_temperature, avg_humidity):
-        #Writes to the csv
-        time_now = datetime.now().strftime('%H%M')
-        if not os.path.isfile(self.output_file): #Checks if file exists. If not, makes it with a header.
-            with open(self.output_file, 'w') as f:
-                writer = csv.writer(f)
-                writer.writerow(['Time', 'Temp', 'Humidity'])
-        with open(self.output_file, 'a') as f:
-            writer = csv.writer(f)
-            writer.writerow([time_now, avg_temperature, avg_humidity])
+    # def write_averages_to_csv(self, avg_temperature, avg_humidity):
+    #     #Writes to the csv
+    #     time_now = datetime.now().strftime('%H%M')
+    #     if not os.path.isfile(self.output_file): #Checks if file exists. If not, makes it with a header.
+    #         with open(self.output_file, 'w') as f:
+    #             writer = csv.writer(f)
+    #             writer.writerow(['Time', 'Temp', 'Humidity'])
+    #     with open(self.output_file, 'a') as f:
+    #         writer = csv.writer(f)
+    #         writer.writerow([time_now, avg_temperature, avg_humidity])
             
     def clear_data_file(self):
         #This clears the raw file. raw should only keep about 5 minutes worth of data. No point in clogging everything up.
@@ -135,7 +135,7 @@ class Data_Final:
         self.read_data_from_csv()
         avg_temperature, avg_humidity = self.average_data()
         self.write_averages_to_db(avg_temperature,avg_humidity)
-        self.write_averages_to_csv(avg_temperature, avg_humidity)
+        # self.write_averages_to_csv(avg_temperature, avg_humidity)
         self.clear_data_file()
 
 
@@ -148,7 +148,7 @@ class DataManager:
         self.data_processor = Data_Final() #aka dot
         self.second_interval = 5 #Takes raw data every 5 seconds
         self.minute_interval = 300 #Processes raw data every 5 minutes
-        self.day_interval = 86400 #Seconds in Day
+        # self.day_interval = 86400 #Seconds in Day
         self.temp = 0
         self.hum = 0
     
@@ -159,8 +159,8 @@ class DataManager:
     def record_data(self):
         current_time = math.floor(time.time())
         #Check if the day has passed, if so start a new dot csv
-        if current_time % self.day_interval == 0:
-            self.data_processor.csv_name_is_current_date()
+        # if current_time % self.day_interval == 0:
+        #     self.data_processor.csv_name_is_current_date()
 
         #Checks if 5 minutes have passed. If so, records data to dot
         if current_time % self.minute_interval == 0:
@@ -169,9 +169,5 @@ class DataManager:
         #Checks to see if 5 seconds has passed, if so updates the raw. Works in Test mode or active mode.
         if current_time % self.second_interval == 0:
             self.raw_writer.record_data_to_csv(self.temp, self.hum)
-
-
-
-
         
         time.sleep(1) #necessary so it doesn't run over and over in the same second

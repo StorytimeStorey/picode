@@ -6,8 +6,6 @@ from datetime import datetime, timedelta
 import os
 import pandas as pd
 import json
-import sqlite3
-import asyncio
 
 def make_table(data, table_type):
     # Format data as a table
@@ -69,34 +67,6 @@ async def set_channel(ctx):
     bot.default_channel = ctx.channel
     await ctx.send('Channel set.')
 
-@bot.hybrid_command()
-async def hello(ctx):
-    await ctx.send("hello!")
-
-@bot.hybrid_command()
-async def print_graphs(ctx): #This needs to be connected to a pipe in order to work properly, since it takes too long to work normally.
-    if os.path.exists(pi_path):
-        current_day = datetime.today().strftime('%m_%d_%y')
-        csv_file = f'../data/{current_day}_dot.csv'
-        save_location = "../data/" 
-        info.make_graph(csv_file, save_location)
-        with open('../data/temperature_and_humidity.png', 'rb') as file:
-            image = discord.File(file)
-        await ctx.send(file=image)
-
-
-    else: #CODE FOR TESTING ENVIRONMENT
-        csv_file = 'controller/data/csv/raw.csv'
-        print(csv_file)
-        save_location = 'controller/data/csv/'
-        info.make_graph(csv_file, save_location)
-        with open('controller/data/csv/test_temperature_and_humidity.png', 'rb') as file:
-            image = discord.File(file)      
-        await ctx.send(file=image)
-#Not sure what this is...
-    # await ctx.send(file=image).defer()
-    # asyncio.sleep()
-    # await ctx.followup.send()
 
 @bot.hybrid_command()
 async def print_graph(ctx, datatype, duration):
@@ -122,7 +92,7 @@ async def change_status():
         pass
 
 @bot.hybrid_command()
-async def print_status(ctx):
+async def status(ctx):
     if os.path.exists(pi_path):
         try:
             current_day = datetime.today().strftime('%m_%d_%y')
@@ -138,6 +108,9 @@ async def print_status(ctx):
     else: #CODE FOR TESTING ENVIRONMENT
         current_status = info.read_last_row('controller/data/csv/test.csv')
         await ctx.send(f"{current_status}")
+
+
+
 @bot.hybrid_command()
 # @commands.is_owner()
 async def shutdown(ctx):
