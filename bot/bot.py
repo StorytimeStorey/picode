@@ -98,6 +98,13 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
     # await ctx.followup.send()
 
 @bot.hybrid_command()
+async def print_graph(ctx, datatype, duration): #This needs to be connected to a pipe in order to work properly, since it takes too long to work normally.
+    info.create_graph(datatype,duration)
+    with open('../data/temperature_and_humidity.png', 'rb') as file:
+        image = discord.File(file)
+    await ctx.send(file=image)
+
+@bot.hybrid_command()
 async def print_db(ctx, datatype, duration):
     requested_data, parsed_datatype = info.get_data_from_db(datatype, duration)
     table = make_table(requested_data, parsed_datatype)

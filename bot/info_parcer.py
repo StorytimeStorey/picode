@@ -148,7 +148,8 @@ def create_graph(datatype_queried, timeline_queried):
     plt.legend()
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.show()
+    plt.savefig(f'{"../data"}/temperature_and_humidity.png', dpi=300)
+    plt.close()
     
 
 
