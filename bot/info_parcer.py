@@ -6,8 +6,13 @@ import sqlite3
 
 
 def trim_data_list(data):
-    '''takes the length of a list and divides it by 1950 (if its bigger than that). It then trims
-        data until 1950 remain.'''
+    '''
+    Takes in a list, returns a trimmed list based on the total length of the list.
+
+    Discord only allows 2000 characters per post. This function makes sure that a list of values
+    is less than that amount. It is calculated using 35 characters per line. This allows for 47 lines from the list.
+    This function will eventually have use a second variable to control the divisor for different uses. 
+    '''
     if len(data) > 47:
         step = len(data) // 47
         trimmed_data = data[::step]
@@ -48,6 +53,9 @@ def get_data_from_db(datatype_queried, timeline_queried):
     return requested_data, datatype
 
 def parse_datatype(datatype_str):
+    '''Checks to see which datatype is being requested
+        Temperature, Humidity, and Both or All.
+        simply checks if the first letter is t, h, b, or a'''
     if datatype_str[0].lower() == "h":
         return "hum"
     elif datatype_str[0].lower() == "t":
@@ -59,6 +67,11 @@ def parse_datatype(datatype_str):
 
 
 def parse_duration(duration_str):
+    '''
+    Takes the duration string from discord input and parces out the pieces
+    Checks for a number in the beginning and a word at the end
+    Turns the number into some form of seconds 
+    '''
     duration = 0
     val, txt = duration_str.split()
     try:
@@ -68,7 +81,7 @@ def parse_duration(duration_str):
     txt.lower()
     if "second" in txt:
         duration += value
-    elif "minute" in txt:
+    elif "min" in txt:
         duration += value * 60
     elif "hour" in txt:
         duration += value * 3600
@@ -112,6 +125,33 @@ def read_last_row(file_path):
     text = generate_text_from_csv_list(data_list)
         # Return the list
     return text
+
+def create_graph(datatype_queried, timeline_queried):
+    data, datatype = get_data_from_db(datatype_queried, timeline_queried)
+
+    timestamp = [row[0] for row in data]
+    if datatype == "temp":
+        temp = [row[1] for row in data]
+        plt.plot(timestamp, temp)
+    elif datatype == "hum":
+        hum = [row[1] for row in data]
+        plt.plot(timestamp, hum)
+    elif datatype == "both":
+        temp = [row[1] for row in data]
+        hum = [row[2] for row in data]
+        plt.plot(timestamp, temp, label='Temperature')
+        plt.plot(timestamp, hum, label='Humidity')
+
+    plt.xlabel('Timestamp')
+    plt.ylabel('Value')
+    plt.title('Data Graph')
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+    
+
+
 
 def make_graph(csv_file, data_directory):
 
