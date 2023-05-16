@@ -16,9 +16,9 @@ def get_data_from_db(datatype_queried, timeline_queried):
     #connect to the db
     conn = sqlite3.connect("../data/box1.db")
     c = conn.cursor()
-
+    start_time = parse_duration(timeline_queried)
     #Find the amount of time between now and requested time
-    timeline = datetime.now() - parse_duration(timeline_queried)
+    timeline = datetime.now() - start_time
 
     c.execute("SELECT * FROM data WHERE timestamp >= ?", (timeline,))
     data = c.fetchall()
