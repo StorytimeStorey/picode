@@ -1,9 +1,76 @@
 import csv
 import matplotlib.pyplot as plt
 from datetime import datetime
+import sqlite3
 
 
 
+
+    # Query the database for data since the start time
+
+def get_data_from_db(datatype_queried, timeline_queried):
+    '''Takes in a datatype "humidity" or "temperature" and a timeline "10 minutes" or "5 days" and gets the data from the 
+    database
+    data is a list: [place in list, timestamp, temperature, humidity]
+    '''
+    #connect to the db
+    conn = sqlite3.connect("../data/box1.db")
+    c = conn.cursor()
+
+    #Find the amount of time between now and requested time
+    timeline = datetime.now() - parse_duration(timeline_queried)
+
+    c.execute("SELECT * FROM data WHERE timestamp >= ?", (timeline,))
+    data = c.fetchall()
+
+    datatype = parse_dataype(datatype_queried)
+    if datatype == "temp":
+        requested_data = [(row[2], row[3]) for row in data]
+    elif datatype == "hum":
+        requested_data = [(row[2], row[4]) for row in data]
+
+    conn.close()
+    return requested_data
+
+
+
+
+
+
+
+
+def parse_dataype(datatype_str):
+    if datatype_str[0].lower() == "h":
+        return "hum"
+    elif datatype_str[0].lower() == "t":
+        return "temp"
+    else: 
+        raise ValueError(f"Invalid datatype {datatype_str}")
+
+
+def parse_duration(duration_str):
+    duration = 0
+    val, txt = duration_str.split()
+    try:
+        print(val)
+        value = int(val)
+        print(value)
+    except ValueError:
+        raise ValueError(f"Invalid duration value: {val}")
+    txt.lower()
+    if "second" in txt:
+        duration += value
+    elif "minute" in txt:
+        duration += value * 60
+    elif "hour" in txt:
+        duration += value * 3600
+    elif "day" in txt:
+        duration += value * 86400
+    elif "week" in txt:
+        duration += value * 604800
+    else:
+        raise ValueError("Invalid duration unit: {}".format(txt))
+    return duration
 
 def generate_text_from_csv_list(list):
     if len(list) > 2:
