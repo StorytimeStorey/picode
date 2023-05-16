@@ -2,7 +2,7 @@ import csv
 import time
 from datetime import datetime
 import os
-
+import math
 
 
 #class for writing to raw
@@ -111,7 +111,7 @@ class DataManager:
         self.hum = hum
 
     def record_data(self):
-        current_time = round(time.time())
+        current_time = math.floor(time.time())
         #Check if the day has passed, if so start a new dot csv
         if current_time % self.day_interval == 0:
             self.data_processor.csv_name_is_current_date()
