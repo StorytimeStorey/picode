@@ -120,7 +120,7 @@ async def print_db(ctx, duration):
     start_time = datetime.now() - time_delta
 
     # Query the database for data since the start time
-    c.execute("SELECT * FROM mytable WHERE timestamp >= ?", (start_time,))
+    c.execute("SELECT * FROM data WHERE timestamp >= ?", (start_time,))
     data = c.fetchall()
 
     # Print the data
