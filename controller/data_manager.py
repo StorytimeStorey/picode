@@ -78,7 +78,7 @@ class Data_Final:
         self.output_file = f'../data/{current_day}_dot.csv' #data over time
         self.data = []
 
-        self.db = Database("box1.db")
+        self.db = Database("../data/box1.db")
 
 
     def csv_name_is_current_date(self):

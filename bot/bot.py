@@ -110,7 +110,7 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
 
 @bot.hybrid_command()
 async def print_db(ctx, duration):
-    conn = sqlite3.connect("box1.db")
+    conn = sqlite3.connect("../data/box1.db")
     c = conn.cursor()
 
     # Parse the duration argument into a timedelta object
