@@ -92,26 +92,6 @@ async def change_status():
         pass
 
 @bot.hybrid_command()
-async def status(ctx):
-    if os.path.exists(pi_path):
-        try:
-            current_day = datetime.today().strftime('%m_%d_%y')
-            current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
-            await ctx.send(f"{current_status}")
-        except FileNotFoundError:
-            await ctx.send("5-minute file doesn't exist yet. Pulling data from raw...")
-            current_status = info.read_last_row('controller/data/csv/raw.csv')
-            await ctx.send(f"{current_status}")
-
-
-
-    else: #CODE FOR TESTING ENVIRONMENT
-        current_status = info.read_last_row('controller/data/csv/test.csv')
-        await ctx.send(f"{current_status}")
-
-
-
-@bot.hybrid_command()
 # @commands.is_owner()
 async def shutdown(ctx):
     exit()
