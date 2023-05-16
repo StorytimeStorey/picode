@@ -1,6 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
-from datetime import datetime
+from datetime import datetime, timedelta
 import sqlite3
 
 
@@ -70,7 +70,7 @@ def parse_duration(duration_str):
         duration += value * 604800
     else:
         raise ValueError("Invalid duration unit: {}".format(txt))
-    return duration
+    return timedelta(seconds = duration)
 
 def generate_text_from_csv_list(list):
     if len(list) > 2:
