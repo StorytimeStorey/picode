@@ -8,35 +8,14 @@ import pandas as pd
 import json
 import sqlite3
 
-
-def parse_duration(duration_str):
-    # Split the duration string into a number and a unit
-    parts = duration_str.split()
-    if len(parts) != 2:
-        raise ValueError("Invalid duration string: {}".format(duration_str))
-
-    # Parse the number and unit
-    num = int(parts[0])
-    unit = parts[1].lower()
-
-    # Map unit names to timedelta attributes
-    unit_map = {
-        "second": "seconds",
-        "minute": "minutes",
-        "hour": "hours",
-        "day": "days",
-        "week": "weeks",
-        "month": "months",
-        "year": "years",
-    }
-
-    # Look up the corresponding timedelta attribute
-    if unit not in unit_map:
-        raise ValueError("Invalid duration unit: {}".format(unit))
-    attr = unit_map[unit]
-
-    # Create and return the timedelta object
-    return timedelta(**{attr: num})
+def make_table(data):
+    # Format data as a table
+    table = "```\n"
+    table += "Date        | Value\n"  # Table header
+    table += "------------|------\n"  # Table separator
+    for row in data:
+        table += f"{row[0]} | {row[1]}\n"
+    table += "```"
 
 
 # finds the channel id and token paths from settings.json
@@ -109,24 +88,10 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
     # await ctx.followup.send()
 
 @bot.hybrid_command()
-async def print_db(ctx, duration):
-    conn = sqlite3.connect("../data/box1.db")
-    c = conn.cursor()
-
-    # Parse the duration argument into a timedelta object
-    time_delta = parse_duration(duration)
-
-    # Calculate the start time based on the duration
-    start_time = datetime.now() - time_delta
-
-    # Query the database for data since the start time
-    c.execute("SELECT * FROM data WHERE timestamp >= ?", (start_time,))
-    data = c.fetchall()
-
-    # Print the data
-    await ctx.send(data)
-
-    conn.close()
+async def print_db(ctx, datatype, duration):
+    requested_data = info.get_data_from_db(datatype, duration)
+    table = make_table(requested_data)
+    await ctx.send(table)
 
 
 @tasks.loop(seconds=30)
