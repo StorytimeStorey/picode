@@ -12,7 +12,7 @@ def make_table(data, table_type):
     # Format data as a table
     if table_type == "temp" or table_type == "hum":
         table = "```\n"
-        table += f"Date               |{table_type}\n"  # Table header
+        table += f"Date                |{table_type.capitalize()}\n"  # Table header
         table += "--------------------|\n"  # Table separator
         for row in data:
             table += f"{row[0]} | {row[1]}\n"
@@ -20,8 +20,8 @@ def make_table(data, table_type):
         return table
     else:
         table = "```\n"
-        table += f"Date               | Temp | Hum |\n"  # Table header
-        table += "--------------------|------|-----|\n"  # Table separator
+        table += f"Date                | Temp | Hum |\n"  # Table header
+        table += "--------------------|------|------|\n"  # Table separator
         for row in data:
             table += f"{row[0]} | {row[1]} | {row[2]} |\n"
         table += "```"
@@ -100,8 +100,8 @@ async def print_graphs(ctx): #This needs to be connected to a pipe in order to w
 @bot.hybrid_command()
 async def print_db(ctx, datatype, duration):
     requested_data, parsed_datatype = info.get_data_from_db(datatype, duration)
-    table = make_table(requested_data)
-    await ctx.send(table, parsed_datatype)
+    table = make_table(requested_data, parsed_datatype)
+    await ctx.send(table)
 
 
 @tasks.loop(seconds=30)
