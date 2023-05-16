@@ -132,10 +132,10 @@ def create_graph(datatype_queried, timeline_queried):
     timestamp = [row[0] for row in data]
     if datatype == "temp":
         temp = [row[1] for row in data]
-        plt.plot(timestamp, temp)
+        plt.plot(timestamp, temp, label = "Temp")
     elif datatype == "hum":
         hum = [row[1] for row in data]
-        plt.plot(timestamp, hum)
+        plt.plot(timestamp, hum, label = "Hum")
     elif datatype == "both":
         temp = [row[1] for row in data]
         hum = [row[2] for row in data]
@@ -148,7 +148,7 @@ def create_graph(datatype_queried, timeline_queried):
     plt.legend()
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig(f'{"../data"}/temperature_and_humidity.png', dpi=300)
+    plt.savefig(f'../data/temperature_and_humidity.png', dpi=300)
     plt.close()
     
 
