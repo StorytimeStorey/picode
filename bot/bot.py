@@ -90,7 +90,7 @@ async def change_status():
     else:
         pass
 
-@bot.hybrid_command()
+@bot.command()
 # @commands.is_owner()
 async def shutdown(ctx):
     exit()
