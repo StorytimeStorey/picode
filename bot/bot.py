@@ -67,8 +67,8 @@ async def set_channel(ctx):
     await ctx.send('Channel set.')
 
 
-@bot.hybrid_command()
-async def graph(ctx,datatype, timeline, description = "datatype must be temp, hum, or both. Timeline should be ># unit<, i.e. 30 minutes, or 10 hours, or 2 days, etc. The most it can do is weeks."):
+@bot.hybrid_command(name = "Graph", description = "datatype must be temp, hum, or both. Timeline should be ># unit<, i.e. 30 minutes, or 10 hours, or 2 days, etc. The most it can do is weeks.")
+async def graph(ctx,datatype, timeline):
     await ctx.defer()
     info.create_graph(datatype,timeline)
     with open('../data/temperature_and_humidity.png', 'rb') as file:
