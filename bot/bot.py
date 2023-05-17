@@ -2,7 +2,6 @@
 import discord
 import info_parcer as info
 from discord.ext import tasks, commands
-from datetime import datetime, timedelta
 import os
 import pandas as pd
 import json

@@ -46,7 +46,7 @@ class ControlModule:
     1)Refreshes current sensor values
     2)checks current values vs ON/OFF thresholds
         2.5) if outside threshold values, checks alarms (which can write to alarms.csv)
-    3)writes to raw.csv to be processed by data-dir scripts
+    3)writes to raw.csv and processed by data_manager scripts
     
     '''
     def __init__(self, settings = "controller/settings.json"):
