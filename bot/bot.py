@@ -58,7 +58,7 @@ intents = discord.Intents(value=7,
                           integrations=True)
 
 # set command prefix
-bot = commands.Bot(command_prefix='@M', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 #Not sure what this command is doing. Jackson, any comments here?
 @bot.command(name='set_channel')
@@ -68,7 +68,7 @@ async def set_channel(ctx):
 
 
 @bot.hybrid_command()
-async def graph(ctx, datatype, timeline):
+async def graph(ctx,datatype, timeline, description = "datatype must be temp, hum, or both. Timeline should be ># unit<, i.e. 30 minutes, or 10 hours, or 2 days, etc. The most it can do is weeks."):
     await ctx.defer()
     info.create_graph(datatype,timeline)
     with open('../data/temperature_and_humidity.png', 'rb') as file:
