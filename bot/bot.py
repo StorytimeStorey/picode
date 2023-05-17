@@ -68,16 +68,16 @@ async def set_channel(ctx):
 
 
 @bot.hybrid_command()
-async def print_graph(ctx, datatype, duration):
+async def graph(ctx, datatype, timeline):
     await ctx.defer()
-    info.create_graph(datatype,duration)
+    info.create_graph(datatype,timeline)
     with open('../data/temperature_and_humidity.png', 'rb') as file:
         image = discord.File(file)
     await ctx.send(file=image)
 
 @bot.hybrid_command()
-async def print_db(ctx, datatype, duration):
-    requested_data, parsed_datatype = info.get_data_from_db(datatype, duration)
+async def database(ctx, datatype, timeline):
+    requested_data, parsed_datatype = info.get_data_from_db(datatype, timeline)
     table = make_table(requested_data, parsed_datatype)
     await ctx.send(table)
 
