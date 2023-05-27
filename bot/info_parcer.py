@@ -137,7 +137,7 @@ def create_graph(datatype_queried, timeline_queried):
     Checks for which datatype was called for and makes new lists from the one taken from the database
     Makes a graph out of it and saves it to the data directory
     '''
-    data, datatype = get_data_from_db(datatype_queried, timeline_queried)
+    data, datatype = get_data_from_db(datatype_queried, timeline_queried, 'graph')
 
     timestamp = [row[0] for row in data]
     timestamps = [datetime.datetime.strptime(ts, '%Y-%m-%d %H:%M:%S') for ts in timestamp]
