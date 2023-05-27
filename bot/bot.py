@@ -10,7 +10,7 @@ import json
 def read_line_from_file(line_number):
     '''Retrieves information from the help.txt
         line_number corresponds to the specific line requested. 0 will be the help line, 1 credits, etc.'''
-    with open('help.txt', 'r') as file:
+    with open('bot/help.txt', 'r') as file:
         lines = file.readlines()
         line = lines[line_number]
         return line.strip()
