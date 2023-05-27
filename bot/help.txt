@@ -1,0 +1,2 @@
+/graph is used to graph data over time.\nIt takes the following inputs:\nDatatype expects either temp or hum. \nt really just looks for a t or an h at the start of the word.\nExample: temp, temperature, tggee, t\nTimeline expects [number] [time structure]. Only goes up to weeks.\nExample: 6 hours. 2 weeks. 4 days.
+

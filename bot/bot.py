@@ -6,6 +6,15 @@ import os
 import pandas as pd
 import json
 
+
+def read_line_from_file(line_number):
+    '''Retrieves information from the help.txt
+        line_number corresponds to the specific line requested. 0 will be the help line, 1 credits, etc.'''
+    with open('help.txt', 'r') as file:
+        lines = file.readlines()
+        line = lines[line_number]
+        return line.strip()
+
 def make_table(data, table_type):
     # Format data as a table
     if table_type == "temp" or table_type == "hum":
@@ -76,8 +85,13 @@ async def graph(ctx,datatype, timeline):
     await ctx.send(file=image)
 
 @bot.hybrid_command()
+async def help(ctx):
+    line = read_line_from_file(0)
+    await ctx.send(line)
+
+@bot.hybrid_command()
 async def database(ctx, datatype, timeline):
-    requested_data, parsed_datatype = info.get_data_from_db(datatype, timeline)
+    requested_data, parsed_datatype = info.get_data_from_db(datatype, timeline, 'print')
     table = make_table(requested_data, parsed_datatype)
     await ctx.send(table)
 
@@ -112,9 +126,8 @@ async def send_alert(channel, alert_csv):
 
 @tasks.loop(seconds=5)
 async def alert(channel):
-    # if len_alerts exists, check if the length has changed and send alert if it has. if it does not exist, create it
     alert_csv = pd.read_csv('controller/data/csv/alerts.csv')
-    if not 'len_alerts' in globals():
+    if 'len_alerts' not in globals():
         global len_alerts
         len_alerts = len(alert_csv)
     else:
@@ -123,7 +136,8 @@ async def alert(channel):
             print('sent alert')
 
     current_status = info.read_last_row('data/csv/test.csv')
-    await channel.send(f'{current_status}')
+    if current_status is not None:  # Add a check for None value
+        await channel.send(f'{current_status}')
 
 # syncs the task tree and start the alerts loop
 @bot.event

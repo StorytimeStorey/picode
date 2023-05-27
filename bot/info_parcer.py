@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 import sqlite3
 
@@ -20,7 +21,7 @@ def trim_data_list(data):
     else:
         return data
 
-def get_data_from_db(datatype_queried, timeline_queried):
+def get_data_from_db(datatype_queried, timeline_queried, querie_origin):
     '''Takes in a datatype "humidity" or "temperature" and a timeline "10 minutes" or "5 days" and gets the data from the 
     database
     data is a list: [place in list, timestamp, temperature, humidity]
@@ -28,6 +29,8 @@ def get_data_from_db(datatype_queried, timeline_queried):
         timestamp, temp
         timestamp, hum
         timestamp, temp, hum
+        querie_origin is so the function can either trim the data (for written tables on discord, which has a 2k char limit) or graphing (has no limit)
+            expects either "print" or "graph"
     '''
     #connect to the db
     conn = sqlite3.connect("../data/box1.db")
@@ -37,7 +40,10 @@ def get_data_from_db(datatype_queried, timeline_queried):
     timeline = datetime.now() - start_time
 
     c.execute("SELECT * FROM data WHERE timestamp >= ?", (timeline,))
-    data = trim_data_list(c.fetchall())
+    data = c.fetchall()
+    if querie_origin == 'print':
+        data = trim_data_list(data)
+    
 
     #Depending on the datatype requested, form the new lists accordingly
     datatype = parse_datatype(datatype_queried)
@@ -134,27 +140,67 @@ def create_graph(datatype_queried, timeline_queried):
     data, datatype = get_data_from_db(datatype_queried, timeline_queried)
 
     timestamp = [row[0] for row in data]
-
+    timestamps = [datetime.datetime.strptime(ts, '%Y-%m-%d %H:%M:%S') for ts in timestamp]
+    
     if datatype == "temp":
         temp = [row[1] for row in data]
-        plt.plot(timestamp, temp, label = "Temp")
+        plt.plot(timestamps, temp, label="Temp")
     elif datatype == "hum":
         hum = [row[1] for row in data]
-        plt.plot(timestamp, hum, label = "Hum")
+        plt.plot(timestamps, hum, label="Hum")
     elif datatype == "both":
         temp = [row[1] for row in data]
         hum = [row[2] for row in data]
-        plt.plot(timestamp, temp, label='Temperature')
-        plt.plot(timestamp, hum, label='Humidity')
+        plt.plot(timestamps, temp, label='Temperature')
+        plt.plot(timestamps, hum, label='Humidity')
 
     plt.xlabel('Timestamp')
     plt.ylabel('Value')
     plt.title('Data Graph')
     plt.legend()
-    plt.xticks(rotation=90, fontsize = 5)
+    plt.xticks(rotation=90)
+    
+    # Format the x-axis tick labels using mdates
+    ax = plt.gca()
+    ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %H:%M:%S'))
+    
     plt.tight_layout()
-    plt.savefig(f'../data/temperature_and_humidity.png', dpi=300)
+    plt.savefig('../data/temperature_and_humidity.png', dpi=300)
     plt.close()
+
+# def create_graph(datatype_queried, timeline_queried):
+#     '''
+#     Takes in a datatype: "Temp" "Hum" or "Both" and a timeline: # and time unit up to weeks
+#     Pulls the information from the database
+#     Checks for which datatype was called for and makes new lists from the one taken from the database
+#     Makes a graph out of it and saves it to the data directory
+#     '''
+#     data, datatype = get_data_from_db(datatype_queried, timeline_queried)
+
+#     timestamp = [row[0] for row in data]
+#     timestamps = [datetime.datetime.strptime(ts, '%Y-%m-%d %H:%M:%S') for ts in timestamp]
+    
+#     if datatype == "temp":
+#         temp = [row[1] for row in data]
+#         plt.plot(timestamp, temp, label = "Temp")
+#     elif datatype == "hum":
+#         hum = [row[1] for row in data]
+#         plt.plot(timestamp, hum, label = "Hum")
+#     elif datatype == "both":
+#         temp = [row[1] for row in data]
+#         hum = [row[2] for row in data]
+#         plt.plot(timestamp, temp, label='Temperature')
+#         plt.plot(timestamp, hum, label='Humidity')
+
+#     plt.xlabel('Timestamp')
+#     plt.ylabel('Value')
+#     plt.title('Data Graph')
+#     plt.legend()
+#     plt.xticks(rotation=90, fontsize = 5)
+#     plt.tight_layout()
+#     plt.savefig(f'../data/temperature_and_humidity.png', dpi=300)
+#     plt.close()
 
 def add_time_column(data):
     time = 1
