@@ -13,7 +13,7 @@ def read_line_from_file(line_number):
     with open('bot/help.txt', 'r') as file:
         lines = file.readlines()
         line = lines[line_number]
-        return line.strip()
+        return line.strip().replace(r'\n', '\n')
 
 def make_table(data, table_type):
     # Format data as a table
@@ -79,7 +79,7 @@ async def set_channel(ctx):
 @bot.hybrid_command()
 async def graph(ctx,datatype, timeline, ):
     await ctx.defer()
-    info.create_graph(datatype,timeline, 'graph')
+    info.create_graph(datatype,timeline)
     with open('../data/temperature_and_humidity.png', 'rb') as file:
         image = discord.File(file)
     await ctx.send(file=image)
