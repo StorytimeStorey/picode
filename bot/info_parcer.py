@@ -162,7 +162,7 @@ def create_graph(datatype_queried, timeline_queried):
     
     # Format the x-axis tick labels using mdates
     ax = plt.gca()
-    ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+    ax.xaxis.set_major_locator(mdates.AutoDateLocator(minticks=50))
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %H:%M:%S'))
     
     plt.tight_layout()
