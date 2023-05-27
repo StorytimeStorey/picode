@@ -77,9 +77,9 @@ async def set_channel(ctx):
 
 
 @bot.hybrid_command()
-async def graph(ctx,datatype, timeline):
+async def graph(ctx,datatype, timeline, ):
     await ctx.defer()
-    info.create_graph(datatype,timeline)
+    info.create_graph(datatype,timeline, 'graph')
     with open('../data/temperature_and_humidity.png', 'rb') as file:
         image = discord.File(file)
     await ctx.send(file=image)
