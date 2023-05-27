@@ -85,7 +85,7 @@ async def graph(ctx,datatype, timeline):
     await ctx.send(file=image)
 
 @bot.hybrid_command()
-async def help(ctx):
+async def instructions(ctx):
     line = read_line_from_file(0)
     await ctx.send(line)
 
