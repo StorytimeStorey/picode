@@ -140,7 +140,7 @@ def create_graph(datatype_queried, timeline_queried):
     data, datatype = get_data_from_db(datatype_queried, timeline_queried, 'graph')
 
     timestamp = [row[0] for row in data]
-    timestamps = [datetime.datetime.strptime(ts, '%Y-%m-%d %H:%M:%S') for ts in timestamp]
+    timestamps = [datetime.strptime(ts, '%Y-%m-%d %H:%M:%S') for ts in timestamp]
     
     if datatype == "temp":
         temp = [row[1] for row in data]
