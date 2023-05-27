@@ -137,22 +137,6 @@ def create_graph(datatype_queried, timeline_queried):
     Checks for which datatype was called for and makes new lists from the one taken from the database
     Makes a graph out of it and saves it to the data directory
     '''
-
-    # Custom date formatter function
-    def custom_date_formatter(x, pos):
-        current_date = mdates.num2date(x)
-        previous_date = mdates.num2date(ax.get_xticks()[-1]) if pos > 0 else None
-        
-        if previous_date is None or current_date.date() != previous_date.date():
-            # Display full date format '%Y-%m-%d' when the day changes
-            return current_date.strftime('%Y-%m-%d')
-        else:
-            # Display only the day '%d' for subsequent ticks within the same day
-            return current_date.strftime('%d')
-
-    # Set the custom formatter
-
-
     data, datatype = get_data_from_db(datatype_queried, timeline_queried, 'graph')
 
     timestamp = [row[0] for row in data]
@@ -179,8 +163,8 @@ def create_graph(datatype_queried, timeline_queried):
     # Format the x-axis tick labels using mdates
     ax = plt.gca()
     ax.xaxis.set_major_locator(mdates.AutoDateLocator(minticks=30))
-    ax.xaxis.set_major_formatter(mdates.FuncFormatter(custom_date_formatter))
-        
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %H:%M:%S'))
+    
     plt.tight_layout()
     plt.savefig('../data/temperature_and_humidity.png', dpi=300)
     plt.close()
