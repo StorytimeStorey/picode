@@ -98,11 +98,12 @@ async def database(ctx, datatype, timeline):
 
 @tasks.loop(seconds=30)
 async def change_status():
-    current_status = info.read_last_row('controller/data/csv/raw.csv')
-    if current_status:
-        await bot.change_presence(activity=discord.Game(f"{current_status}"))
-    else:
-        pass
+    try:
+        current_status = info.read_last_row('controller/data/csv/raw.csv')
+    except:
+        current_status = "data not available, trying again..."
+    await bot.change_presence(activity=discord.Game(f"{current_status}"))
+
 
 @bot.command()
 # @commands.is_owner()
