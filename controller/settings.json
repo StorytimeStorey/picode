@@ -5,9 +5,13 @@
                    "HOFF":68, 
                    "CON": 75, 
                    "COFF" : 68, 
-                   "HH":80, 
+                   "HH":80,
+                   "HUMLL":70,
                    "HUMON": 80, 
-                   "HUMOFF":96
+                   "HUMOFF":96,
+                   "TON":22,
+                   "TOFF":10
+                
                 },
     "GPIO_Pins": {
                   "heat_pin" : null, 
