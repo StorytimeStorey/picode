@@ -6,7 +6,6 @@ try:
     except ImportError:
         try:
             import RPi.GPIO as GPIO
-            GPIO.setmode(GPIO.BOARD)
         except ImportError:
             pass
 except ImportError:
@@ -87,7 +86,7 @@ class ControlModule:
                 current_pin = eval(f"self.{key}")
                 print(f"{key} is at {value}")
                 GPIO.setup(current_pin, GPIO.OUT)
-                GPIO.output(current_pin, False)
+                GPIO.output(current_pin, True)
             else:
                 print(f"{key} is not set up")
 
@@ -193,6 +192,7 @@ class ControlModule:
     def run(self):
         while True:
             self.update_readings_from_sensor()
+            self.check_vs_thresholds()
             self.record()
 
 
