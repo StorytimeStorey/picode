@@ -6,6 +6,7 @@ try:
     except ImportError:
         try:
             import RPi.GPIO as GPIO
+            GPIO.setmode(GPIO.BOARD)
         except ImportError:
             pass
 except ImportError:

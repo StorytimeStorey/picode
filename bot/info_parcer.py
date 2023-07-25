@@ -158,7 +158,7 @@ def create_graph(datatype_queried, timeline_queried):
     plt.ylabel('Value')
     plt.title('Data Graph')
     plt.legend()
-    plt.xticks(rotation=90, fontsize = 5)
+    plt.xticks(rotation=90, fontsize = 7)
     
     # Format the x-axis tick labels using mdates
     ax = plt.gca()
