@@ -139,18 +139,18 @@ class ControlModule:
         '''
         # turn heater on if temp is too low
         if self.heat_pin:
-            self.heater_check(self)
+            self.heater_check()
 
         # turn ac on if temp is too high
         if self.ac_pin:
-            self.cooler_check(self)
+            self.cooler_check()
 
         #Turn humidifer on if humidity is low
         if self.hum_pin:
-            self.humidity_check(self)
+            self.humidity_check()
 
         if self.light_pin:
-            self.timer_check(self)
+            self.timer_check()
 
 
 
