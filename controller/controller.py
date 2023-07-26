@@ -150,7 +150,6 @@ class ControlModule:
             self.humidity_check()
 
         if self.light_pin:
-            print("self.light_pin is true")
             self.timer_check()
 
 
