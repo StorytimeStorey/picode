@@ -18,10 +18,10 @@ class Data_Raw:
         # Check if CSV file exists and create it with header row if it doesn't
         if not os.path.exists(self.csv):
             with open(self.csv, 'w') as f:
-                    f.write('Temperature,Humidity\n')
+                    f.write('Temperature,Humidity')
 
         with open(self.csv, 'a') as f:
-            f.write(f'{temp},{hum}\n')
+            f.write(f'\n{temp},{hum}')
 
 
 class Database:
