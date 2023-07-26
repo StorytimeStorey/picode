@@ -100,14 +100,9 @@ class ControlModule:
 
     def timer_check(self):
         now = datetime.datetime.now().time()
-        print(f"timer check activated at {now}")
-        print(f"Timer to turn on at {self.timer_on}")
-        print(f"Timer to turn off at {self.timer_off}")
         if self.timer_on <= now < self.timer_off:
-            print("light to be on")
             GPIO.output(self.light_pin, False) #Turn the light on
         else:
-            print("light to be off")
             GPIO.output(self.light_pin, True) #Turn the light off
 
     def heater_check(self):

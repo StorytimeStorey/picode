@@ -18,7 +18,7 @@
                   "ac_pin" : null, 
                   "hum_pin":null, 
                   "fan_pin":null,
-                  "light_pin":16
+                  "light_pin":23
                 },
     "Token_Paths": {
                     "pi_path": "../token.txt", 

@@ -96,7 +96,9 @@ class Data_Final:
         with open(self.data_file, 'r') as f:
             reader = csv.reader(f)
             next(reader)  # Skip header row
-            self.data = [(float(row[0]), float(row[1])) for row in reader]
+            data = [row for row in reader if any(field.strip() for field in row)]
+            self.data = [(float(row[0]), float(row[1])) for row in data]
+
             
     def average_data(self):
         ''' function to average temp and humidity data from the csv '''
