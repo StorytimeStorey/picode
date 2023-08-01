@@ -2,10 +2,38 @@
 import discord
 import info_parcer as info
 from discord.ext import tasks, commands
-from datetime import datetime
 import os
 import pandas as pd
 import json
+
+
+def read_line_from_file(line_number):
+    '''Retrieves information from the help.txt
+        line_number corresponds to the specific line requested. 0 will be the help line, 1 credits, etc.'''
+    with open('bot/help.txt', 'r') as file:
+        lines = file.readlines()
+        line = lines[line_number]
+        return line.strip().replace(r'\n', '\n')
+
+def make_table(data, table_type):
+    # Format data as a table
+    if table_type == "temp" or table_type == "hum":
+        table = "```\n"
+        table += f"Date                |{table_type.capitalize()}\n"  # Table header
+        table += "--------------------|\n"  # Table separator
+        for row in data:
+            table += f"{row[0]} | {row[1]}\n"
+        table += "```"
+        return table
+    else:
+        table = "```\n"
+        table += f"Date                | Temp | Hum  |\n"  # Table header
+        table += "--------------------|------|------|\n"  # Table separator
+        for row in data:
+            table += f"{row[0]} | {row[1]} | {row[2]} |\n"
+        table += "```"
+        return table
+
 
 # finds the channel id and token paths from settings.json
 with open("controller/settings.json", 'r') as file:
@@ -39,7 +67,7 @@ intents = discord.Intents(value=7,
                           integrations=True)
 
 # set command prefix
-bot = commands.Bot(command_prefix='@M', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 #Not sure what this command is doing. Jackson, any comments here?
 @bot.command(name='set_channel')
@@ -47,58 +75,37 @@ async def set_channel(ctx):
     bot.default_channel = ctx.channel
     await ctx.send('Channel set.')
 
-@bot.hybrid_command()
-async def hello(ctx):
-    await ctx.send("hello!")
 
 @bot.hybrid_command()
-async def print_graphs(ctx): #This needs to be connected to a pipe in order to work properly, since it takes too long to work normally.
-    if os.path.exists(pi_path):
-        current_day = datetime.today().strftime('%m_%d_%y')
-        csv_file = f'../data/{current_day}_dot.csv'
-        save_location = "../data/" 
-        info.make_graph(csv_file, save_location)
-        with open('../data/temperature_and_humidity.png', 'rb') as file:
-            image = discord.File(file)
-        await ctx.send(file=image)
+async def graph(ctx,datatype, timeline, ):
+    await ctx.defer()
+    info.create_graph(datatype,timeline)
+    with open('../data/temperature_and_humidity.png', 'rb') as file:
+        image = discord.File(file)
+    await ctx.send(file=image)
 
+@bot.hybrid_command()
+async def instructions(ctx):
+    line = read_line_from_file(0)
+    await ctx.send(line)
 
-    else: #CODE FOR TESTING ENVIRONMENT
-        csv_file = 'controller/data/csv/raw.csv'
-        print(csv_file)
-        save_location = 'controller/data/csv/'
-        info.make_graph(csv_file, save_location)
-        with open('controller/data/csv/test_temperature_and_humidity.png', 'rb') as file:
-            image = discord.File(file)      
-        await ctx.send(file=image)
-#Not sure what this is...
-    # await ctx.send(file=image).defer()
-    # asyncio.sleep()
-    # await ctx.followup.send()
+@bot.hybrid_command()
+async def database(ctx, datatype, timeline):
+    requested_data, parsed_datatype = info.get_data_from_db(datatype, timeline, 'print')
+    table = make_table(requested_data, parsed_datatype)
+    await ctx.send(table)
+
 
 @tasks.loop(seconds=30)
 async def change_status():
-    current_status = info.read_last_row('controller/data/csv/raw.csv')
+    try:
+        current_status = info.read_last_row('controller/data/csv/raw.csv')
+    except:
+        current_status = "data not available, trying again..."
     await bot.change_presence(activity=discord.Game(f"{current_status}"))
 
-@bot.hybrid_command()
-async def print_status(ctx):
-    if os.path.exists(pi_path):
-        try:
-            current_day = datetime.today().strftime('%m_%d_%y')
-            current_status = info.read_last_row(f'../data/{current_day}_dot.csv')
-            await ctx.send(f"{current_status}")
-        except FileNotFoundError:
-            await ctx.send("5-minute file doesn't exist yet. Pulling data from raw...")
-            current_status = info.read_last_row('controller/data/csv/raw.csv')
-            await ctx.send(f"{current_status}")
 
-
-
-    else: #CODE FOR TESTING ENVIRONMENT
-        current_status = info.read_last_row('controller/data/csv/test.csv')
-        await ctx.send(f"{current_status}")
-@bot.hybrid_command()
+@bot.command()
 # @commands.is_owner()
 async def shutdown(ctx):
     exit()
@@ -120,9 +127,8 @@ async def send_alert(channel, alert_csv):
 
 @tasks.loop(seconds=5)
 async def alert(channel):
-    # if len_alerts exists, check if the length has changed and send alert if it has. if it does not exist, create it
     alert_csv = pd.read_csv('controller/data/csv/alerts.csv')
-    if not 'len_alerts' in globals():
+    if 'len_alerts' not in globals():
         global len_alerts
         len_alerts = len(alert_csv)
     else:
@@ -131,7 +137,8 @@ async def alert(channel):
             print('sent alert')
 
     current_status = info.read_last_row('data/csv/test.csv')
-    await channel.send(f'{current_status}')
+    if current_status is not None:  # Add a check for None value
+        await channel.send(f'{current_status}')
 
 # syncs the task tree and start the alerts loop
 @bot.event
@@ -141,21 +148,6 @@ async def on_ready():
     #alert.start(channel)
     change_status.start()
     # exit()
-
-# def run_bot():
-#     if os.path.exists(Storey_johnson_path): #If Storey is testing...
-#         print("Storey path works")
-#         with open(Storey_johnson_path) as f: token = f.read().strip()
-#     elif os.path.exists(Jackson_johnson_path): #If Jackson is testing...
-#         print("Jackson_path works")
-#         with open(Jackson_johnson_path) as f: token = f.read().strip()
-#     elif os.path.exists(pi_johnson_path): #If run on the pi...
-#         print("pi_path works")
-#         with open(pi_johnson_path) as f: token = f.read().strip()
-#     else:
-#         print("Failed to find token") #Catches for failures...
-
-#     bot.run(token)
 
 if __name__ == '__main__':
     bot.run(token)

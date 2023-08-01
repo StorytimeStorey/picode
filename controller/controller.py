@@ -4,7 +4,10 @@ try:
     try:
         import LePotatoPi.GPIO as GPIO
     except ImportError:
-        import RPi.GPIO as GPIO
+        try:
+            import RPi.GPIO as GPIO
+        except ImportError:
+            pass
 except ImportError:
     print("Entering test mode")
     test_mode = True
@@ -14,6 +17,7 @@ from sensor import BME280
 from time import sleep
 from new_alerts import run_alert
 import json
+import datetime
 
 class ControlModule:
     '''
@@ -40,13 +44,15 @@ class ControlModule:
         HUMOFF - humidity level at which to turn the humidifier off
         HHUM - High humidity at which an alert should be sent
         HH - High-High, the high temp at which an alert should be sent
+        TON - Timer On, sets the time which the light should be on (use 24h time, i.e. 18 to mean 6pm)
+        TOFF - Timer off, sets the time which the light should be off (use 24h time)
 
     Order of operations:
 
     1)Refreshes current sensor values
     2)checks current values vs ON/OFF thresholds
         2.5) if outside threshold values, checks alarms (which can write to alarms.csv)
-    3)writes to raw.csv to be processed by data-dir scripts
+    3)writes to raw.csv and processed by data_manager scripts
     
     '''
     def __init__(self, settings = "controller/settings.json"):
@@ -61,9 +67,12 @@ class ControlModule:
         self.thresholds = data['Thresholds']
         self.pins = data['GPIO_Pins']
         #Written as follows:
-        # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#}
+        # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#, "TON":#, "TOFF:#"}
         # "GPIO_Pins":{"heat_pin" : None, "ac_pin" : None, "hum_pin":None, "fan_pin":None,"light_pin":None, "test_mode":False}
-        
+        self.timer_on = datetime.time(self.thresholds['TON'],0)
+        self.timer_off = datetime.time(self.thresholds['TOFF'], 0)
+
+
         # set the GPIO pins to use
         self.heat_pin = self.pins["heat_pin"]
         self.ac_pin = self.pins["ac_pin"]
@@ -77,7 +86,7 @@ class ControlModule:
                 current_pin = eval(f"self.{key}")
                 print(f"{key} is at {value}")
                 GPIO.setup(current_pin, GPIO.OUT)
-                GPIO.output(current_pin, False)
+                GPIO.output(current_pin, True)
             else:
                 print(f"{key} is not set up")
 
@@ -89,32 +98,62 @@ class ControlModule:
         '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
         self.current_temp, self.current_hum = self.sensor.update_readings()
 
+    def timer_check(self):
+        now = datetime.datetime.now().time()
+        if self.timer_on <= now < self.timer_off:
+            GPIO.output(self.light_pin, False) #Turn the light on
+        else:
+            GPIO.output(self.light_pin, True) #Turn the light off
+
+    def heater_check(self):
+        '''Handles the heater side of thresholds checks'''
+        if self.current_temp <= self.thresholds['HON']:
+            GPIO.output(self.heat_pin, True)
+        # turn heater off if temp is good
+        if self.current_temp >= self.thresholds['HOFF']:
+            GPIO.output(self.heat_pin, False)
+
+
+    def cooler_check(self):
+        '''Handles the cooler side of threshold checks'''
+        if self.current_temp >= self.thresholds['CON']:
+            GPIO.output(self.ac_pin, True)
+        # turn ac off if temp is good
+        if self.current_temp <= self.thresholds['COFF']:
+            GPIO.output(self.ac_pin, False)
+        # turn humidifier on if humidity is too low
+
+    def humidity_check(self):
+        '''Handles the humidity side of thresholds checks'''
+        if self.current_hum <= self.thresholds['HUMON']:
+            GPIO.output(self.hum_pin, False)
+        # turn humidifier off if humidity is good
+        if self.current_hum >= self.thresholds['HUMOFF']:
+            GPIO.output(self.hum_pin, True)
+
+
     def check_vs_thresholds(self):
         '''
         Determines when and if to turn on or off the heater, ac, and humidifier.
         Also checks if the temps are high or low enough to warrant creating an alert. 
         '''
-        pass
         # turn heater on if temp is too low
-        if self.current_temp <= self.thresholds['HON'] and self.heat_pin:
-            GPIO.output(self.heat_pin, True)
-            GPIO.output(self.ac_pin, False)
-        # turn heater off if temp is good
-        if self.current_temp >= self.thresholds['HOFF'] and self.heat_pin:
-            GPIO.output(self.heat_pin, False)
+        if self.heat_pin:
+            self.heater_check()
+
         # turn ac on if temp is too high
-        if self.current_temp >= self.thresholds['CON'] and self.ac_pin:
-            GPIO.output(self.ac_pin, True)
-            GPIO.output(self.heat_pin, False)
-        # turn ac off if temp is good
-        if self.current_temp <= self.thresholds['COFF'] and self.ac_pin:
-            GPIO.output(self.ac_pin, False)
-        # turn humidifier on if humidity is too low
-        if self.current_hum <= self.thresholds['HUMON'] and self.hum_pin:
-            GPIO.output(self.hum_pin, True)
-        # turn humidifier off if humidity is good
-        if self.current_hum >= self.thresholds['HUMOFF'] and self.hum_pin:
-            GPIO.output(self.hum_pin, False)
+        if self.ac_pin:
+            self.cooler_check()
+
+        #Turn humidifer on if humidity is low
+        if self.hum_pin:
+            self.humidity_check()
+
+        if self.light_pin:
+            self.timer_check()
+
+
+
         # if the temp exceeds the LL or HH values, send an alert
         if self.current_temp <= self.thresholds['LL'] or self.current_temp >= self.thresholds['HH']:
             # determine whether the heater, ac, and humidifier are on or off
@@ -153,6 +192,7 @@ class ControlModule:
     def run(self):
         while True:
             self.update_readings_from_sensor()
+            self.check_vs_thresholds()
             self.record()
 
 

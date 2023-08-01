@@ -5,16 +5,20 @@
                    "HOFF":68, 
                    "CON": 75, 
                    "COFF" : 68, 
-                   "HH":80, 
+                   "HH":80,
+                   "HUMLL":70,
                    "HUMON": 80, 
-                   "HUMOFF":96
+                   "HUMOFF":96,
+                   "TON":10,
+                   "TOFF":22
+                
                 },
     "GPIO_Pins": {
                   "heat_pin" : null, 
                   "ac_pin" : null, 
                   "hum_pin":null, 
                   "fan_pin":null,
-                  "light_pin":null
+                  "light_pin":23
                 },
     "Token_Paths": {
                     "pi_path": "../token.txt", 
