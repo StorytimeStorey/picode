@@ -18,6 +18,7 @@ from time import sleep
 from new_alerts import run_alert
 import json
 import datetime
+import csv
 
 class ControlModule:
     '''
@@ -98,12 +99,22 @@ class ControlModule:
         '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
         self.current_temp, self.current_hum = self.sensor.update_readings()
 
+
+    def save_timer_status_to_csv(self, now):
+        filename = "timer_status.csv"
+        with open(filename, 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([self.timer_on, self.timer_off, now])
+
+
     def timer_check(self):
         now = datetime.datetime.now().time()
         if self.timer_on <= now < self.timer_off:
             GPIO.output(self.light_pin, False) #Turn the light on
         else:
             GPIO.output(self.light_pin, True) #Turn the light off
+        if now.second == 0:
+            self.save_timer_status_to_csv(now)
 
     def heater_check(self):
         '''Handles the heater side of thresholds checks'''
