@@ -166,34 +166,34 @@ class ControlModule:
 
 
         # if the temp exceeds the LL or HH values, send an alert
-        if self.current_temp <= self.thresholds['LL'] or self.current_temp >= self.thresholds['HH']:
-            # determine whether the heater, ac, and humidifier are on or off
-            if GPIO.input(self.heat_pin) == '0 / GPIO.LOW / False':
-                heater_status = 'off'
-            elif GPIO.input(self.heat_pin) == '1 / GPIO.HIGH / True':
-                heater_status = 'off'
-            if GPIO.input(self.ac_pin) == '0 / GPIO.LOW / False':
-                ac_status = 'off'
-            elif GPIO.input(self.ac_pin) == '1 / GPIO.HIGH / True':
-                ac_status = 'off'
-            if GPIO.input(self.hum_pin) == '0 / GPIO.LOW / False':
-                hum_status = 'off'
-            elif GPIO.input(self.hum_pin) == '1 / GPIO.HIGH / True':
-                hum_status = 'on'
-            if self.current_temp <= self.thresholds['LL']:
-                alert_type = 'Low-temp'
-            elif self.current_temp >= self.thresholds['HH']:
-                alert_type = 'High-temp'
-            run_alert(
-                      self.thresholds['HH'], 
-                      self.thresholds['LL'], 
-                      self.thresholds['HHUM'], 
-                      self.thresholds['LHUM'], 
-                      heater_status, 
-                      ac_status, 
-                      hum_status, 
-                      alert_type
-                      )
+        # if self.current_temp <= self.thresholds['LL'] or self.current_temp >= self.thresholds['HH']:
+        #     # determine whether the heater, ac, and humidifier are on or off
+        #     if GPIO.input(self.heat_pin) == '0 / GPIO.LOW / False':
+        #         heater_status = 'off'
+        #     elif GPIO.input(self.heat_pin) == '1 / GPIO.HIGH / True':
+        #         heater_status = 'off'
+        #     if GPIO.input(self.ac_pin) == '0 / GPIO.LOW / False':
+        #         ac_status = 'off'
+        #     elif GPIO.input(self.ac_pin) == '1 / GPIO.HIGH / True':
+        #         ac_status = 'off'
+        #     if GPIO.input(self.hum_pin) == '0 / GPIO.LOW / False':
+        #         hum_status = 'off'
+        #     elif GPIO.input(self.hum_pin) == '1 / GPIO.HIGH / True':
+        #         hum_status = 'on'
+        #     if self.current_temp <= self.thresholds['LL']:
+        #         alert_type = 'Low-temp'
+        #     elif self.current_temp >= self.thresholds['HH']:
+        #         alert_type = 'High-temp'
+        #     run_alert(
+        #               self.thresholds['HH'], 
+        #               self.thresholds['LL'], 
+        #               self.thresholds['HHUM'], 
+        #               self.thresholds['LHUM'], 
+        #               heater_status, 
+        #               ac_status, 
+        #               hum_status, 
+        #               alert_type
+        #               )
 
     def record(self):
         self.data_manager.update_data(self.current_temp, self.current_hum)
