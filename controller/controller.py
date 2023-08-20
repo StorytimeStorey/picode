@@ -108,19 +108,21 @@ class ControlModule:
             writer = csv.writer(csvfile)
             writer.writerow([self.timer_on, self.timer_off, now])
 
-    # def control_fan(self):
-    #     now = datetime.datetime.now().time()
+    def control_fan(self):
+        now = datetime.datetime.now().time()
         
-    #     if not self.fan_running and self.thresholds["FANINTERVAL"] * 59 % now.minute == 0:
-    #         self.fan_running = True
-    #         GPIO.output(self.fan_pin, False) #Turn the light on
-    #         # self.fan_start_time = current_time
-        
-    #     if self.fan_running and current_time - self.fan_start_time >= self.thresholds["FANTIMER"] * 60:
-    #         # Turn off the fan (deactivate relay)
-    #         self.fan_running = False
-    #         GPIO.output(self.fan_pin, True) #Turn the light off
-    #         self.fan_start_time = current_time
+        if not self.fan_running and now.minute == 0:
+            self.fan_running = True
+            GPIO.output(self.fan_pin, False) #Turn the light on
+            # self.fan_start_time = current_time
+        elif self.fan_running and now.minute != 0:
+            self.fan_running = False
+            GPIO.output(self.fan_pin, True)
+        # if self.fan_running and current_time - self.fan_start_time >= self.thresholds["FANTIMER"] * 60:
+        #     # Turn off the fan (deactivate relay)
+        #     self.fan_running = False
+        #     GPIO.output(self.fan_pin, True) #Turn the light off
+        #     self.fan_start_time = current_time
 
 
 
