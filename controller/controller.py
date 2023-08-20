@@ -111,7 +111,7 @@ class ControlModule:
     def control_fan(self):
         now = datetime.datetime.now().time()
         
-        if not self.fan_running and now.minute == 0:
+        if not self.fan_running and now.minute == 5:
             self.fan_running = True
             GPIO.output(self.fan_pin, False) #Turn the light on
             # self.fan_start_time = current_time
@@ -181,6 +181,8 @@ class ControlModule:
         if self.light_pin:
             self.timer_check()
 
+        if self.fan_pin:
+            self.control_fan()
 
 
         # #if the temp exceeds the LL or HH values, send an alert

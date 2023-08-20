@@ -18,7 +18,7 @@
                   "heat_pin" : null, 
                   "ac_pin" : null, 
                   "hum_pin":24, 
-                  "fan_pin":null,
+                  "fan_pin":25,
                   "light_pin":23
                 },
     "Token_Paths": {
