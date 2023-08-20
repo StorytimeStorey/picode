@@ -10,12 +10,14 @@
                    "HUMON": 80, 
                    "HUMOFF":96,
                    "TON":10,
-                   "TOFF":22
+                   "TOFF":22,
+                   "FANINTERVAL":1,
+                   "FANTIMER":15
                 },
     "GPIO_Pins": {
                   "heat_pin" : null, 
                   "ac_pin" : null, 
-                  "hum_pin":null, 
+                  "hum_pin":24, 
                   "fan_pin":null,
                   "light_pin":23
                 },

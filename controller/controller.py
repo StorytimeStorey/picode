@@ -18,6 +18,7 @@ from time import sleep
 from new_alerts import run_alert
 import json
 import datetime
+import time
 import csv
 
 class ControlModule:
@@ -68,11 +69,10 @@ class ControlModule:
         self.thresholds = data['Thresholds']
         self.pins = data['GPIO_Pins']
         #Written as follows:
-        # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#, "TON":#, "TOFF:#"}
+        # "Thresholds": {"LL":#, "HON":#, "HOFF":#, "CON": #, "COFF" : #, "HH":#, "HUMON": #, "HUMOFF":#, "TON":#, "TOFF":#, "FANINTERVAL":#,"FANTIMER":#}
         # "GPIO_Pins":{"heat_pin" : None, "ac_pin" : None, "hum_pin":None, "fan_pin":None,"light_pin":None, "test_mode":False}
         self.timer_on = datetime.time(self.thresholds['TON'],0)
         self.timer_off = datetime.time(self.thresholds['TOFF'], 0)
-
 
         # set the GPIO pins to use
         self.heat_pin = self.pins["heat_pin"]
@@ -94,6 +94,8 @@ class ControlModule:
         #Should be immediately changed by sensor updates
         self.current_temp = 0
         self.current_hum = 0
+        self.fan_running = False
+        self.fan_start_time = 0
 
     def update_readings_from_sensor(self):
         '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
@@ -105,6 +107,21 @@ class ControlModule:
         with open(filename, 'a', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow([self.timer_on, self.timer_off, now])
+
+    # def control_fan(self):
+    #     now = datetime.datetime.now().time()
+        
+    #     if not self.fan_running and self.thresholds["FANINTERVAL"] * 59 % now.minute == 0:
+    #         self.fan_running = True
+    #         GPIO.output(self.fan_pin, False) #Turn the light on
+    #         # self.fan_start_time = current_time
+        
+    #     if self.fan_running and current_time - self.fan_start_time >= self.thresholds["FANTIMER"] * 60:
+    #         # Turn off the fan (deactivate relay)
+    #         self.fan_running = False
+    #         GPIO.output(self.fan_pin, True) #Turn the light off
+    #         self.fan_start_time = current_time
+
 
 
     def timer_check(self):
@@ -123,7 +140,6 @@ class ControlModule:
         # turn heater off if temp is good
         if self.current_temp >= self.thresholds['HOFF']:
             GPIO.output(self.heat_pin, False)
-
 
     def cooler_check(self):
         '''Handles the cooler side of threshold checks'''
@@ -165,7 +181,7 @@ class ControlModule:
 
 
 
-        # if the temp exceeds the LL or HH values, send an alert
+        # #if the temp exceeds the LL or HH values, send an alert
         # if self.current_temp <= self.thresholds['LL'] or self.current_temp >= self.thresholds['HH']:
         #     # determine whether the heater, ac, and humidifier are on or off
         #     if GPIO.input(self.heat_pin) == '0 / GPIO.LOW / False':
