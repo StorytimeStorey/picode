@@ -14,6 +14,15 @@ except ImportError:
 
 from data_manager import DataManager
 from sensor import BME280
+
+try:
+    from camera_controller import Camera
+    cam = True
+except ImportError:
+    print("No camera found")
+    cam = False
+    pass
+
 from time import sleep
 from new_alerts import run_alert
 import json
@@ -62,6 +71,9 @@ class ControlModule:
 
         self.sensor = BME280() #Reach sensor
         self.data_manager = DataManager() #What controls writing and saving the data
+        if cam == True:
+            self.camera = Camera() #initialize camera stuff
+
 
         with open(settings, 'r') as file:
             data = json.load(file)
@@ -94,12 +106,26 @@ class ControlModule:
         #Should be immediately changed by sensor updates
         self.current_temp = 0
         self.current_hum = 0
+
         self.fan_running = False
         self.fan_start_time = 0
+
+        self.camera_activated = False
+
 
     def update_readings_from_sensor(self):
         '''self.current_temp, self.current_hum = self.sensor.update_readings()'''
         self.current_temp, self.current_hum = self.sensor.update_readings()
+
+    def capture_images(self):
+        now = datetime.datetime.now().time()
+        if now.minute == self.thresholds["CAMTIMER"] and self.camera_activated == False:
+            self.camera_activated = True
+            GPIO.output(self.light_pin, False)
+            self.camera.capture_image()
+        
+        if now.minute != self.thresholds["CAMTIMER"] and self.camera_activated == True:
+            self.camera_activated = False
 
 
     def save_timer_status_to_csv(self, now):
@@ -111,7 +137,7 @@ class ControlModule:
     def control_fan(self):
         now = datetime.datetime.now().time()
         
-        if not self.fan_running and now.minute == 5:
+        if not self.fan_running and now.minute == 0:
             self.fan_running = True
             GPIO.output(self.fan_pin, False) #Turn the light on
             # self.fan_start_time = current_time
@@ -183,6 +209,9 @@ class ControlModule:
 
         if self.fan_pin:
             self.control_fan()
+        
+        if cam:
+            self.capture_images()
 
 
         # #if the temp exceeds the LL or HH values, send an alert
